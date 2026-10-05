@@ -455,7 +455,9 @@ _q = _queries_for(['Germany'], ['job', 'internship', 'thesis'],
 # anybody (0 local forms in 17,544 real titles), so the local query pairs the same English
 # role words with the local word for a beginner, and there is nothing left for a precise
 # shape to add. A pass with nothing to ask is skipped rather than sent empty.
-check('job asked 3 times, the other two 4 each', len(_q) == 3 + 4 + 4, len(_q))
+# Thesis has a third shape, the thesis words alone (T-27), in English and in the local language: 4 + 2.
+check('job asked 3 times, internship 4, thesis 6 (broad, exact, and the thesis words alone)',
+      len(_q) == 3 + 4 + 6, len(_q))
 # Counted by naming them, not by looking for a leading quote -- the entry-level job query
 # starts with one too, which is what made an earlier version of this check miscount.
 _texts = [text for _prefix, text in _q]
@@ -524,7 +526,8 @@ _q = _queries_for(['Ireland'], ['job', 'internship', 'thesis'],
                   p.ALL_SEARCH_LANGUAGES)
 # No local pass at all -- it would be the same search twice -- so each kind is asked
 # broadly and precisely, in English only, and nothing else.
-check('an English-speaking country has no local pass', len(_q) == 2 + 2 + 2, len(_q))
+# ...plus the thesis words alone, in English, for Thesis only (T-27).
+check('an English-speaking country has no local pass', len(_q) == 2 + 2 + 3, len(_q))
 # Not "no German word anywhere": the English INTERNSHIP query deliberately carries every
 # language's word for an internship in one group, because a German employer writes
 # "Werkstudent" on an otherwise English posting and that group is how it is found. What must
