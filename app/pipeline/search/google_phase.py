@@ -147,7 +147,7 @@ def _run_google_followups(rows: list[dict], client, countries, cities, *,
         role_terms=direct_api_terms,
     )
     # Now that every source has contributed its rows, work out how to read the sites
-    # Job Finder could not. Runs here rather than inside the deep crawl because the crawl
+    # RoleHound could not. Runs here rather than inside the deep crawl because the crawl
     # only sees its own eligible subset -- doing it there examined one domain out of
     # nineteen. What is learned is permanent and takes effect from the next search.
     try:

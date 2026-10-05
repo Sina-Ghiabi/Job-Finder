@@ -78,7 +78,7 @@ def load_settings() -> dict:
         loaded = json.loads(SETTINGS_PATH.read_text(encoding='utf-8'))
     except (json.JSONDecodeError, OSError) as e:
         _record_load_problem(
-            'settings.json could not be read (%s) — Job Finder is starting with no saved '
+            'settings.json could not be read (%s) — RoleHound is starting with no saved '
             'settings, so API keys and your last search setup are missing. The file is at '
             '%s.' % (e, SETTINGS_PATH))
         return {}
@@ -90,7 +90,7 @@ def load_settings() -> dict:
     if not isinstance(loaded, dict):
         _record_load_problem(
             'settings.json is valid JSON but the wrong shape (%s, expected an object) — '
-            'Job Finder is starting with no saved settings, so API keys and your last search '
+            'RoleHound is starting with no saved settings, so API keys and your last search '
             'setup are missing. A OneDrive sync conflict or a half-finished write produces '
             'exactly this. The file is at %s.'
             % (type(loaded).__name__, SETTINGS_PATH))
@@ -218,7 +218,7 @@ def save_applications(applications: list[dict]) -> None:
 def add_application(job: dict, document_paths: list[str], apply_date: str = '') -> dict:
     """Copies the chosen documents into data/documents/<application_id>/ and records the application.
 
-    `apply_date` is for applications entered by hand: Sina applies to things outside Job Finder
+    `apply_date` is for applications entered by hand: Sina applies to things outside RoleHound
     -- "شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه کنم" --
     and those were applied to on some earlier day, not today. Left empty it means today,
     which is what every application made through the app itself wants. Format is dd/mm/yyyy,
@@ -558,7 +558,7 @@ def export_excels(chosen_path: str) -> tuple[str, str]:
     chosen = Path(chosen_path)
     target_dir = chosen.parent
     target_dir.mkdir(parents=True, exist_ok=True)
-    prefix = chosen.stem or 'JobFinder_Export'
+    prefix = chosen.stem or 'RoleHound_Export'
 
     jobs_path = target_dir / f'{prefix}_Jobs.xlsx'
     excel_export.build_jobs_workbook(load_jobs()).save(jobs_path)

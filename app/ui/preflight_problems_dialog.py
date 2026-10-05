@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 
 
 class PreflightProblemsDialog(QDialog):
-    """The one window that reports anything Job Finder could not reach.
+    """The one window that reports anything RoleHound could not reach.
 
     Sina asked for exactly this shape: "بگه مشکل اینه و اگر میتونی حلش کنی حل کن اگر نه رد
     شو" -- name the problem, offer a live fix where one genuinely exists (a missing or
@@ -33,7 +33,7 @@ class PreflightProblemsDialog(QDialog):
         self.cancelled = False
 
         url_count = sum(1 for p in problems if p.get('kind') == 'url')
-        self.setWindowTitle("Job Finder found problems")
+        self.setWindowTitle("RoleHound found problems")
         self.setMinimumWidth(620)
         self.setMinimumHeight(480)
 
@@ -51,7 +51,7 @@ class PreflightProblemsDialog(QDialog):
         else:
             what = f"{len(problems)} problem(s)"
         intro = QLabel(
-            f"Job Finder found {what}. Each one below says what happened and how to fix it. "
+            f"RoleHound found {what}. Each one below says what happened and how to fix it. "
             "Anything left unfixed is simply skipped -- the rest of the search is unaffected."
         )
         intro.setWordWrap(True)

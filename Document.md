@@ -1,4 +1,4 @@
-# Job Finder
+# RoleHound
 
 A personal, local job-search desktop application. It searches LinkedIn, Indeed and
 Glassdoor through Apify, cleans the results down with a long chain of keyword rules,
@@ -11,7 +11,7 @@ ever lost.** It documents not just what each feature does, but the exact keyword
 the exact order things run in, and *why* certain decisions were made — including things
 that were tried and deliberately reverted.
 
-Built with **PySide6** (Qt for Python), packaged as a single standalone **`JobFinder.exe`**
+Built with **PySide6** (Qt for Python), packaged as a single standalone **`RoleHound.exe`**
 with PyInstaller.
 
 ---
@@ -1659,21 +1659,21 @@ because the alternative is the 0-row result `T-19` measured.
 
 > *"میخوام بذارم به صورت عمومی همه استفاده کنن"* · *"دانلود و استفاده اکیه ولی تغییر و فروش مشکل داره"*
 
-- **Name:** JobDesk became **Job Finder** (window title, brand label, `JobFinder_Export.xlsx`,
-  `JobFinder.spec`, `JobFinder.exe`, the Taskbar id). **The per-user data folder stays
+- **Name:** JobDesk became Job Finder and then **RoleHound** (window title, brand label, `RoleHound_Export.xlsx`,
+  `RoleHound.spec`, `RoleHound.exe`, the Taskbar id). **The per-user data folder stays
   `%APPDATA%\JobDesk` on purpose** — renaming it would orphan every saved setting, the Bank and the résumé.
-  Finding it on GitHub: "Job-Finder" alone is shared by 100+ repositories; a distinctive name
-  (ShoghlYab, KaarJoo and AbroadJobs had 0–3) is still open.
+  Why RoleHound: "Job-Finder" alone was shared by 100+ GitHub repositories, while "RoleHound"
+  had none (checked 5 October 2026 — GitHub only, not Google or any domain).
 - **This file** was `README.md`; it is now `Document.md`. The new `README.md` is the short public page
   (purpose, what it uses, what to prepare, a step-by-step guide, the Google speed note).
 - **License:** PolyForm Strict 1.0.0 (`LICENSE`) — use for yourself, no changes, no redistribution, no
   commercial use. Source-available, not Open Source. GitHub's Terms still let anyone fork a public repository;
   the license says they may not, it does not stop them.
-- **Two repositories.** `Job-Finder` (public) holds one clean commit made with a GitHub noreply address.
-  `Job-Finder-history` (private) keeps the full 72-commit history, which carries two personal e-mail
+- **Two repositories.** `RoleHound` (public) holds one clean commit made with a GitHub noreply address.
+  `RoleHound-history` (private) keeps the full 72-commit history, which carries two personal e-mail
   addresses and an old personal profile in `archive/` (residence, nationality, university, language levels).
   Removing a file from the latest commit does not remove it from history, so the public repository was
-  started afresh. The working folder is wired to `Job-Finder-history`; a change reaches the public one only by
+  started afresh. The working folder is wired to `RoleHound-history`; a change reaches the public one only by
   being copied across clean.
 - **What the review found and removed:** no API key, token or password was ever committed (all 72 commits
   scanned); the `archive/` folder (34 files) and personal sentences in comments and docs were removed. Still
@@ -2942,12 +2942,12 @@ layout wrappers — and that is where the time goes.
 
 ### 14 · Packaging, the exe, icons, git
 
-> **There were two `JobFinder.exe` files.** One in the project root, three weeks old, and one in
+> **There were two `RoleHound.exe` files.** One in the project root, three weeks old, and one in
 > `dist/`. Sina was opening the root one — which is why a new icon and a night of fixes "had
-> not changed anything". The root copy is deleted; **the exe is `dist/JobFinder.exe`.**
+> not changed anything". The root copy is deleted; **the exe is `dist/RoleHound.exe`.**
 
 > **`Icon.png` and `Icon.ico` were two different images** — a brain and an unrelated document
-> mark. Only `Icon.ico` is ever read (`JobFinder.spec` twice, `main.py` once), so editing the PNG
+> mark. Only `Icon.ico` is ever read (`RoleHound.spec` twice, `main.py` once), so editing the PNG
 > changed nothing. They are generated from one source now.
 >
 > Windows will not take a PNG as an exe icon, and a single-size `.ico` is blurry in the
@@ -2955,11 +2955,11 @@ layout wrappers — and that is where the time goes.
 > Windows 11's default — the mark sits on its own dark rounded square so it separates from
 > whatever is behind it.
 
-> **`JobFinder.spec` was not in the repository.** `*.spec` in `.gitignore` caught it, so **a
+> **`RoleHound.spec` was not in the repository.** `*.spec` in `.gitignore` caught it, so **a
 > fresh clone could not build the app at all** — the only build instruction was missing.
-> `!JobFinder.spec` excepts the hand-written one; generated specs stay ignored.
+> `!RoleHound.spec` excepts the hand-written one; generated specs stay ignored.
 
-> **`build/`, `dist/`, `JobFinder.exe`, `__pycache__`, `.venv` are gitignored on purpose** —
+> **`build/`, `dist/`, `RoleHound.exe`, `__pycache__`, `.venv` are gitignored on purpose** —
 > GitHub refuses a single file over 100MB. That means they were **never pushed**, so deleting
 > them is *not* recoverable from git; it is merely *reproducible*, which is a weaker promise.
 > Say which one you mean.
@@ -3104,7 +3104,7 @@ a logged-in session. Do not re-check the three routes above; they have been chec
 
 ## Quick start
 
-1. Run `JobFinder.exe` (or `python main.py` from source).
+1. Run `RoleHound.exe` (or `python main.py` from source).
 2. On first launch the Job Search page is empty (nothing saved yet). Click **New Search**.
 3. Fill in the [Setup Wizard](#the-setup-wizard--every-field) and click **Start Search**.
 4. Watch the [Log panel](#the-log-panel) at the bottom — every step is reported live.
@@ -3114,7 +3114,7 @@ a logged-in session. Do not re-check the three routes above; they have been chec
 
 ## The two-phase model: raw search, then Filter
 
-This is the single most important thing to understand about how Job Finder works, and it
+This is the single most important thing to understand about how RoleHound works, and it
 was a deliberate, explicit design change partway through development (see
 [Design decisions](#design-decisions-and-things-that-were-tried-and-reverted)).
 
@@ -3689,7 +3689,7 @@ following up on the Jooble discovery). Results fell into four groups:
    separate HTTP+JSON integration. **Two of the three were built** (see "Direct JSON API
    integrations" below) — `arbetsformedlingen.se` (Sweden) and `arbeitsagentur.de`
    (Germany) both turned out to need no registration at all; `francetravail.fr` still
-   requires registered credentials Job Finder doesn't have, so it's left on the
+   requires registered credentials RoleHound doesn't have, so it's left on the
    Google-only path.
 3. **No real mechanism found at all** — JS-rendered SPAs with no discoverable URL
    parameter (`werk.nl`, `nationalevacaturebank.nl`, `app.welcometothejungle.com`,
@@ -3744,7 +3744,7 @@ deliberately avoided (beyond the aijobs.ai one above):
 ### The safety net: what happens when a URL guess is wrong (or a site changes)
 
 Not every URL in `DIRECT_SEARCH_URL_BUILDERS` was verified at the *exact* combination
-Job Finder needs (many are inferred from a confirmed pattern seen on a different city on
+RoleHound needs (many are inferred from a confirmed pattern seen on a different city on
 the same site, applied here to Oslo/Berlin/Vienna/Amsterdam/Copenhagen) — and any site,
 confirmed or not, can silently change its URL format at any time in the future. Sina
 explicitly asked for this to never fail silently: `_run_direct_site_searches` tracks,
@@ -3955,7 +3955,7 @@ scraping would.
 - **`francetravail.fr`** also has a real, documented API
   (`api.francetravail.io/partenaire/offresdemploi/v2/offres`, with `commune`/`rayon`
   parameters), but unlike the two above, it requires registered OAuth2 credentials from
-  France Travail's own developer portal that Job Finder doesn't have — not attempted, left
+  France Travail's own developer portal that RoleHound doesn't have — not attempted, left
   on the Google-only path. France already has solid coverage via the confirmed-working
   `hellowork.com` direct search.
 
@@ -3973,7 +3973,7 @@ scraping would.
   it). He requested his own free API keys directly from Jooble (one per country
   domain — a key from `de.jooble.org` only works for `de.jooble.org`, confirmed by
   Jooble's own docs) and sent them back one at a time to be wired in as each arrived.
-  **16 of Job Finder's 18 countries are live** (`JOOBLE_API_COUNTRIES` in `pipeline.py`):
+  **16 of RoleHound's 18 countries are live** (`JOOBLE_API_COUNTRIES` in `pipeline.py`):
   Germany, Netherlands, Austria, Norway, France, Denmark, Sweden, Italy, Switzerland,
   Finland, Belgium, Spain, United Kingdom, Australia, Canada, and Portugal — the 5 with
   a matching `CITIES` city (Germany/Berlin, Netherlands/Amsterdam, Austria/Vienna,
@@ -4192,14 +4192,14 @@ click, no login session) is what's actually blocked. A URL fix can't solve that 
 human, briefly, can.
 
 **How it works** (`_run_manual_assisted_search`, wired through `manual_assist_cb`): for
-a curated list of domains (`MANUAL_ASSIST_SITES`), Job Finder launches a real, visible
+a curated list of domains (`MANUAL_ASSIST_SITES`), RoleHound launches a real, visible
 Chrome or Microsoft Edge window — whichever is actually installed on Sina's own PC,
 launched via Playwright's `channel` option rather than a bundled/headless browser — and
-navigates it to that site's best-known search URL. A dialog pops up in Job Finder itself
+navigates it to that site's best-known search URL. A dialog pops up in RoleHound itself
 ("Continue" / "Skip this site") while the worker thread blocks on a `threading.Event`.
 Sina clears whatever's in the way in the real browser window — a captcha, a cookie
 wall, a login, or just typing his own search into a JS-only search box — then clicks
-Continue. Job Finder then reads that exact page: if the domain has a confirmed
+Continue. RoleHound then reads that exact page: if the domain has a confirmed
 individual-job-link pattern, it visits each one (through the same browser, same
 cleared session, no further clicks needed) and extracts title/description from each;
 otherwise it captures whichever page Sina ended up on as a single row, the same honest
@@ -4210,7 +4210,7 @@ research above:
 - **Apify-blocked infra** (the crawler gets zero content or an explicit 403,
   confirmed earlier): `duunitori.fi`, `seek.com.au`, `careerone.com.au`,
   `nationalevacaturebank.nl`.
-- **Genuinely login-gated**: `werk.nl`, `adem.public.lu` — Sina logs in himself; Job Finder
+- **Genuinely login-gated**: `werk.nl`, `adem.public.lu` — Sina logs in himself; RoleHound
   never touches credentials.
 - **JS-only search, confirmed no URL parameter works**: `vdab.be`, `actiris.brussels`,
   `jobat.be`, `leforem.be`, `karrierestart.no` — Sina types the search himself.
@@ -4288,7 +4288,7 @@ defined city in `CITIES` — checked both, live:
 
 **Packaging**: needs the `playwright` pip package (added to `requirements.txt`) and its
 driver folder (a bundled `node.exe` + JS driver scripts — not a Python module, so
-PyInstaller needs it added explicitly as `datas` in `JobFinder.spec`, at the same relative
+PyInstaller needs it added explicitly as `datas` in `RoleHound.spec`, at the same relative
 path it's extracted to at runtime). No browser binary is bundled at all — `channel`
 locates the system's own installed Chrome/Edge, keeping the .exe's size increase to
 roughly the driver's size rather than a full browser download. Verified end-to-end with
@@ -4306,7 +4306,7 @@ otherwise the search would sit waiting at the first popup indefinitely.
 ### Two yellow warnings, covering different failure modes
 
 Rather than silently doing nothing when a `COUNTRY_JOB_SITES`/`GOOGLE_GLOBAL_EXTRA_SITES`
-site isn't working as expected, Job Finder logs a yellow warning in the Log panel with the
+site isn't working as expected, RoleHound logs a yellow warning in the Log panel with the
 same simple 3-step format either way, so Sina can go verify and report back what he
 finds:
 ```
@@ -4329,7 +4329,7 @@ spamming the log when a domain is simply thin across many countries):
    to be searched for at least one selected country/city (it's in that country's
    `COUNTRY_JOB_SITES` entry, or it's one of the always-searched
    `GOOGLE_GLOBAL_EXTRA_SITES`), but this run's Google results contained nothing from it
-   at all. Sina asked for this as a blanket safety net covering *every* site Job Finder
+   at all. Sina asked for this as a blanket safety net covering *every* site RoleHound
    searches via Google, confirmed pattern or not — a domain can go quiet for reasons that
    have nothing to do with a missing deep-crawl pattern (a typo'd/dead/renamed domain,
    Google indexing it poorly, a robots block, or — especially relevant for the
@@ -4346,7 +4346,7 @@ independently, in that order, right after Google's results are normalized in
 ### How location actually works for Google-searched sites
 
 Neither `COUNTRY_JOB_SITES` nor `GOOGLE_GLOBAL_EXTRA_SITES` sites are queried through
-their own internal location filter or API — Job Finder never talks to remoteok.com's or
+their own internal location filter or API — RoleHound never talks to remoteok.com's or
 finn.no's own search backend directly. Location scoping happens entirely through the
 Google query text itself: `build_google_job_queries` embeds the plain location name
 (e.g. `Oslo`) right next to the `site:` restriction —
@@ -4638,7 +4638,7 @@ countries/cities actually selected, reported in two sections in the Log:
 **If problems are found**, the search pauses (blocking the worker thread, same
 `threading.Event` + `result_holder` pattern already used by the manual-assist popup) and
 a dialog (`PreflightProblemsDialog`) lists each one with its reason. Where the problem is
-something Job Finder can actually fix live — a missing or rejected API key — there's an
+something RoleHound can actually fix live — a missing or rejected API key — there's an
 inline field to paste a replacement right there, and a fixed key is both used
 immediately for this run and saved to `settings.json` for next time. Where it isn't
 fixable live (a changed URL pattern, a real block), there's nothing to type — just
@@ -5722,7 +5722,7 @@ exact string equality only.
 
 **Export Excel** (top-right of the navbar) opens a **Save As** dialog (not a bare
 folder picker — an earlier version used `getExistingDirectory`, which was confusing;
-now `getSaveFileName` with default name `JobFinder_Export.xlsx` in your Downloads
+now `getSaveFileName` with default name `RoleHound_Export.xlsx` in your Downloads
 folder). Whatever base name you choose, two files are written next to it:
 `{name}_Jobs.xlsx` and `{name}_Applications.xlsx`.
 
@@ -5979,7 +5979,7 @@ one-time cache issue above). Two genuinely separate real problems were found and
      (which was already there) — a known, commonly-reported real Windows+Qt gotcha
      where the Taskbar button icon is tied to the top-level window's *own* icon and
      doesn't always reliably inherit the QApplication-level one alone in a frozen build.
-   - `ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('JobFinder.App')`
+   - `ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('RoleHound.App')`
      (`main.py`'s `_set_windows_app_user_model_id`) is called before `QApplication` is
      even constructed — Windows groups/identifies a running window's Taskbar button by
      its AppUserModelID, not just its own `HICON`; without a unique one set, a frozen
@@ -6001,13 +6001,13 @@ All local JSON, no database:
 | Running as... | Data folder |
 |---|---|
 | `python main.py` (dev) | `data/`, next to `main.py` |
-| `JobFinder.exe` (packaged) | `%APPDATA%\JobDesk\` |
+| `RoleHound.exe` (packaged) | `%APPDATA%\JobDesk\` |
 
 This split is deliberate (`storage._resolve_data_dir`, checks `sys.frozen`) — a
 PyInstaller onefile exe's own directory is a temporary extraction path, not a stable
 place to keep user data.
 
-**Worth remembering during live debugging**: the actually-running `JobFinder.exe` reads
+**Worth remembering during live debugging**: the actually-running `RoleHound.exe` reads
 and writes `%APPDATA%\JobDesk\settings.json` (and `jobs.json`/`applications.json`
 alongside it), **not** the repo's own `data/` folder — that's only ever used by
 `python main.py` in dev. This was a real, separate, useful fact the cancel-bug
@@ -6055,7 +6055,7 @@ when that application is removed or when Clear My Applications is used.
 ## Project file structure
 
 > **Note on the project folder's name:** this app's folder has been renamed at least
-> once already (it was originally `Job FinderApp`, later renamed to `1 - App`) and may be
+> once already (it was originally `RoleHoundApp`, later renamed to `1 - App`) and may be
 > renamed again — none of the code depends on the folder being called anything
 > specific. Wherever this doc says "the project folder", it means wherever `main.py`
 > currently lives, not a literal fixed name.
@@ -6064,7 +6064,7 @@ when that application is removed or when Clear My Applications is used.
 <project folder>/
 ├── main.py                       entry point -- QApplication, window icon, MainWindow
 ├── tests/                        the 3,167-assertion campaign; `python tests/run_all.py`
-├── JobFinder.spec                  PyInstaller spec -- THE build entry point (bundles the
+├── RoleHound.spec                  PyInstaller spec -- THE build entry point (bundles the
 │                                  Playwright driver + Icon.ico); see "Building the .exe"
 ├── requirements.txt              PySide6, apify-client, pandas, requests, openpyxl,
 │                                  pyinstaller, lingua-language-detector, anthropic,
@@ -6116,7 +6116,7 @@ when that application is removed or when Clear My Applications is used.
 
 **Correction from a full-codebase audit**: this tree previously listed `python-dotenv`
 as a dependency (it is not imported anywhere) while omitting `playwright` and
-`beautifulsoup4` (both genuinely required), and left out `JobFinder.spec`,
+`beautifulsoup4` (both genuinely required), and left out `RoleHound.spec`,
 `preflight_problems_dialog.py` and `broken_urls_dialog.py` entirely. Now matches
 `requirements.txt` and the real folder.
 
@@ -6134,10 +6134,10 @@ python main.py
 
 ```bash
 cd "<project folder>"
-.venv\Scripts\python -m PyInstaller JobFinder.spec --noconfirm
+.venv\Scripts\python -m PyInstaller RoleHound.spec --noconfirm
 ```
 
-**Build from `JobFinder.spec`** — it's the checked-in, reproducible build definition, and
+**Build from `RoleHound.spec`** — it's the checked-in, reproducible build definition, and
 it sets `upx=True` (compression) which a bare command line wouldn't.
 
 > **Correction.** An earlier revision of this section claimed the spec is *required*
@@ -6152,12 +6152,12 @@ it sets `upx=True` (compression) which a bare command line wouldn't.
 > package and fires for any PyInstaller build, one-liner included. So the spec is the
 > right thing to use, just not for the stated reason, and the one-liner is not broken.
 
-Result: `dist\JobFinder.exe` — a single self-contained file, no Python installation
+Result: `dist\RoleHound.exe` — a single self-contained file, no Python installation
 needed to run it. Copy it anywhere; it always stores its data in `%APPDATA%\JobDesk`
 regardless of where the exe itself lives.
 
-> **Note:** If `JobFinder.exe` is currently running, the build fails with a
-> `PermissionError` (file in use) — close the app (or `taskkill /F /IM JobFinder.exe`)
+> **Note:** If `RoleHound.exe` is currently running, the build fails with a
+> `PermissionError` (file in use) — close the app (or `taskkill /F /IM RoleHound.exe`)
 > first.
 
 ## Design decisions and things that were tried and reverted
@@ -6382,7 +6382,7 @@ detail lives in the code comments at each site.
     would trust next time a site is added. Corrected. The budget itself was re-measured
     and is still correct: worst case 30 words, and all three site lists are still
     pairwise disjoint.
-27. The build section documented a raw PyInstaller one-liner rather than `JobFinder.spec`;
+27. The build section documented a raw PyInstaller one-liner rather than `RoleHound.spec`;
     see [Building the .exe](#building-the-exe).
 28. **Six credentials had no UI at all.** The 16 Jooble keys, the Reed key, the two France
     Travail credentials and `manual_assist_enabled` could only be set by hand-editing the
@@ -6822,7 +6822,7 @@ pandas". This time it was "tested in a process that had already done the setup t
 binary hasn't done yet." The build is not verified until the built artifact is launched —
 so that is now part of the routine, not an afterthought.
 
-All **539** assertions (471 offline + 68 live) pass, and the rebuilt `JobFinder.exe` was
+All **539** assertions (471 offline + 68 live) pass, and the rebuilt `RoleHound.exe` was
 launched and confirmed running with a live window before this was called done.
 
 
@@ -6926,7 +6926,7 @@ fake Apify client, asserting the organic result becomes a row, that an excluded 
 - **pyflakes reports 0 findings across the entire package** — no undefined names, no
   unused imports.
 - **550 assertions green** (482 offline + 68 live), up from 539.
-- The rebuilt `JobFinder.exe` was launched and confirmed running with a live window.
+- The rebuilt `RoleHound.exe` was launched and confirmed running with a live window.
 - No performance regression: Filter's first click 918 ms, subsequent 381 ms, survivors
   identical at 3/800.
 
@@ -7017,7 +7017,7 @@ changed.
 
 - **pyflakes: 0 findings across the entire application.**
 - **638 assertions green** (570 offline + 68 live), up from 550.
-- The rebuilt `JobFinder.exe` was launched and confirmed running with a live window.
+- The rebuilt `RoleHound.exe` was launched and confirmed running with a live window.
 
 
 ## The UI layer — where the biggest function actually was
@@ -7094,7 +7094,7 @@ the golden snapshot did.
 - **713 assertions green** (645 offline + 68 live), up from 638.
 - **pyflakes: 0 findings across the entire application.**
 - Median function length across all 348 functions: **10 lines**.
-- The rebuilt `JobFinder.exe` was launched and confirmed running with a live window.
+- The rebuilt `RoleHound.exe` was launched and confirmed running with a live window.
 
 
 ## `search.py` became a subpackage
@@ -7217,7 +7217,7 @@ trusted them I would have concluded something false about the tool.)
 
 ### The next real step, and why it is not just "annotate everything"
 
-The obvious move — annotate `row: dict[str, str]` — would be **another lie**. A Job Finder
+The obvious move — annotate `row: dict[str, str]` — would be **another lie**. A RoleHound
 listing is heterogeneous: `title` is a `str`, `claude_match` an `int | None`,
 `thin_description` a `bool`, and `description` can arrive as a pandas `NaN` float. The
 honest tool for that shape is a `TypedDict` declaring each field's real type, which would
@@ -7229,7 +7229,7 @@ done.
 
 ## The app now reads new job sites by itself
 
-Google finds a page full of jobs on a site Job Finder has never seen. Until now that was a
+Google finds a page full of jobs on a site RoleHound has never seen. Until now that was a
 dead end: the page became one row, every posting behind it was lost, and the domain went
 into a dialog asking Sina to open the site, find a posting, and paste its URL back. In one
 real search **31 domains** were in that state.

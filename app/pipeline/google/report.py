@@ -16,7 +16,7 @@ def _warn_zero_result_google_sites(rows: list[dict], countries: list[str], citie
                                     progress_cb=None,
                                     extra_broken_domains: tuple[str, ...] | list[str] = (),
                                     problems: list | None = None) -> list:
-    """Sina asked for this as a blanket safety net covering EVERY site Job Finder searches
+    """Sina asked for this as a blanket safety net covering EVERY site RoleHound searches
     via Google (COUNTRY_JOB_SITES and GOOGLE_GLOBAL_EXTRA_SITES alike, confirmed
     deep-crawl pattern or not) -- not just the ones with no confirmed
     GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS entry (that's the separate, narrower check

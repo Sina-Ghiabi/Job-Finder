@@ -499,12 +499,12 @@ def _run_pre_google_check(client, countries, cities, actor_order, jooble_api_key
 # domains should not cost eight API calls to explain.
 # ---------------------------------------------------------------------------
 _FIX_ADVICE_SYSTEM_PROMPT = """You help someone maintain a personal job-search app called
-Job Finder. The user is not a developer working on its internals -- he runs it to find jobs.
+RoleHound. The user is not a developer working on its internals -- he runs it to find jobs.
 
 You are given a numbered list of things that failed during a search. For each one, write
 the concrete steps HE can take.
 
-What Job Finder already does by itself, so never suggest doing these by hand:
+What RoleHound already does by itself, so never suggest doing these by hand:
 - It works out each site's job-URL pattern automatically, by reading the site and
   verifying against real postings. Never tell him to find a URL pattern, edit a regex,
   or configure link patterns.
@@ -520,7 +520,7 @@ Rules:
 - Then 1-3 short steps, one per line, each starting with "- ".
 - Be specific and practical. Name the actual page to open, the actual setting to change.
 - If the cause is an API key, say where that provider issues keys, and that the new key
-  goes in Job Finder's Setup window (or can be pasted directly into this problem report).
+  goes in RoleHound's Setup window (or can be pasted directly into this problem report).
 - If a website is blocking or has gone quiet, the useful steps are human ones: open it in
   a browser to see whether it still exists, whether it still has a job section, and
   whether its address has changed or it now redirects somewhere else.

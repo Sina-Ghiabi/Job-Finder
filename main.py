@@ -28,7 +28,7 @@ def _set_windows_app_user_model_id():
         return
     try:
         import ctypes
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('JobFinder.App')
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('RoleHound.App')
     except Exception:
         pass  # best-effort -- worst case the Taskbar identity/icon falls back to default
 

@@ -92,7 +92,7 @@ check('playwright imports (rung 4: the full browser route)', _have_pw, _pw_error
 # The spec file has to name curl_cffi explicitly: PyInstaller cannot see an import that
 # happens inside a function by name. collect_submodules is the line that matters -- it
 # brings in the compiled _wrapper.pyd, which is where libcurl lives.
-_spec = open(os.path.join(APP, 'JobFinder.spec'), encoding='utf-8').read()
+_spec = open(os.path.join(APP, 'RoleHound.spec'), encoding='utf-8').read()
 check('the PyInstaller spec collects curl_cffi submodules',
       "collect_submodules('curl_cffi')" in _spec)
 

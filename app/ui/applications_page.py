@@ -117,7 +117,7 @@ class ApplicationsPage(QWidget):
         title.setObjectName("SectionTitle")
         top_row.addWidget(title)
         top_row.addStretch(1)
-        # For applications made outside Job Finder -- on LinkedIn, or a company's own site.
+        # For applications made outside RoleHound -- on LinkedIn, or a company's own site.
         # Without this the list was a record of what the app found, not of what Sina has
         # actually applied to, and only the second one is worth keeping.
         self.add_by_hand_btn = QPushButton("Add by hand")
@@ -284,7 +284,7 @@ class ApplicationsPage(QWidget):
         self._paint_status(button, new_status)
 
     def _add_by_hand(self):
-        """Record an application made outside Job Finder.
+        """Record an application made outside RoleHound.
 
         Goes through storage.add_application like every other one, so the row that appears
         is an ordinary row: the status menu, Download, Remove and the Excel export all work

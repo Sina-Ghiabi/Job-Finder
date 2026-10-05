@@ -1,4 +1,4 @@
-"""Shared harness for the Job Finder comprehensive test campaign."""
+"""Shared harness for the RoleHound comprehensive test campaign."""
 import os
 import sys
 import tempfile

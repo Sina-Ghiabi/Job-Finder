@@ -515,7 +515,7 @@ silently cost the Indeed leg.
 
 ### C-2 · Indeed itself · **RESOLVED — my error, not the app's**
 
-The invalid `datePosted` came from the test script, not from Job Finder. `INDEED_DATE_OPTIONS`
+The invalid `datePosted` came from the test script, not from RoleHound. `INDEED_DATE_OPTIONS`
 in `text.py` already holds exactly what the actor accepts:
 
 ```python
@@ -1221,7 +1221,7 @@ hit read back by hand before the rule shipped. Covered by 1.33.
 
 Both reported $0.00 and looked broken. They are not: 18 and 38 real rows came back, their
 cost simply rounds to nothing, and the Indeed actor does accept `no` (Norway) — its country
-list was read from the actor's own schema, and all 18 Job Finder countries are in it. Small is
+list was read from the actor's own schema, and all 18 RoleHound countries are in it. Small is
 what Indeed and Glassdoor are on this market: 21 and 46 rows on the earlier Austrian run too.
 
 ---

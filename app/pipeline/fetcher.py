@@ -102,7 +102,7 @@ def set_apify_token(token) -> None:
     """Hands the ladder its fifth rung. Called once per run, before any fetching.
 
     Without a token this rung is simply skipped, so nothing else in the app has to know
-    whether it is available -- an unconfigured Job Finder behaves exactly as it did before.
+    whether it is available -- an unconfigured RoleHound behaves exactly as it did before.
     """
     _APIFY_TOKEN[0] = (token or '').strip() or None
 
@@ -259,7 +259,7 @@ def _report_missing_capabilities(progress_cb) -> None:
         _record_missing_capability(
             'The curl_cffi library could not be loaded (%s), so two of the four ways of '
             'opening a blocked site are unavailable. Sites that answer 403 to a plain '
-            'request will now fail. This is a Job Finder packaging problem, not a website '
+            'request will now fail. This is a RoleHound packaging problem, not a website '
             'problem.' % e)
     try:
         importlib.import_module('playwright.sync_api')
@@ -267,7 +267,7 @@ def _report_missing_capabilities(progress_cb) -> None:
         _record_missing_capability(
             'Playwright could not be loaded (%s), so the last resort -- a real headless '
             'browser -- is unavailable. Sites that build their job list in JavaScript '
-            'cannot be read. This is a Job Finder packaging problem, not a website problem.'
+            'cannot be read. This is a RoleHound packaging problem, not a website problem.'
             % e)
     for missing in take_missing_capabilities():
         progress_cb('GLOG:fetch|error|%s' % missing, 0, 1)
@@ -288,7 +288,7 @@ def _curl_get(url: str, user_agent: str, strategy: str) -> FetchResult:
         _record_missing_capability(
             'The curl_cffi library could not be loaded (%s), so two of the four ways of '
             'opening a blocked site are unavailable. Sites that answer 403 to a plain '
-            'request will now fail. This is a Job Finder packaging problem, not a website '
+            'request will now fail. This is a RoleHound packaging problem, not a website '
             'problem.' % e)
         return FetchResult(None, '', strategy)
     headers = dict(BASE_HEADERS, **{'User-Agent': user_agent})
@@ -367,7 +367,7 @@ def _rung_browser(url: str) -> FetchResult:
         _record_missing_capability(
             'Playwright could not be loaded (%s), so the last resort -- a real headless '
             'browser -- is unavailable. Sites that build their job list in JavaScript '
-            'cannot be read. This is a Job Finder packaging problem, not a website problem.'
+            'cannot be read. This is a RoleHound packaging problem, not a website problem.'
             % e)
         return FetchResult(None, '', 'browser')
 

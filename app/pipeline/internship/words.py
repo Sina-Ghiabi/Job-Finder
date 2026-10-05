@@ -37,7 +37,7 @@ import unicodedata
 
 
 # Which languages a listing's words are read in -- this module's own copy, covering the
-# eighteen countries Job Finder searches.
+# eighteen countries RoleHound searches.
 COUNTRY_LANGUAGES = {
     'Italy': ('it', 'en'),
     'Denmark': ('da', 'en'),

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Add an application Sina made outside Job Finder, filling in by hand what Apply fills in
+"""Add an application Sina made outside RoleHound, filling in by hand what Apply fills in
 automatically.
 
 His words: "میخوام در بخش ای که کار های Apply شده رو قرار می دهیم میخوام که بشه به صورت دستی
 هم وارد کرد / شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه
-کنم". Job Finder finds jobs and he applies to them from the Jobs page -- but he also applies to
+کنم". RoleHound finds jobs and he applies to them from the Jobs page -- but he also applies to
 things it never found, straight on LinkedIn or a company's own site, and those belonged in
 the same list. A record of what he has applied to is only useful if it is ALL of it.
 
@@ -272,7 +272,7 @@ class ManualApplicationDialog(QDialog):
         lay = QFormLayout(box)
         lay.setSpacing(10)
 
-        note = QLabel('An application made through Job Finder carries these. One entered by '
+        note = QLabel('An application made through RoleHound carries these. One entered by '
                       'hand has no verdict unless you give it one, and empty is the honest '
                       'answer — nothing read this listing.')
         note.setStyleSheet(_HINT)
@@ -322,7 +322,7 @@ class ManualApplicationDialog(QDialog):
             self.search_level_input.addItem(key.title() if key else '(none)', key)
         lay.addRow('Level', self.search_level_input)
 
-        note = QLabel('Recorded on every application Job Finder makes, so the Excel export can '
+        note = QLabel('Recorded on every application RoleHound makes, so the Excel export can '
                       'group by it. Fill it in if this job belongs with one of your searches.')
         note.setStyleSheet(_HINT)
         note.setWordWrap(True)

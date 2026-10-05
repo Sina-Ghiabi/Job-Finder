@@ -87,7 +87,7 @@ _LOG_ROUTES = (
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Job Finder")
+        self.setWindowTitle("RoleHound")
         self.resize(1600, 960)
         self.showMaximized()
 
@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
 
         self._select_page(0)
         self.jobs_page.show_jobs(storage.load_jobs())
-        self.log_panel.log("Job Finder started — showing previously saved listings.")
+        self.log_panel.log("RoleHound started — showing previously saved listings.")
         # Anything the loaders above could not read. They return empty rather than
         # crashing, which is right, and used to say nothing at all -- so a damaged
         # jobs.json was indistinguishable from a search that found nothing.
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(4, 0, 4, 0)
         layout.setSpacing(0)
 
-        brand = QLabel("Job Finder")
+        brand = QLabel("RoleHound")
         brand.setObjectName("BrandLabel")
         layout.addWidget(brand)
 
@@ -693,7 +693,7 @@ class MainWindow(QMainWindow):
         QMessageBox.critical(self, "Filter failed", message)
 
     def handle_export(self):
-        default_path = str(Path.home() / 'Downloads' / 'JobFinder_Export.xlsx')
+        default_path = str(Path.home() / 'Downloads' / 'RoleHound_Export.xlsx')
         chosen_path, _ = QFileDialog.getSaveFileName(
             self, "Choose where to save the export", default_path, "Excel files (*.xlsx)"
         )

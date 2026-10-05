@@ -15,7 +15,7 @@ what drains it) -- and covers:
     the fetch ladder        every rung's library is actually present in this build
     Apify                   the token works and the Google actor is reachable (a .get())
     the direct APIs         one minimal real call each, except Jooble (config only)
-    the direct-search URLs  every site Job Finder searches by URL still opens
+    the direct-search URLs  every site RoleHound searches by URL still opens
     the browser-only sites  every site that needs the ladder still opens
     the job-URL patterns    each saved pattern still matches real links on its own site
 
@@ -78,7 +78,7 @@ def _check_ladder() -> list[dict]:
         except Exception as e:
             problems.append(_problem(
                 'Fetch ladder — %s' % module,
-                '%s could not be loaded (%s), so %s are unavailable. %s This is a Job Finder '
+                '%s could not be loaded (%s), so %s are unavailable. %s This is a RoleHound '
                 'packaging problem, not a website problem.' % (module, e, rungs, cost),
                 kind='app'))
     return problems

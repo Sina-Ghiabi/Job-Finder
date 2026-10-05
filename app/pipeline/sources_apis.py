@@ -541,7 +541,7 @@ def _fetch_swissdevjobs(role_term: str) -> list[dict]:
     acquired or shut down and folded into JobCopilot. Left in place rather than deleted
     because a source coming back is not unheard of, and one cheap request per search is a
     small price for finding out -- but it now fails with a sentence that says what
-    happened, instead of a raw JSONDecodeError that reads like a bug in Job Finder.
+    happened, instead of a raw JSONDecodeError that reads like a bug in RoleHound.
     """
     resp = requests.get(_SWISSDEVJOBS_API_URL, headers={'User-Agent': 'Mozilla/5.0'}, timeout=30)
     resp.raise_for_status()

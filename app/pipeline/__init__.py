@@ -1,4 +1,4 @@
-"""The Job Finder pipeline.
+"""The RoleHound pipeline.
 
 Split into focused modules, lowest-level first; each may only import from the
 ones above it in this list, which is what keeps the import graph acyclic:

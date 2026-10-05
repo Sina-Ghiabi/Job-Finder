@@ -495,7 +495,7 @@ check('  ...and mentions a match floor only when one is set',
 # ------------------------------------------------------------------------- 3.by-hand ----
 section('3.by-hand  an application Sina typed in himself')
 # "شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه کنم" -- he
-# applies to things Job Finder never found, and a record of what he has applied to is only
+# applies to things RoleHound never found, and a record of what he has applied to is only
 # useful if it is all of it. The design decision under test: a hand-entered application goes
 # through add_application like every other one, so there is ONE record shape. If it did not,
 # the status menu, the documents folder, Remove and the Excel export would each need to know

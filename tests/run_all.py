@@ -1,4 +1,4 @@
-"""Runs the whole Job Finder test campaign and prints one consolidated verdict.
+"""Runs the whole RoleHound test campaign and prints one consolidated verdict.
 
     .venv\\Scripts\\python tests\\run_all.py            # everything, including live APIs
     .venv\\Scripts\\python tests\\run_all.py --offline  # skip the suite that spends money
@@ -85,7 +85,7 @@ def run(path):
 
 
 print('=' * 78)
-print('Job Finder test campaign' + ('  (offline)' if OFFLINE else '  (including live APIs)'))
+print('RoleHound test campaign' + ('  (offline)' if OFFLINE else '  (including live APIs)'))
 print('=' * 78)
 
 grand = {'pass': 0, 'bad': 0}

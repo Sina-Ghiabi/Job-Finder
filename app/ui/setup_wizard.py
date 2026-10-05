@@ -26,7 +26,7 @@ class SetupWizard(QDialog):
         # moment Save or Start Search was clicked, even
         # ones just entered live via the pre-flight problems dialog's "fix" fields.
         self._saved_settings = saved_settings
-        self.setWindowTitle("Job Finder — Search Setup")
+        self.setWindowTitle("RoleHound — Search Setup")
         self.setMinimumWidth(480)
         self.resize(480, 720)
 

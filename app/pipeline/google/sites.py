@@ -333,7 +333,7 @@ COUNTRY_STARTUP_SITES = {
     # workinstartups.com and builtinlondon.uk were both tried for the UK and rejected:
     # workinstartups.com returned HTTP 403 to a real fetch attempt (same
     # can't-confirm-crawlable reason handpickedberlin.com was excluded for Germany --
-    # Google's own index having it doesn't mean Job Finder's own crawler can actually
+    # Google's own index having it doesn't mean RoleHound's own crawler can actually
     # reach it later); builtinlondon.uk is real and very active but lists jobs at
     # large established companies (Mastercard, Wells Fargo, Cloudflare, ...) alongside
     # startups, not startups specifically -- including it would wrongly label a big
@@ -465,7 +465,7 @@ _PATTERN_CRAWL_BATCH_SIZE = 3
 _DEEP_CRAWL_BATCH_SIZE = 12
 
 
-# How many unknown domains one search will try to learn. Whatever Google finds, Job Finder
+# How many unknown domains one search will try to learn. Whatever Google finds, RoleHound
 # is expected to go in and read -- so this is a stop against a pathological run, not a
 # ration. Each domain costs a handful of HTTP requests and at most one small Claude
 # call, and the result is saved forever: the cost is paid once per site, ever.

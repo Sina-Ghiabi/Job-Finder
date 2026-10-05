@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/banner.svg" alt="Job Finder" width="100%">
+<img src="assets/banner.svg" alt="RoleHound" width="100%">
 
 <br>
 
-[![Stars](https://img.shields.io/github/stars/Sina-Ghiabi/Job-Finder?style=for-the-badge&logo=github&color=f5c542&labelColor=0b1020)](https://github.com/Sina-Ghiabi/Job-Finder/stargazers)
+[![Stars](https://img.shields.io/github/stars/Sina-Ghiabi/RoleHound?style=for-the-badge&logo=github&color=f5c542&labelColor=0b1020)](https://github.com/Sina-Ghiabi/RoleHound/stargazers)
 [![Platform](https://img.shields.io/badge/Windows-10%20%7C%2011-4f8cff?style=for-the-badge&logo=windows&logoColor=white&labelColor=0b1020)](#-before-you-start)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-22d3a6?style=for-the-badge&logo=python&logoColor=white&labelColor=0b1020)](#-step-by-step)
 [![Apify](https://img.shields.io/badge/Powered%20by-Apify-97d700?style=for-the-badge&labelColor=0b1020)](https://apify.com)
@@ -21,7 +21,7 @@
 
 ## 💛 Why this exists
 
-Job Finder was built to make **finding work easier for Iranians living abroad** — people who need
+RoleHound was built to make **finding work easier for Iranians living abroad** — people who need
 roles that fit a visa, a language and a CV, and who cannot afford to scroll through thousands of
 irrelevant listings to find the few that matter.
 
@@ -38,7 +38,7 @@ irrelevant listings to find the few that matter.
 
 ## ✨ What it does
 
-You type a job title and pick countries. Job Finder asks the big job boards, throws away what you
+You type a job title and pick countries. RoleHound asks the big job boards, throws away what you
 could never take, and shows you the rest — scored against **your** résumé.
 
 ```mermaid
@@ -95,8 +95,8 @@ Get these ready first:
 ### 1 · Install
 
 ```bash
-git clone https://github.com/Sina-Ghiabi/Job-Finder.git
-cd Job-Finder
+git clone https://github.com/Sina-Ghiabi/RoleHound.git
+cd RoleHound
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt

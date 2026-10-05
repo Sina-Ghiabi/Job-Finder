@@ -1551,7 +1551,7 @@ check('a failed Filter forgets the shortcut', storage.load_filter_state() == {},
 
 # ------------------------------------------------------------------------- 5.by-hand ----
 section('5.by-hand  the Add by hand window')
-# The Applications list used to be a record of what Job Finder found, not of what Sina had
+# The Applications list used to be a record of what RoleHound found, not of what Sina had
 # applied to. He applies to jobs on LinkedIn and on companies' own sites, and those belong in
 # the same list -- so this window collects one and hands it to the ordinary save path.
 from datetime import datetime as _hand_dt                                 # noqa: E402

@@ -320,7 +320,7 @@ def remove_duplicates(rows: list) -> tuple:
     internships. The body alone is not enough either, since a company's boilerplate is often
     identical across every advert on its careers page.
     """
-    from rapidfuzz import fuzz            # a library, like re -- not a shared Job Finder rule
+    from rapidfuzz import fuzz            # a library, like re -- not a shared RoleHound rule
 
     keep = [True] * len(rows)
     # Best copy first here too, so when two addresses are the same posting the one that

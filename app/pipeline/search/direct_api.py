@@ -101,7 +101,7 @@ def _run_direct_api_searches(rows: list[dict], countries: list[str], cities: lis
                               apify_client=None, role_terms=None, settings=None) -> None:
     """Additive, same principle as _run_direct_site_searches -- runs alongside every
     other stage, only ever adds rows. Covers the sites whose real location mechanism
-    is a JSON API Job Finder can call directly (no Apify actor at all needed for these):
+    is a JSON API RoleHound can call directly (no Apify actor at all needed for these):
     arbetsformedlingen.se (Sweden, country-wide), arbeitsagentur.de (Germany,
     country-wide or Berlin-specific), and -- for each domain in JOOBLE_API_COUNTRIES
     Sina has supplied his own key for (jooble_api_keys: {'de': '...', 'nl': '...'}) --
@@ -109,7 +109,7 @@ def _run_direct_api_searches(rows: list[dict], countries: list[str], cities: lis
     completely different, unblocked mechanism from jooble.org's Cloudflare-walled
     browser path, see MANUAL_ASSIST_GLOBAL_SITES's removed entry above for why that one
     doesn't work. francetravail.fr's API also exists but needs registered credentials
-    Job Finder doesn't have -- not attempted here."""
+    RoleHound doesn't have -- not attempted here."""
     # EVERY SOURCE BELOW IS NOW SWITCHABLE.
     #
     # Until this, the thirteen sources in this function ran whenever a search ran, and only

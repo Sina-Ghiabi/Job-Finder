@@ -38,7 +38,7 @@ from .geo import (
 #    francetravail.fr) -- their confirmed real mechanism is a REST API returning JSON,
 #    not an HTML page the website-content-crawler can extract <a href> links from.
 #    Needs its own HTTP+JSON integration (a genuinely different, larger engineering
-#    task -- francetravail.fr's API also requires registered API credentials Job Finder
+#    task -- francetravail.fr's API also requires registered API credentials RoleHound
 #    doesn't have) -- left as a known future gap, not attempted here.
 # 2. **No real mechanism found at all** -- confirmed via research (and, for several of
 #    these, a further real Apify `playwright:adaptive` test against a guessed search URL
@@ -70,7 +70,7 @@ from .geo import (
 #    first -- see _direct_url_infojobs_net below.
 #
 # Every URL below is built from research findings, but not every one was verified at
-# the exact combination Job Finder actually needs (e.g. a confirmed city+keyword pattern
+# the exact combination RoleHound actually needs (e.g. a confirmed city+keyword pattern
 # on a *different* city, applied here to Oslo/Berlin/Vienna/Amsterdam/Copenhagen) --
 # `_run_direct_site_searches` below checks whether each constructed URL actually
 # yields real job links once crawled, and logs a yellow warning (in the same

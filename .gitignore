@@ -29,15 +29,15 @@ venv/
 .mypy_cache/
 
 # PyInstaller spec files are ignored in general -- they are usually generated -- but
-# JobFinder.spec is written by hand and is the only instruction for building the exe. A blanket
+# RoleHound.spec is written by hand and is the only instruction for building the exe. A blanket
 # `*.spec` kept it out of the repository entirely, so a fresh clone could not build the app
 # at all. It is tracked now; any other .spec is still generated and still ignored.
 *.spec
-!JobFinder.spec
+!RoleHound.spec
 
 # Build artefacts. GitHub refuses any single file over 100MB, and both of these are larger
 # than that -- a push carrying them is rejected outright, not merely bloated. They are
-# reproducible from the source next to them (see JobFinder.spec).
-JobFinder.exe
+# reproducible from the source next to them (see RoleHound.spec).
+RoleHound.exe
 build_probe/
 dist_probe/

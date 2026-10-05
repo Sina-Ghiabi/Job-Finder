@@ -351,7 +351,7 @@ class LogLines:
 
     def _log_pattern_start(self, message: str):
         # Nested under Google like the other additive stages. This is the step that used
-        # to be a manual job: finding, for a site Job Finder cannot read, how it builds its
+        # to be a manual job: finding, for a site RoleHound cannot read, how it builds its
         # job links.
         self.log_panel.start_timer_line('pattern', '    Learning New Sites',
                                         group='platform:Google')

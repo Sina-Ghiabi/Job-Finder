@@ -18,7 +18,7 @@ from .deepen import (_absorb_deep_crawl_items, _crawl_domain,
                      _deep_crawl_run_input, _known_pattern_domain)
 
 def _domains_worth_learning(rows):
-    """The Google domains this run met that Job Finder cannot read yet, one page each.
+    """The Google domains this run met that RoleHound cannot read yet, one page each.
 
     One page per domain is enough -- the pattern is a property of the site, not of the
     posting -- and a domain whose pattern is already known is skipped, so a run only ever
@@ -84,7 +84,7 @@ def _learn_one_domain(domain, listing_url, client, progress_cb):
 
 def learn_missing_job_patterns(rows, anthropic_api_key=None, progress_cb=None,
                                should_cancel=None) -> dict:
-    """Work out the job-URL pattern for every Google domain Job Finder cannot read yet.
+    """Work out the job-URL pattern for every Google domain RoleHound cannot read yet.
 
     Takes the FULL row set, not the deep crawl's subset. An earlier version was called
     from inside _deepen_google_results and so inherited its filter -- only rows tagged
@@ -126,7 +126,7 @@ def learn_missing_job_patterns(rows, anthropic_api_key=None, progress_cb=None,
     if progress_cb:
         progress_cb('PATTERN_DISCOVERY_START', 0, 1)
         progress_cb(
-            'GLOG:pattern|info|%d site(s) returned a page full of jobs that Job Finder '
+            'GLOG:pattern|info|%d site(s) returned a page full of jobs that RoleHound '
             "could not read yet — working out how each one builds its job links…"
             % len(targets), 0, 1)
 
