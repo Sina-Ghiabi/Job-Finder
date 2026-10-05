@@ -68,7 +68,7 @@ flowchart LR
 | **Job boards** | [LinkedIn](https://apify.com/apimaestro/linkedin-jobs-scraper-api) · [Indeed](https://apify.com/valig/indeed-jobs-scraper) · [Glassdoor](https://apify.com/valig/glassdoor-jobs-scraper) through **Apify** actors |
 | **Google** | [Apify Google Search](https://apify.com/apify/google-search-scraper) + a page crawler, for company career pages and local job boards |
 | **Screening & scoring** | **Claude** (Anthropic API) |
-| **Optional extras** | Jooble · Reed (UK) · France Travail · DeepL for translation |
+| **Optional extras** | Jooble · Reed (UK) · France Travail, and a set of free public job APIs (see below) |
 | **App** | Python · **PySide6** (Qt) · pandas · openpyxl |
 
 <br>
