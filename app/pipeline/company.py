@@ -8,7 +8,7 @@ from .rules import (_normalize_text)
 
 # Legal-entity suffix words stripped before comparing two company names -- a job ad and
 # an official register routinely spell the same company differently ("Booking.com" vs
-# "Booking.com B.V."). Sina explicitly flagged this: a small naming difference must
+# "Booking.com B.V."). The user explicitly flagged this: a small naming difference must
 # never cause a real match to be missed.
 _LEGAL_SUFFIX_WORDS = {
     'bv', 'nv', 'bvba', 'holding', 'holdings', 'group', 'groep', 'gmbh', 'ag',
@@ -93,7 +93,7 @@ def _save_company_legal_name_cache(cache: dict) -> None:
 
 
 # Company Popularity (formerly here: a per-unique-company Claude web-search call,
-# 'Startup'/'Unknown'/'Known'/'Well Known'/'Famous') was removed entirely -- Sina asked
+# 'Startup'/'Unknown'/'Known'/'Well Known'/'Famous') was removed entirely -- The user asked
 # for it gone since it was the single biggest remaining recurring Claude cost (one
 # real, separately-billed web-search call per unique company on every Filter run) and,
 # in real use, mostly just returned 'Unknown' anyway (traced to two real causes:

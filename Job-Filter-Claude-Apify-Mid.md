@@ -1,11 +1,11 @@
-# Job screening for Sina
+# Job screening for the user
 
 Read the whole posting and decide. If it conflicts with anything below, **DROP**. Otherwise
 **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, where he studies, his experience and his skills — read
 them there, and nowhere else.
@@ -87,7 +87,7 @@ one are all kept, each labelled as what it is.
    years it asks for, and whether it calls itself Junior, Mid, Senior, Lead or
    Principal — is REPORTED, not filtered. Put it in `seniority` and keep the listing.
    A role wanting eight years is kept and labelled Senior; one wanting none is kept and
-   labelled Junior. Sina picks the levels he wants in the table afterwards, so taking
+   labelled Junior. The user picks the levels he wants in the table afterwards, so taking
    that decision here would take it away from him.
 
 5. **It is not a real vacancy** — a search-results or index page listing many jobs, a paid
@@ -98,7 +98,7 @@ one are all kept, each labelled as what it is.
    for it; if no single employer is hiring anyone here, it is not a vacancy.
 6. **It requires a citizenship, residency or clearance his résumé shows he does not have.**
    One his résumé shows he has is fine.
-7. **It is not the work named on the Field line.** That line is the job title Sina is
+7. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same job under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not.
 8. **It requires enrolment at a university in a country other than the one his résumé says

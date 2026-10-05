@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The Filter window: every choice in one place, and a way to take them all off again.
 
-Sina asked for this directly -- click Filter, see every option there is, press Submit and the
+The user asked for this directly -- click Filter, see every option there is, press Submit and the
 filtering starts; click Filter again and one button clears everything and shows the whole
 Bank. And: a Filter already run with exactly these choices must not be run again.
 
@@ -27,7 +27,7 @@ from PySide6.QtWidgets import (QButtonGroup, QCheckBox, QComboBox, QDialog, QFor
 from app import pipeline
 from app.pipeline import geo
 
-# The levels, in the order the wizard offers them, with what each one means to Sina rather
+# The levels, in the order the wizard offers them, with what each one means to the user rather
 # than its internal key -- "Junior" alone never said whether a thesis counted.
 LEVEL_LABELS = [
     ('any', 'Any — jobs, internships and theses; Seniority and Type are columns'),
@@ -69,14 +69,12 @@ class FilterDialog(QDialog):
         self.chosen: dict = {}
         self.cleared = False
         self._settings = settings or {}
-        # The job titles this search actually asked for: the one Sina typed, then each other
+        # The job titles this search actually asked for: the one the user typed, then each other
         # name for the same work, as [(title, similarity)]. It comes from what was SEARCHED --
         # title_equivalents' cached answer -- and not from reading the pool.
         #
         # An earlier draft counted how many listings each title had found, which meant
-        # scanning every row to open this window. Sina stopped it: "نباید بره تمام آگهی هارو
-        # بخونه بگه این Title های کاری هست ها / فقط همون هایی که Search شده اند رو باید بهم
-        # نشون بده". He is choosing among what was asked for, which is a list already known.
+        # scanning every row to open this window. The user stopped it: [owner's note: it must not read every advert to list titles; show only the titles that were searched]. He is choosing among what was asked for, which is a list already known.
         self._searched_titles = list(field_counts or [])
 
         outer = QVBoxLayout(self)
@@ -139,9 +137,7 @@ class FilterDialog(QDialog):
     def _which_fields_box(self) -> QWidget:
         """Which job titles in the pool are worth reading -- the one choice that saves money.
 
-        Sina asked for it here rather than in the table: "قبل از Filter ... بگه در اون Search
-        کلی ای که انجام شد این Field ها جستجو شد / به صورت Dropdown بگه میخوای کدوم Field ها
-        نمایش داده بشه و بقیه حذف بشن".
+        The user asked for it here rather than in the table: [owner's note: before Filter, list the fields the search covered, as a dropdown to choose which to show and which to drop].
 
         The difference from the table's own column filters is the whole point of having both.
         Unticking a title HERE removes those listings before Claude reads anything -- 512
@@ -228,7 +224,7 @@ class FilterDialog(QDialog):
         return box
 
     def _lock_remote_for_type(self) -> None:
-        """Remote unclickable for Thesis and Internship -- Sina's rule, the same as in Search."""
+        """Remote unclickable for Thesis and Internship -- The user's rule, the same as in Search."""
         level = self.level_group.checkedButton()
         locked = bool(level) and level.property('level_key') in ('thesis', 'internship')
         for button in self.mode_group.buttons():
@@ -311,7 +307,7 @@ class FilterDialog(QDialog):
         all -- it collects postings. The Filter is what sends them to Claude to be scored
         against it, so choosing the résumé beside the match slider is choosing it at the
         moment it matters, and a wrong one is noticed before a run is paid for instead of
-        after. Sina found this out the hard way: he uploaded someone else's résumé, from a
+        after. The user found this out the hard way: he uploaded someone else's résumé, from a
         different field entirely, and the low match scores were the first he heard of it.
 
         Changing the résumé changes the run's signature -- filter_signature hashes its
@@ -496,7 +492,7 @@ class FilterDialog(QDialog):
         self.accept()
 
     def _on_submit(self):
-        # Claude reads every fact about Sina from the résumé, so ticking Claude with no
+        # Claude reads every fact about the user from the résumé, so ticking Claude with no
         # résumé means part two -- the whole match score -- silently does nothing. This is
         # the check the Search wizard used to make; it belongs here, where the résumé is
         # chosen and where the run that needs it is about to start.

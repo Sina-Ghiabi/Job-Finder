@@ -352,8 +352,8 @@ class MainWindow(QMainWindow):
 
         The loaders return empty instead of raising, so the app survives a damaged or
         half-synced file -- but until this existed they also said nothing, and an
-        unreadable jobs.json looked exactly like a search that found nothing. Sina asked
-        for the opposite: "هرجا مشکلی پیش اومد با رنگ قرمز نشون بده که بدونم مشکل داره".
+        unreadable jobs.json looked exactly like a search that found nothing. The user asked
+        for the opposite: [owner's note: show a red mark wherever something goes wrong, so a problem is visible].
         """
         for problem in storage.take_load_problems():
             self.log_panel.log(problem, level='error')
@@ -434,7 +434,7 @@ class MainWindow(QMainWindow):
     def handle_filter_existing(self):
         """Open the Filter window, and act on what it says.
 
-        Sina's design, in his words: click Filter and every option there is opens in one
+        The user's design, in his words: click Filter and every option there is opens in one
         window; Submit closes it and the filtering starts; click Filter again and one button
         takes every filter off and shows the whole Bank. And a Filter already run with exactly
         these choices must show its previous answer instead of being run again.
@@ -497,8 +497,7 @@ class MainWindow(QMainWindow):
         """The job titles this search asked for, for the Filter window's own list.
 
         Read from what was SEARCHED -- title_equivalents' cached answer for the title -- and
-        never by scanning the pool. Sina was explicit: "نباید بره تمام آگهی هارو بخونه بگه این
-        Title های کاری هست ها / فقط همون هایی که Search شده اند رو باید بهم نشون بده".
+        never by scanning the pool. The user was explicit: [owner's note: it must not read every advert to list titles; show only the titles that were searched].
 
         `client=None`, so this never asks Claude just to open a window: an answer already
         cached is used, and a title never asked about yet simply offers nothing, which the
@@ -538,7 +537,7 @@ class MainWindow(QMainWindow):
         """This Filter, over this pool, under these rules."""
         # Both are read defensively: a missing résumé or an unreachable prompt must make the
         # signature differ (so the Filter runs again) rather than raise on the way to a
-        # window Sina just pressed a button on.
+        # window the user just pressed a button on.
         try:
             resume_mark = resume.fingerprint(claude_prompt.current_resume_text())
         except Exception:
@@ -634,7 +633,7 @@ class MainWindow(QMainWindow):
                                     else 'claude_screen_user_kept')
                         item['job'][override] = True
                         # And the "why this was removed" note comes off now, not at the next
-                        # Filter run. It is no longer true the moment Sina overrules it, and
+                        # Filter run. It is no longer true the moment the user overrules it, and
                         # in between he can apply to this listing -- add_application copies
                         # the description into the record, so the note would be filed against
                         # a job he applied to.
@@ -650,7 +649,7 @@ class MainWindow(QMainWindow):
 
         # The Job module's count is reported first and on its own, before the other two
         # modules are folded in -- otherwise "removed N" silently changes meaning the moment
-        # a thesis is added back, and that number is the one Sina reads to check the Job
+        # a thesis is added back, and that number is the one the user reads to check the Job
         # filter still does what it did.
         total_removed = self._filter_original_count - len(final_kept)
         self.log_panel.log(f"Filter re-applied — removed {total_removed} listing(s), {len(final_kept)} remain.")
@@ -675,7 +674,7 @@ class MainWindow(QMainWindow):
         self.jobs_page.show_jobs(final_kept)
         # Only now: the signature stands for "jobs.json holds the answer to these choices",
         # and until this line it did not. Written after the review dialog too, so a run where
-        # Sina removed flagged listings by hand is remembered as it ended, not as it began.
+        # The user removed flagged listings by hand is remembered as it ended, not as it began.
         pending = getattr(self, '_pending_filter', None)
         if pending:
             storage.save_filter_state(pending['signature'], pending['choices'],

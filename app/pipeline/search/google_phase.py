@@ -210,7 +210,7 @@ def _run_google_phase(rows, client, countries, cities, actor_order, *,
     if should_cancel and should_cancel():
         raise SearchCancelled()
 
-    # Started here, before the pre-Google check, so Sina sees ONE continuous
+    # Started here, before the pre-Google check, so the user sees ONE continuous
     # "Google" timer covering the whole phase (pre-check included), not just
     # the actor call itself.
     if progress_cb:
@@ -252,7 +252,7 @@ def _run_google_phase(rows, client, countries, cities, actor_order, *,
             google_item_limit = len(google_queries.splitlines()) * google_pages_per_query
             # Started right before the one combined actor call that produces
             # the known-site results (it can genuinely take a minute or more) --
-            # a real, live-ticking timer so Sina can see this stage actually
+            # a real, live-ticking timer so the user can see this stage actually
             # started instead of the Log going quiet with no sign anything is
             # happening. Stopped right below once real results are in.
             if progress_cb:
@@ -282,14 +282,14 @@ def _run_google_phase(rows, client, countries, cities, actor_order, *,
             # call's usageTotalUsd covers known+global+open-web together, not
             # split by site) -- only the final per-site job COUNT, once the
             # whole call is done, is a real number. Only sites that actually
-            # returned something get their own line, per Sina's own ask -- but
+            # returned something get their own line, per the user's own ask -- but
             # the Running timer above is always stopped here regardless, even
             # with zero known-site results, so it never ticks forever.
             if progress_cb:
                 # One summary cost line for the WHOLE section (the real
                 # usageTotalUsd from the one combined Google Search actor call
                 # that produced every known-site result this run), followed by
-                # each site's own final job count -- per Sina's approved format.
+                # each site's own final job count -- per the user's approved format.
                 progress_cb(f"KNOWN_SITES_HEADER:{_google_usage_usd}", done, total)
                 for domain, count in sorted(known_site_counts.items()):
                     progress_cb(f"KNOWN_SITE_RESULT:{domain}|{count}", done, total)

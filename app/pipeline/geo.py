@@ -90,7 +90,7 @@ COUNTRY_ISO2 = {
 # this site has no real presence).
 COUNTRY_JOB_SITES = {
     # europa.eu (EURES) and arbetsformedlingen.se (Sweden) both removed from every
-    # entry here -- Sina asked for this after a real cost audit found both already have
+    # entry here -- The user asked for this after a real cost audit found both already have
     # a free, direct JSON-API integration (_fetch_eures/_fetch_arbetsformedlingen_se,
     # see _run_direct_api_searches) that returns the SAME listings with the SAME (or
     # better -- both APIs include the full job description text) quality, at zero
@@ -102,7 +102,7 @@ COUNTRY_JOB_SITES = {
     'Denmark': ['jobindex.dk', 'jobnet.dk', 'it-jobbank.dk'],
     # te-palvelut.fi removed -- its search backend (paikat.te-palvelut.fi) no longer
     # resolves via DNS at all (confirmed dead). Its real successor, tyomarkkinatori.fi,
-    # is below with a confirmed working URL Sina found by hand.
+    # is below with a confirmed working URL the user found by hand.
     'Finland': ['duunitori.fi', 'jobly.fi', 'tyomarkkinatori.fi'],
     'Norway': ['finn.no', 'arbeidsplassen.nav.no', 'karrierestart.no'],
     'Austria': ['karriere.at', 'stepstone.at', 'wearedevelopers.com'],
@@ -114,7 +114,7 @@ COUNTRY_JOB_SITES = {
     # jobs.ch and jobup.ch removed too, same reasoning as europa.eu/arbetsformedlingen.se
     # above -- both already have a free JobCloud API (_fetch_jobcloud). Unlike the
     # other removals, that free API's own description is thinner (title only, no full
-    # JD -- see _fetch_jobcloud's own docstring), a real, accepted trade-off Sina
+    # JD -- see _fetch_jobcloud's own docstring), a real, accepted trade-off the user
     # confirmed he's fine with. swissdevjobs.ch was NOT part of this removal (not
     # raised/agreed on) -- still searched via Google as before.
     'Switzerland': ['swissdevjobs.ch', 'wearedevelopers.com'],
@@ -161,7 +161,7 @@ def _mentions_city(city: str, text: str) -> bool:
 
 
 # Each entry: country domain code -> (COUNTRY_JOB_SITES country name, matching CITIES
-# city or None). Sina supplies the actual key per domain via settings.json
+# city or None). The user supplies the actual key per domain via settings.json
 # (jooble_{code}_api_key) -- a domain with no key configured is just skipped.
 JOOBLE_API_COUNTRIES = {
     'de': ('Germany', 'Berlin'),

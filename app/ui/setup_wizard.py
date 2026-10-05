@@ -121,10 +121,8 @@ class SetupWizard(QDialog):
 
         # THE RESULT CAP IS GONE, ON INSTRUCTION
         #
-        # There used to be a checkbox and a number here. Sina's rule, given twice: "هیچ Limit
-        # ای نباید در پیدا کردن آگهی باشد" and then, when the cost of removing it came up,
-        # "بالا رفتن تعداد نتایج هیچ اشکالی ندارد / سقف نتایج رو هم بردار اصلا / هرچی بیشتر
-        # بهتر". A control whose only correct setting is "off" is a way to set it wrongly by
+        # There used to be a checkbox and a number here. The user's rule, given twice: [owner's note: there must be no limit on finding listings] and then, when the cost of removing it came up,
+        # [owner's note: more results are fine; remove the result ceiling; the more the better]. A control whose only correct setting is "off" is a way to set it wrongly by
         # accident, which is what happened: the cap sat at 100 and both LinkedIn and Glassdoor
         # returned exactly 100 listings on a German run, each with more to give and neither
         # saying so.
@@ -142,12 +140,11 @@ class SetupWizard(QDialog):
         """What to search for: the résumé, one job title, one Level, Remote or Not Remote.
 
         This replaced three checkboxes -- Jobs, Internships, Theses -- and a field written into
-        the code. Sina's design:
+        the code. The user's design:
 
           * the résumé, PDF or Word and nothing else: Claude screens with the Level's profile,
-            then scores what is left against it -- "چند درصد ... با رزومه ای که آپلود کردی
-            همخونی داره";
-          * one job title, "مثلا Data Engineer", from which every query and every title check
+            then scores what is left against it -- [owner's note: what percentage matches the résumé that was uploaded];
+          * one job title, [owner's note: for example Data Engineer], from which every query and every title check
             is built;
           * one Level, exactly one: Thesis, Internship, Entry, Junior, Mid or Senior -- so Job
             and Internship are always separate runs;
@@ -185,9 +182,7 @@ class SetupWizard(QDialog):
         form.addRow("", self.title_forms_label)
 
         # --- Type -------------------------------------------------------------------------
-        # Any / Thesis / Internship, and nothing about seniority. Sina: "اون بخش Seniority رو از
-        # Search حذف کن ... Thesis میگرده دنبال Thesis، Internship میگرده دنبال Internship، و Any
-        # میگرده دنبال هر چیزی که میتونه پیدا کنه". Seniority is a column in the table now, picked
+        # Any / Thesis / Internship, and nothing about seniority. [owner's note: remove Seniority from Search; Thesis searches Thesis, Internship searches Internship, and Any searches everything]. Seniority is a column in the table now, picked
         # there; asking an actor about it was measured to add one to three rows (Document T-19).
         # Stored under the old `search_level` key so every reader of it keeps working, and an old
         # value (junior, mid, ...) opens here as Any.
@@ -218,14 +213,13 @@ class SetupWizard(QDialog):
     def _wire_work_mode(self, saved_settings: dict) -> None:
         """Type locks Remote for Thesis and Internship; Remote / Not Remote sets the dropdowns.
 
-        Sina: "اگر من Thesis و Internship انتخاب کردم کلا Remote غیر قابل کلیک بشه". A thesis or an
+        [owner's note: when Thesis or Internship is chosen, Remote becomes unclickable]. A thesis or an
         internship is almost never remote, and measured -- asked for remote-only, LinkedIn and
         Glassdoor returned nothing for either (Document T-19). So choosing either one disables the
         Remote entry and moves the choice to Not Remote; going back to Any gives the entry back
         and puts back what was chosen before.
 
-        And: "بعد هر انتخابی که کردم اونجا مستقیما در مقدار پارامتر مربوطه به اون Actor قرار داده
-        بشه". The two actor parameters that mean "remote or not" -- LinkedIn's `remote` and
+        And: [owner's note: every choice made there goes directly into that actor's own parameter]. The two actor parameters that mean "remote or not" -- LinkedIn's `remote` and
         Glassdoor's `remoteWorkType` -- are SET by this choice, so the panel always shows what
         will be sent. Changing either afterwards is his, and is sent as chosen.
         """
@@ -318,7 +312,7 @@ class SetupWizard(QDialog):
         existed for Indeed, and choosing it cost a two-hour German search its entire Indeed
         leg.
 
-        So Sina picks one range and `pipeline.date_settings_for` turns it into whatever each
+        So the user picks one range and `pipeline.date_settings_for` turns it into whatever each
         actor accepts. Where a platform cannot reach that far back it gets its own maximum,
         and the line underneath says so -- see pipeline.DATE_RANGES.
         """
@@ -380,8 +374,7 @@ class SetupWizard(QDialog):
         layout.addWidget(self.actor_list)
 
         # The fifth switch. The four platforms are the checklist above; this is everything
-        # else a search asks, as one box -- Sina's own shape for it: "فقط برای Google Indeed
-        # Glassdoor LinkedIn API ها".
+        # else a search asks, as one box -- The user's own shape for it: [owner's note: only for the Google, Indeed, Glassdoor and LinkedIn APIs].
         self.source_checkboxes: dict[str, QCheckBox] = {}
         for source in sources_enabled.SOURCES:
             box = QCheckBox(source.label)
@@ -410,8 +403,7 @@ class SetupWizard(QDialog):
     def _build_actor_filter_section(self, layout, saved_settings: dict):
         """One box per platform, holding that platform's own filters and nothing else.
 
-        Sina's words: "برای هر Actor بر اساس Field های همون Actor برام قرار بده و به صورت
-        Dropdown که فقط انتخاب کنیم یا به صورت Checkbox" -- per actor, that actor's own
+        The user's words: [owner's note: per actor, offer that actor's own fields as dropdowns or checkboxes to choose from] -- per actor, that actor's own
         fields, chosen rather than typed. And, after the testing: only the ones that work.
 
         Every control here is built from `actor_filters.FIELDS`, which is also what the
@@ -426,8 +418,7 @@ class SetupWizard(QDialog):
         title.setObjectName("SectionTitle")
         layout.addWidget(title)
 
-        # No explanatory text anywhere in this panel -- Sina: "برای پارامتر های Actor ها توضیح
-        # ننویس". The parameter's own name, and a dropdown in front of it. What each one was
+        # No explanatory text anywhere in this panel -- [owner's note: no explanations for the actors' parameters]. The parameter's own name, and a dropdown in front of it. What each one was
         # measured to do is in Document T-6 / T-16 and in actor_filters.Field.hint, which the
         # window no longer shows.
 
@@ -465,7 +456,7 @@ class SetupWizard(QDialog):
     def _actor_filter_widget(field, value):
         """The one control for one field: a dropdown, whatever the field's kind.
 
-        Sina asked for a dropdown in front of every parameter, so a tick is a No / Yes list and
+        The user asked for a dropdown in front of every parameter, so a tick is a No / Yes list and
         a number is a list of sensible limits, and the FIELD says what to offer
         (Field.dropdown_options). The value stored is the one the actor is given, never the
         label -- the labels are prose and will be reworded.
@@ -507,9 +498,8 @@ class SetupWizard(QDialog):
         out to be expensive rather than redundant. The search plan is
         platform x (countries + cities), so Netherlands AND Amsterdam is two locations and
         1.75x the actor runs, for listings the Netherlands search already returns and dedup
-        then throws away. Sina watched a search go from about 4 euros to over 11 and guessed
-        the cause himself: "من فکر کنم مثلا هم Netherlands رو انتخاب کردم هم Amesterdam / شاید
-        این فکر کرده باید 2 تا جستجو بزنه". He was right.
+        then throws away. The user watched a search go from about 4 euros to over 11 and guessed
+        the cause himself: [owner's note: both Netherlands and Amsterdam were chosen, so two searches may have been run]. He was right.
 
         So checking a country now disables its own cities: the country already includes them.
         A city is still selectable on its own, which is the case the city rows exist for --
@@ -566,7 +556,7 @@ class SetupWizard(QDialog):
         self.countries_tree.itemClicked.connect(self._on_country_tree_item_clicked)
         # itemChanged rather than itemClicked, because a check state also changes from
         # "Select all", "Clear all" and from loading saved settings -- and the cities have to
-        # follow the country in every one of those, not only when Sina clicks the row.
+        # follow the country in every one of those, not only when the user clicks the row.
         self.countries_tree.itemChanged.connect(self._on_country_tree_item_changed)
         layout.addWidget(self.countries_tree)
         self._sync_city_rows()

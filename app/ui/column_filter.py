@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Excel-style column filters for the Jobs table: tick the values you want to see.
 
-Sina asked for this by name: "توی اون جدولی که نمایش بهم میدی من بتونم ستون هارو انتخاب کنم و
-بگم فقط این مقادیر رو نشونم بده / عین Excel / مثلا فقط اونایی که Sponsorship دارن / یا مثلا
-فقط اونایی که Data Analyst هستن".
+The user asked for this by name: [owner's note: in the table, columns can be filtered to chosen values like Excel, for example only those with Sponsorship or only Data Analyst].
 
 WHY IT MATTERS MORE THAN IT LOOKS
 
@@ -15,8 +13,7 @@ built on that is a coin toss, and a wrong call there is a job he never learns ex
 
 Hiding is reversible; deleting is not. So everything related is now kept, and this is where he
 chooses what to look at -- on the real listings, with the counts in front of him, changing his
-mind as often as he likes. His own summary: "دیگه اینطوری هرچی Related هست رو میاری من خودم
-میگم چی نشونم بدی چی نشونم ندی".
+mind as often as he likes. His own summary: [owner's note: bring everything related, and the choice of what to show is made afterwards].
 
 HOW IT BEHAVES
 

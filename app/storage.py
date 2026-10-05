@@ -31,7 +31,7 @@ JOBS_PATH = DATA_DIR / 'jobs.json'
 # last Filter kept, which is why it cannot also be the pool -- the first Filter would eat it,
 # and trying another Level or Remote / Not Remote would mean paying Apify for the same
 # listings twice. The Bank is written once per search and only ever read after that, so a
-# Filter can be re-run against the full pool as many times as Sina likes, for free.
+# Filter can be re-run against the full pool as many times as the user likes, for free.
 BANK_PATH = DATA_DIR / 'bank.json'
 
 STATUS_CHOICES = ['Processing', 'Accept', 'Reject']
@@ -121,7 +121,7 @@ def save_settings(settings: dict) -> None:
 # merging it into the real list would make a crashed run indistinguishable from a good one.
 SEARCH_CHECKPOINT_PATH = DATA_DIR / 'search_checkpoint.json'
 
-# What the last Filter was asked for, and what it answered. Sina's rule for the Filter
+# What the last Filter was asked for, and what it answered. The user's rule for the Filter
 # window: the same choices must show the previous answer instead of paying for it again, and
 # any change must redo the work.
 #
@@ -218,8 +218,8 @@ def save_applications(applications: list[dict]) -> None:
 def add_application(job: dict, document_paths: list[str], apply_date: str = '') -> dict:
     """Copies the chosen documents into data/documents/<application_id>/ and records the application.
 
-    `apply_date` is for applications entered by hand: Sina applies to things outside RoleHound
-    -- "شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه کنم" --
+    `apply_date` is for applications entered by hand: The user applies to things outside RoleHound
+    -- [owner's note: an application may have been made on LinkedIn and need adding by hand] --
     and those were applied to on some earlier day, not today. Left empty it means today,
     which is what every application made through the app itself wants. Format is dd/mm/yyyy,
     the same one `_parse_apply_date` on the Applications page reads.
@@ -251,7 +251,7 @@ def add_application(job: dict, document_paths: list[str], apply_date: str = '') 
         'location': job.get('location'),
         'platform': job.get('platform'),
         'category': job.get('Category'),
-        # Beside category, and for the same reason: both are columns Sina filters on
+        # Beside category, and for the same reason: both are columns the user filters on
         # rather than values the Filter deleted by. A record is a curated dict, so a
         # new field has to be listed here or it is silently dropped.
         'seniority': job.get('Seniority'),
@@ -273,7 +273,7 @@ def add_application(job: dict, document_paths: list[str], apply_date: str = '') 
         'documents': stored_documents,
         'status': 'Processing',
         'apply_date': str(apply_date or '').strip() or datetime.now().strftime('%d/%m/%Y'),
-        # Which applications Sina typed in himself. Recorded because it explains why a row
+        # Which applications the user typed in himself. Recorded because it explains why a row
         # has no Match %, no verdict and no description: nothing read this listing, there
         # was no listing to read.
         'added_by_hand': bool(job.get('added_by_hand')),

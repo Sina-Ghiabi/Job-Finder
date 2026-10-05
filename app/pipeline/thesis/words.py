@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """The Thesis module's own vocabulary. Shared with nothing.
 
-Sina's instruction: Job, Thesis and Internship are three parallel modules that have nothing
-whatsoever in common -- "نه دیکشنری مشترک نه هیچی". So this file, internship/words.py and
+The user's instruction: Job, Thesis and Internship are three parallel modules that have nothing
+whatsoever in common -- [owner's note: no shared dictionary, nothing shared at all]. So this file, internship/words.py and
 country_rules.py have the same shape and none of the same contents, and none of the three
 imports another. Each can be tuned or broken without touching the other two.
 
@@ -126,7 +126,7 @@ ENGLISH = {
         'self-funded', 'self funded', 'at your own expense', 'equity only', 'equity-only',
         'expenses only', 'no financial compensation', 'this is an unpaid',
     ],
-    'other_language_required': [],       # English is the language Sina reads
+    'other_language_required': [],       # English is the language the user reads
     'english_mention': [
         'english',
     ],
@@ -892,7 +892,7 @@ def pattern_for(section: str, country=None, location=None):
     """The compiled matcher for one section, for one listing's languages.
 
     Longest first, so "master thesis" is reported rather than the "thesis" inside it -- the
-    matched phrase is what the Log shows Sina, and the specific one is more use.
+    matched phrase is what the Log shows the user, and the specific one is more use.
     """
     key = (section, str(country or ''), str(location or ''))
     pattern = _PATTERN_CACHE.get(key)

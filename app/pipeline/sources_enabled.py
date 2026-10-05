@@ -3,9 +3,7 @@
 
 WHY
 
-"میخوام در داخل Search برای هر Actor یک Checkbox بذاری که ما انتخاب کنیم که میخوایم از کدوم
-Actor ها استفاده کنیم / چون Deep Crawl واقعا خیلی خیلی وقت میبره / میخوام برای همه از Indeed
-تا API ها Check-box بذاری"
+[owner's note: a checkbox per actor in Search to choose which to use, because Deep Crawl takes very long; one for every source from Indeed to the APIs]
 
 Until now only the four Apify platforms could be switched off. Everything else -- the Google
 sub-stages and the thirteen direct sources -- ran whenever a search ran, with no way to say
@@ -55,8 +53,7 @@ class Source:
 #
 # Deep Crawl is the slow stage -- 208 pages across 7 sites on a real Netherlands run, longer
 # than every other stage put together -- and the first version of this file gave it, and the
-# two stages beside it, a switch each. Sina asked for one switch for Google instead: "نه پس
-# برای Deep Crawl نمیخواد بذاری برای Google بذار".
+# two stages beside it, a switch each. The user asked for one switch for Google instead: [owner's note: not for Deep Crawl - put it on Google].
 #
 # And Google already has that switch. It is one of the four platforms in the Search window's
 # own drag-to-reorder checklist, saved as `actor_order`, and `run_google = 'google' in
@@ -68,8 +65,7 @@ class Source:
 # ONE SWITCH FOR THE WHOLE DIRECT-API STAGE.
 #
 # This arrived at its shape by being narrowed twice. First it had a box per stage and per
-# source -- nineteen of them. Then: a switch for the actors only. Then, finally: "برای اینایی
-# که گفتی چک باکس نمیخوام فقط برای Google Indeed Glassdoor LinkedIn API ها" -- five switches
+# source -- nineteen of them. Then: a switch for the actors only. Then, finally: [owner's note: no checkboxes for those; only for the Google, Indeed, Glassdoor and LinkedIn APIs] -- five switches
 # in total, and the fifth is the APIs as one thing.
 #
 # So the four platforms keep the drag-to-reorder checklist they have always had, and this is

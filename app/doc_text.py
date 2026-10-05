@@ -2,8 +2,8 @@
 """Read the text out of a PDF or Word file, and refuse anything else.
 
 This was the résumé module's private machinery until a second caller appeared: an
-application entered by hand takes its job description as a PDF, the way Sina asked for it
-("برای JobDescription به صورت PDF بگیر"). Two copies of "how do you get the words out of a
+application entered by hand takes its job description as a PDF, the way the user asked for it
+([owner's note: get the job description as a PDF]). Two copies of "how do you get the words out of a
 PDF" would have drifted the first time one of them was fixed -- this project has already
 been bitten by exactly that with Rule 5, which lived in ten files and was changed in one.
 So the machinery moved here and `resume` now imports it.
@@ -12,12 +12,11 @@ WHAT IS CHECKED, AND WHY IT IS CHECKED THIS WAY
 
 A file is accepted only when it IS a PDF or a Word document -- judged by what is inside it,
 not by its name. A text file renamed "jd.pdf" is refused, and so is a PDF renamed ".docx".
-That rule is Sina's, first given for the résumé ("ورودی هم هیچ فرمت ای غیر از این رو قبول
-نکنه"), and it holds here for the same reason: the words are what get read, and a file that
+That rule is the user's, first given for the résumé ([owner's note: no input format other than these is accepted]), and it holds here for the same reason: the words are what get read, and a file that
 cannot give up its words is better refused at the moment it is chosen than accepted and
 found empty later.
 
-Every refusal is a sentence Sina can act on -- which file, what is wrong with it, and what
+Every refusal is a sentence the user can act on -- which file, what is wrong with it, and what
 to do -- never a traceback and never a silent empty string.
 """
 from __future__ import annotations
@@ -35,7 +34,7 @@ MAX_BYTES = 20 * 1024 * 1024
 
 
 class DocumentError(ValueError):
-    """Why a file was refused, in words Sina can act on."""
+    """Why a file was refused, in words the user can act on."""
 
 
 def kind_of(path: Path, head: bytes) -> str:
@@ -132,7 +131,7 @@ def tidy(text: str) -> str:
 def read_document_text(source) -> tuple:
     """Check a chosen file and read its text, without saving anything. Returns (kind, text).
 
-    Raises DocumentError with a message for Sina when the file is not a readable PDF or Word
+    Raises DocumentError with a message for the user when the file is not a readable PDF or Word
     document. Callers that need more -- a minimum length, a particular use -- add their own
     check on top; this one answers only "can these words be read".
     """

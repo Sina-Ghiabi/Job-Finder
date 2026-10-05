@@ -27,7 +27,7 @@ from .sources_apis import (
 from .google import (GOOGLE_SEARCH_ACTOR)
 
 
-# Sina's own real Jooble REST API keys, one per country domain (each requested
+# The user's own real Jooble REST API keys, one per country domain (each requested
 # separately from Jooble -- a key from de.jooble.org only works for de.jooble.org, per
 # Jooble's own docs), confirmed working with real calls: {"totalCount": 73575, "jobs":
 # [{"title", "location", "snippet", "salary", "source", "type", "link", "company",
@@ -37,7 +37,7 @@ from .google import (GOOGLE_SEARCH_ACTOR)
 #
 # The free tier is a LIFETIME cap of 500 requests total *per key*, not monthly -- so
 # every call is tracked in a small local counter file, keyed per domain (see
-# _jooble_usage_path/_read_jooble_usage/_record_jooble_usage below), and Sina gets an
+# _jooble_usage_path/_read_jooble_usage/_record_jooble_usage below), and the user gets an
 # explicit warning once a key's remaining budget gets low, well before it stops working.
 _JOOBLE_LIFETIME_LIMIT = 500
 
@@ -45,7 +45,7 @@ _JOOBLE_LIFETIME_LIMIT = 500
 # ---------------------------------------------------------------------------
 # Pre-flight health check -- runs before any real search work, so a broken source is
 # caught (and can be fixed or skipped) before real Apify credits/API quota are spent on
-# the actual run, not discovered mid-run. Sina asked for this directly after this
+# the actual run, not discovered mid-run. The user asked for this directly after this
 # session's API-hunting work made clear which mechanisms are most likely to silently
 # break (guessed direct-search URLs, undocumented APIs) -- see the fragility-risk
 # discussion in README.md. Two sections, matching the two categories he cares about.
@@ -148,7 +148,7 @@ def _register_api_preflight_checks(add_check, countries, cities, jooble_api_keys
         if not key:
             # Reported, not skipped. This used to `continue` on the grounds that an
             # unconfigured source is "not a problem, just not set up yet" -- and for a
-            # country Sina never searches that is true, which is why this whole loop is
+            # country the user never searches that is true, which is why this whole loop is
             # already scoped to the countries and cities of THIS run.
             #
             # For a country he DID select it is the opposite of harmless: a national job
@@ -189,7 +189,7 @@ def _register_api_preflight_checks(add_check, countries, cities, jooble_api_keys
     # Reed -- real minimal call, or a report that it is switched off. Same reasoning as
     # the Jooble block above: for a run that includes the UK, an unconfigured Reed key is
     # the UK's largest job board contributing nothing, and silence about it is worse than
-    # a line Sina can dismiss.
+    # a line the user can dismiss.
     if 'United Kingdom' in countries:
         if not reed_uk_api_key:
             if report_off is not None:
@@ -344,7 +344,7 @@ def _preflight_check_api_sources(countries, cities, jooble_api_keys, reed_uk_api
     def switched_off(name, reason, fix_kind=None, settings_key=None, relevant_countries=()):
         """A source with no key at all: reported, but not counted as a failure.
 
-        Sina's words, looking at the Log: this is not a problem we have, it is a source we
+        The user's words, looking at the Log: this is not a problem we have, it is a source we
         never set up. Reporting it as FAILED put it in red beside things that are genuinely
         broken, and made a healthy run read as a broken one. It still has to be SAID -- a
         national board switched off for a country being searched is worth knowing -- so it
@@ -412,7 +412,7 @@ def _preflight_check_api_sources(countries, cities, jooble_api_keys, reed_uk_api
     # The switched-off sources travel with the problems rather than only being logged.
     # Found while splitting run_health_check: the Health Check reports what this returns and
     # passes no progress callback, so turning a missing key from FAILED into an OFF line made
-    # those sources vanish from it entirely. Sina asked to be told they are off -- just not
+    # those sources vanish from it entirely. The user asked to be told they are off -- just not
     # in red -- so the caller gets the list and decides how to show it.
     return checked, passed, problems, off
 
@@ -426,13 +426,13 @@ def _run_pre_google_check(client, countries, cities, actor_order, jooble_api_key
     swissdevjobs.ch/jobs.ch/jobup.ch) is ONLY ever actually used from inside the Google
     stage of run_search (_run_direct_api_searches is called from there, not
     independently) -- so this check itself only runs right before that stage starts,
-    not at the very top of run_search before Indeed/LinkedIn/Glassdoor even run. Sina
+    not at the very top of run_search before Indeed/LinkedIn/Glassdoor even run. The user
     asked for exactly this after noticing the original placement checked things that
     had nothing to do with what was about to run yet.
 
     Returns possibly-updated (jooble_api_keys, reed_uk_api_key, francetravail_credentials)
     reflecting any live fixes made in the problems dialog, so the real run right after
-    this uses them without needing a restart. Raises SearchCancelled if Sina cancels
+    this uses them without needing a restart. Raises SearchCancelled if the user cancels
     from the problems dialog."""
     if progress_cb:
         progress_cb("PREFLIGHT_START", 0, 1)
@@ -451,7 +451,7 @@ def _run_pre_google_check(client, countries, cities, actor_order, jooble_api_key
     if progress_cb:
         # Always emitted, even when nothing was relevant this run (total_checked == 0)
         # -- PREFLIGHT_START already opened a live timer line, so it must always be
-        # matched by a PREFLIGHT_END or that line would tick forever. Sina asked for the
+        # matched by a PREFLIGHT_END or that line would tick forever. The user asked for the
         # completed line to name the countries/cities this check covered (instead of a
         # bare passed/checked count), so the label carries that list -- pass/fail still
         # decides the line's color, just not its text anymore.
@@ -490,7 +490,7 @@ def _run_pre_google_check(client, countries, cities, actor_order, jooble_api_key
 # Turning a failure into something actionable.
 #
 # The problem dicts above say WHAT broke -- "HTTP 403", "key rejected", "no results this
-# run". That is exactly the information Sina cannot act on: it names the symptom in the
+# run". That is exactly the information the user cannot act on: it names the symptom in the
 # app's vocabulary, not the fix in his. So each one is handed to Claude with its context,
 # and comes back with the two or three concrete steps that would actually resolve it.
 #

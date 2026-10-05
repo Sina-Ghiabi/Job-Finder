@@ -5,10 +5,10 @@ Copies of the Junior profile's two prompts (claude_screen/prompt.py and
 claude_screen/prompt_not_remote.py), word for word, except the two passages that make a
 level: the level paragraph under "What he is looking for", and rule 4. Kept whole here
 rather than assembled from a shared template, so that editing one profile's prompt can never
-move another's -- Sina's rule for the profiles.
+move another's -- The user's rule for the profiles.
 
 Mirrored byte for byte in Job-Filter-Claude-Apify-Mid.md and
-Job-Filter-Claude-Apify-Mid-Not-Remote.md in the app folder, which are the copies Sina
+Job-Filter-Claude-Apify-Mid-Not-Remote.md in the app folder, which are the copies the user
 reads and edits. The test suite holds them identical.
 """
 from __future__ import annotations
@@ -16,14 +16,14 @@ from __future__ import annotations
 import hashlib
 import json
 
-SYSTEM_PROMPT = """# Job screening for Sina
+SYSTEM_PROMPT = """# Job screening for the user
 
 Read the whole posting and decide. If it conflicts with anything below, **DROP**. Otherwise
 **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, where he studies, his experience and his skills — read
 them there, and nowhere else.
@@ -105,7 +105,7 @@ one are all kept, each labelled as what it is.
    years it asks for, and whether it calls itself Junior, Mid, Senior, Lead or
    Principal — is REPORTED, not filtered. Put it in `seniority` and keep the listing.
    A role wanting eight years is kept and labelled Senior; one wanting none is kept and
-   labelled Junior. Sina picks the levels he wants in the table afterwards, so taking
+   labelled Junior. The user picks the levels he wants in the table afterwards, so taking
    that decision here would take it away from him.
 
 5. **It is not a real vacancy** — a search-results or index page listing many jobs, a paid
@@ -116,7 +116,7 @@ one are all kept, each labelled as what it is.
    for it; if no single employer is hiring anyone here, it is not a vacancy.
 6. **It requires a citizenship, residency or clearance his résumé shows he does not have.**
    One his résumé shows he has is fine.
-7. **It is not the work named on the Field line.** That line is the job title Sina is
+7. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same job under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not.
 8. **It requires enrolment at a university in a country other than the one his résumé says
@@ -159,14 +159,14 @@ one are all kept, each labelled as what it is.
   most postings here never name anyone.
 """
 
-SYSTEM_PROMPT_NOT_REMOTE = """# Job screening for Sina
+SYSTEM_PROMPT_NOT_REMOTE = """# Job screening for the user
 
 Read the whole posting and decide. If it conflicts with anything below, **DROP**. Otherwise
 **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, where he studies, his experience and his skills — read
 them there, and nowhere else.
@@ -176,7 +176,7 @@ If a rule needs a fact his résumé does not give, do not guess it, and do not D
 ## What he is looking for
 
 **A job that is not remote** — on-site or hybrid, done at least partly in person, for any
-company in any country. That is the point of this search: Sina has asked for roles that are
+company in any country. That is the point of this search: The user has asked for roles that are
 not remote.
 
 **In the work named on the Field line of the posting**, at any level of seniority. Read
@@ -230,7 +230,7 @@ one are all kept, each labelled as what it is.
    years it asks for, and whether it calls itself Junior, Mid, Senior, Lead or
    Principal — is REPORTED, not filtered. Put it in `seniority` and keep the listing.
    A role wanting eight years is kept and labelled Senior; one wanting none is kept and
-   labelled Junior. Sina picks the levels he wants in the table afterwards, so taking
+   labelled Junior. The user picks the levels he wants in the table afterwards, so taking
    that decision here would take it away from him.
 
 5. **It is not a real vacancy** — a search-results or index page listing many jobs, a paid
@@ -241,7 +241,7 @@ one are all kept, each labelled as what it is.
    for it; if no single employer is hiring anyone here, it is not a vacancy.
 6. **It requires a citizenship, residency or clearance his résumé shows he does not have.**
    One his résumé shows he has is fine.
-7. **It is not the work named on the Field line.** That line is the job title Sina is
+7. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same job under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not.
 8. **It requires enrolment at a university in a country other than the one his résumé says

@@ -32,17 +32,17 @@ Updated as the campaign goes. This is the part to read first.
 | **Claude's screening stage** | 0 | 1 | 1 | A JSON schema that permitted one field and demanded eight. |
 | **Cost arithmetic** | 0 | 1 | 1 | Stages were left out of estimates; corpora differ six-fold between countries. |
 | **How the code is edited** | 0 | 1 | 1 | A regex written through a shell heredoc became an unmatchable pattern. |
-| **Telling Sina which site to go and fix** | 3 | 1 | 4 | Three separate messages sent him to fix sites that were working. A wrong warning costs more than no warning. |
+| **Telling the user which site to go and fix** | 3 | 1 | 4 | Three separate messages sent him to fix sites that were working. A wrong warning costs more than no warning. |
 | **The search crashing outright** | 0 | 2 | 2 | A C library in a thread pool, and nothing written to disk until the end — so one crash costs three hours and every credit spent. |
 | **What the search asks for** | 0 | 4 | 4 | The newest area and the largest. Everything else is about what happens to a listing after it is found; these are listings never found at all. |
 | **One title, six Levels, a résumé** | 2 | 6 | 10 | A promise with no test (a mirror file), text that outlived the decision it described (a hard-coded bio), and headers that outran their own rows (the Excel export). The two open ones are in Junior, left untouched on purpose. |
 | **What a page gives us about itself** | 0 | 5 | 6 | The Oslo run. A location that was an object, a title that was half the board's name, a description that was somebody else's vacancy. None of them was a rule being wrong; all of them were the app believing a page about itself. |
 
-**Three faults are open as of 13 September 2026 — K-2, K-3 and K-4, all found today and all in the same place: what the Log tells Sina to go and fix.** Germany's two runs are finished and every fault
+**Three faults are open as of 13 September 2026 — K-2, K-3 and K-4, all found today and all in the same place: what the Log tells the user to go and fix.** Germany's two runs are finished and every fault
 either fixed and re-measured, or investigated and found not to be one.
 
 The pattern across the campaign so far: **most faults are about not being able to tell what a
-fetched page actually is.** Not the filters, not Claude, not the rules Sina wrote — the step
+fetched page actually is.** Not the filters, not Claude, not the rules the user wrote — the step
 before all of them, where a URL and some HTML have to be turned into "this is one vacancy,
 and here is its text". That is where the ambiguity lives.
 
@@ -97,7 +97,7 @@ none. Checked against 14 real URLs, 14 correct.
 
 ### A-3 · An index page is dropped even when nothing could be taken out of it · **FIXED, then reversed**
 
-Sina's question, and the sharpest one asked so far. The design is: open the page, take the
+The user's question, and the sharpest one asked so far. The design is: open the page, take the
 vacancies, then discard the page. Measured over all 197 Austrian index pages:
 
 ```
@@ -121,8 +121,7 @@ not one matching any known posting shape.
 The first fix was a rule: **a page that could not be emptied must not be dropped.** Keeping
 it costs a few junk rows that Claude will judge; dropping it loses work silently.
 
-**Sina's question reversed it, and he was right.** *"88 صفحه‌ای که نگه داشته شدند به چه دردی
-میخورند؟"* — measured on the second German run, to nothing at all:
+**The user's question reversed it, and he was right.** *owner's note: what use are the 88 pages that were kept?* — measured on the second German run, to nothing at all:
 
 ```
 88 pages could not be emptied
@@ -227,7 +226,7 @@ How it hid for so long: no error was raised, an answer came back for every listi
 token bill looked plausible, and a stage whose job is to remove things removing nothing
 looks exactly like a stage with nothing to remove.
 
-What exposed it: Sina asked why Claude would delete the silent listings anyway. Measuring
+What exposed it: The user asked why Claude would delete the silent listings anyway. Measuring
 that gave 60 KEEPs out of 60 with `match` of `None` on every one — and a 13-token answer
 cannot hold a match percentage.
 
@@ -275,7 +274,7 @@ about where the person sits, and a great many genuinely remote data-engineering 
 mention it as a technology.
 
 The word is in `ON_SITE_OR_HYBRID_KEYWORDS` in `rules.py`, which is the Job module's
-vocabulary — the one Sina has said not to touch. It still needs raising, because this is not
+vocabulary — the one the user has said not to touch. It still needs raising, because this is not
 a borderline judgement: `on-premise` is a deployment model.
 
 ### F-2 · "hybrid" fires on cloud architecture and on benefit lists · **FIXED**
@@ -307,7 +306,7 @@ or not the work happens there.
 
 ### F-4 · 991 listings dropped for saying nothing · **RESOLVED — the rule is right**
 
-The largest group by far. It is Sina's own rule — a job advert that never raises the subject
+The largest group by far. It is the user's own rule — a job advert that never raises the subject
 means an office — and it was justified by a measurement:
 
 > Removed, it let through 128 listings that said nothing whatsoever about working
@@ -333,7 +332,7 @@ Claude was deleting them for exactly the reasoning that prompt now forbids. So t
 rule is still dropping 991 German listings on the strength of a behaviour that has been
 fixed, and nobody has re-measured since.
 
-Sina asked the question that exposed this: *"چرا به هر حال Claude حذفشون میکنه؟"* — and the
+The user asked the question that exposed this: *owner's note: why does Claude remove them anyway?* — and the
 honest answer is that it probably no longer does.
 
 **The measurement was taken, and it settles it the other way.** Forty of the 1,176 silent
@@ -345,7 +344,7 @@ DROPPED  40 of 40
 ```
 
 Not a useful number — none. Claude deletes every one, so the keyword rule is saving the cost
-of screening 1,176 listings to reach exactly the same answer. Sina's original reasoning holds
+of screening 1,176 listings to reach exactly the same answer. The user's original reasoning holds
 and the rule stays as it is.
 
 Why they die, which is worth knowing because only one of these reasons is about location:
@@ -481,7 +480,7 @@ said nothing about why.
 
 #### H-1 · "No limit" is a value two of the three actors refuse · **FIXED**
 
-Sina's instruction was unambiguous — *"هیچ Limit ای نباید در پیدا کردن آگهی باشد"* — and
+The user's instruction was unambiguous — *owner's note: there must be no limit on finding listings* — and
 `NO_RESULT_LIMIT = 100000` carried it out. Two of the three actors reject it outright:
 
 ```
@@ -543,7 +542,7 @@ need repeating; every later country gets it from the start.
 
 ### D-1 · The Claude cost estimate was wrong twice · **FIXED**
 
-Told Sina ten countries would cost about $2.50. Both the number and the reasoning were
+Told the user ten countries would cost about $2.50. Both the number and the reasoning were
 wrong: the Job module's `worth` stage was left out entirely, and Austria's 557 survivors
 were counted as the Netherlands' 93.
 
@@ -582,7 +581,7 @@ never found at all, and nothing downstream can recover from that.
 
 ### I-1 · Nothing ever searched for a thesis or an internship · **FIXED**
 
-Sina's question: *"آیا تمام Internship ها و Thesis ها نیز به درستی گرفته می شدند؟"* — and the
+The user's question: *owner's note: were all Internships and Theses collected correctly?* — and the
 number that prompted it, from a real German run: **4 theses and 53 internships** out of 4,812
 listings, in the country of the Masterarbeit and the Werkstudent.
 
@@ -608,7 +607,7 @@ Not one of `Masterarbeit`, `Abschlussarbeit`, `thesis`, `Praktikum`, `Werkstuden
 `internship` appears in any query this app sends. Three parallel modules were sifting the
 results of a search built for one of them.
 
-**Fixed by making the search three searches**, in the order Sina specified — Jobs found and
+**Fixed by making the search three searches**, in the order the user specified — Jobs found and
 closed, then Internships, then Theses — all landing in one pool that the existing filters
 separate exactly as before. Three checkboxes at the top of Search choose which run.
 
@@ -618,7 +617,7 @@ kinds share those 1,000 places, so adding theses would have cost jobs. Three cal
 ceilings — the split raises Job's own recall rather than spending it.
 
 And why checkboxes rather than an always-on change: with Jobs alone ticked the search takes
-**one pass with the same keyword object it always used**, so the path Sina asked never to
+**one pass with the same keyword object it always used**, so the path the user asked never to
 disturb is provably the path it takes. Verified:
 
 ```
@@ -677,7 +676,7 @@ The role group now carries all twelve languages the app searches, plus Polish.
 
 **Note for the Job pass, deliberately not acted on.** `KEYWORDS` — the job search — is still
 English only and has the same gap. Fixing it would find more jobs and would also change the
-one path Sina has asked twice to leave alone: *"به هیچ عنوان نمیخوام که Job دیگه دست بخوره."*
+one path the user has asked twice to leave alone: *owner's note: the Job module is not to be touched any more*
 Recorded here for him to decide.
 
 ### I-4 · A dozen of the best German boards were searched for the wrong thing · **FIXED**
@@ -778,9 +777,9 @@ Working in the very next run: with the Internship search still going and credit 
 
 ---
 
-## K · Telling Sina which site to go and fix
+## K · Telling the user which site to go and fix
 
-A site that cannot be read is worth a line in the Log, because Sina can sometimes do
+A site that cannot be read is worth a line in the Log, because the user can sometimes do
 something about it. A site that reads perfectly well is not — and three separate messages
 were telling him to go and fix things that were not broken.
 
@@ -824,7 +823,7 @@ Fetched again by hand, all three return 200:
 | jobtensor.com | 200, 120,299 bytes | opens; its "postings" are articles |
 | kununu.com | 202, 665,292 bytes | opens behind a cookie wall; it is an employer-REVIEW site, not a job board |
 
-The message is wrong in a way that costs Sina's time: it sends him to fix a site that opens.
+The message is wrong in a way that costs the user's time: it sends him to fix a site that opens.
 What is true is narrower — nothing on the page was recognisable as a posting, which is K-1's
 second case.
 
@@ -871,7 +870,7 @@ www.efinancialcareers.ch        login (German)
 www.efinancialcareers-gulf.com  sign-in wall
 ```
 
-Sina asked what he could do, and this is the one category where the answer is "make a free
+The user asked what he could do, and this is the one category where the answer is "make a free
 account". Told him not to yet: of those same ten sites, three turned out to have no postings
 at all and two are behind CAPTCHAs, so the odds are not obviously good. What is needed first
 is a measurement of how many relevant jobs sit behind each wall — his time is worth more than
@@ -884,7 +883,7 @@ a CAPTCHA, which an account does not open.
 
 ## L · The move to DevOps and MLOps, and what the first run under it exposed
 
-Sina moved the Job and Internship searches off data science onto DevOps and MLOps, with
+The user moved the Job and Internship searches off data science onto DevOps and MLOps, with
 every junior and entry-level form of them, in all 13 languages and 18 countries. Thesis was
 left exactly as it was. The previous vocabulary is kept whole in
 `../Vocabulary-Backup/OLD-VOCABULARY.txt` and `original-source/`.
@@ -904,7 +903,7 @@ alone added 245 listings the broad query never returned; the German beginner-wor
 Splitting the role vocabulary so Thesis could keep its own renamed `_LANGUAGE_ROLE_WORDS`,
 but `keywords_for` still referred to the old name. Because the name sat inside a function
 body, importing the module raised nothing: the app started cleanly and would have failed at
-the first local search. Caught by Sina asking whether the Junior words were actually
+the first local search. Caught by the user asking whether the Junior words were actually
 attached to the role words in every language — they were not attached to anything.
 
 ### L-2 · The Job module's field filter had never run · **FIXED**
@@ -1006,7 +1005,7 @@ project's 80 source files was then scanned for control characters: none elsewher
 
 ## M · One title, six Levels, a résumé, and Remote / Not Remote
 
-Sina replaced every field vocabulary with one job title he types ("مثلا Data Engineer"), the
+The user replaced every field vocabulary with one job title he types ([owner's note: for example Data Engineer]), the
 Job / Internship / Thesis checkboxes with one Level (Thesis, Internship, Entry, Junior, Mid,
 Senior), the hard-coded profile in every Claude prompt with the résumé he uploads (PDF or
 Word only), and added Remote / Not Remote. Entry, Mid and Senior are copies of the Junior
@@ -1030,7 +1029,7 @@ Remote) are generated with their prompts and Suite 4.42 holds every one byte-ide
 
 ### M-2 · The second Claude pass judged every listing against a stale, hard-coded bio · **FIXED**
 
-`worth.py` described Sina as "entry or junior level, in data, ML or AI" — written before the
+`worth.py` described the user as "entry or junior level, in data, ML or AI" — written before the
 field became a title and never updated, so a DevOps or Data Engineering run was still judged
 as data science. Replaced by the résumé match, for all six Levels, with its own cache key.
 
@@ -1054,7 +1053,7 @@ the one-at-a-time path keeps the mark.
 
 `resume.py` computed its folder from `storage.DATA_DIR` when imported, before the test harness
 moves storage to a temporary folder — so a test saving a résumé would have replaced the one
-Sina really uploaded. The path is now resolved on every call, and Suite 4.40 checks it points
+The user really uploaded. The path is now resolved on every call, and Suite 4.40 checks it points
 inside the test folder.
 
 ### M-6 · HTML entities are not unescaped before the rules read a posting · **FIXED (O campaign)**
@@ -1064,7 +1063,7 @@ corpora**, on 27–43% of listings (`&amp;` 26,445, `&gt;` 5,483, `&lt;` 5,189, 
 4,528), from the sources that hand over plain text rather than HTML — `strip_html` already
 unescapes the HTML ones. And the number that decided how to fix it: running the Work Location
 rule, the seniority rule, the unpaid rule and the language rule over all 24,295 listings both
-ways, **zero keyword verdicts change**. So this was never a filtering fault. It is what Sina
+ways, **zero keyword verdicts change**. So this was never a filtering fault. It is what the user
 reads in the table and the export, and what Claude is handed: "technology &amp;amp; domain
 knowledge". Unescaped in the Filter's first step, where the title is already being cleaned;
 the Bank keeps the untouched original. Covered by 4.entities.
@@ -1074,7 +1073,7 @@ the Bank keeps the untouched original. Covered by 4.entities.
 `&#39;` reaches `rule_text` as-is, so phrases with an apostrophe — several French ones in the
 Junior vocabulary — cannot match a posting that encodes it. Found while copying the Junior
 vocabulary into the new profiles; the profiles copy Junior exactly, so all four share it.
-Not fixed: it changes the Junior module, which Sina called complete.
+Not fixed: it changes the Junior module, which the user called complete.
 
 ### M-7 · "Graduates aged 18 to 28 years" is read as an experience range · **FIXED (O campaign)**
 
@@ -1121,7 +1120,7 @@ Mid and Senior prompts names lead, staff and principal roles, and Claude drops t
 
 ## N · The first run under the new design: Data Engineer, Entry, Remote, Oslo
 
-Sina's own résumé (PDF), the title box set to `Data Engineer`, Level `Entry`, `Remote`, one
+The user's own résumé (PDF), the title box set to `Data Engineer`, Level `Entry`, `Remote`, one
 city. 77 minutes, $2.42 of Apify, **1,018 listings**: Google 537, LinkedIn 220,
 workatastartup 167, Glassdoor 38, Indeed 18, the free APIs the rest. Then the Filter: 204
 duplicates, 694 dropped by the title check, 58 by the Work Location rule, 27 by the country
@@ -1156,7 +1155,7 @@ Junior's word list carries "team lead" but not "lead" on its own, so every profi
 from it kept a title that says plainly what it is. Measured: **50 distinct titles** in this
 one run, "Lead Data Engineer" at NAV among them, all at Entry level. Entry, Mid and Senior now
 drop "lead" and "staff" as their own words — with a tail guard, because without one "Data
-Engineer, Leading Bank" was dropped for the word "Leading". Junior is untouched, as Sina asked;
+Engineer, Leading Bank" was dropped for the word "Leading". Junior is untouched, as the user asked;
 rule 4 of its prompt catches these at Claude's stage.
 
 ### N-4 · A page gave the board's list of other vacancies instead of the posting · **FIXED**
@@ -1228,7 +1227,7 @@ what Indeed and Glassdoor are on this market: 21 and 46 rows on the earlier Aust
 
 ## O · The wide campaign: every Level, both work modes, 24,295 real listings
 
-Sina asked for one large test that measures everything, after a Junior/Remote run over the
+The user asked for one large test that measures everything, after a Junior/Remote run over the
 Amsterdam pool came back empty and he asked, reasonably, whether the filters were working at
 all. The campaign has four parts, and the point of the shape is that each part can only be
 answered by evidence the part before it cannot produce.
@@ -1253,7 +1252,7 @@ have to hold whatever the corpus:
 | I5 | a level word in the title decides, in both directions | held |
 | I6 | no configuration raises | held |
 
-That matrix is what answers Sina's doubt directly: the Amsterdam pool at Junior/Remote keeps
+That matrix is what answers the user's doubt directly: the Amsterdam pool at Junior/Remote keeps
 18 and at Junior/Not Remote keeps 49, of which **18 survive Claude and score 11 "worth
 applying to", 7 "worth opening first"**. Nothing was broken. Entry + Remote is simply a
 very narrow slice: the postings that fit his level exactly — ING's "at least 1 year", Young
@@ -1303,7 +1302,7 @@ and **zero** in the Germany and Austria runs, where nothing foreign had survived
 point. Covered by 4.place.
 
 One more thing had to be true for any of it to matter: a city search stores no country at
-all. Sina's own settings for the Amsterdam run were `cities=['Amsterdam'], countries=[]`, so
+all. The user's own settings for the Amsterdam run were `cities=['Amsterdam'], countries=[]`, so
 the first version of this rule would have sat switched off on every search he actually runs.
 The step now reads the chosen cities too, through `geo.CITY_COUNTRY`.
 
@@ -1311,7 +1310,7 @@ The step now reads the chosen cities too, through `geo.CITY_COUNTRY`.
 
 In a Not Remote search both modules removed *remote* postings — correctly — and wrote the
 reason as `cannot be done from Turin`. The rule itself reads the work mode properly; only the
-sentence in the Log did not, so the one line Sina gets told him the opposite of what happened.
+sentence in the Log did not, so the one line the user gets told him the opposite of what happened.
 Both now say `remote work, which a Not Remote search excludes`. Covered by 4.why.
 
 This came out of a count that looked alarming and was not: of 889 internship titles in the
@@ -1359,12 +1358,12 @@ stages, because the first stage was not enough:
    or a seniority word — in any of the languages the app reads. Rules 1 and 5 to 8 ask only
    that the quote be real. **2 of 94.**
 
-The direction of the failure is deliberate: a wrongly-kept listing costs Sina one line in the
+The direction of the failure is deliberate: a wrongly-kept listing costs the user one line in the
 review dialog, a wrongly-dropped one costs him a job he never sees.
 
 ### O-4 · The Bank: the Filter used to eat the pool it filters · **FIXED**
 
-Not a wrong verdict — a design fault Sina found by describing the app back to me. A search
+Not a wrong verdict — a design fault the user found by describing the app back to me. A search
 banks its listings, the Filter judges them, `save_jobs` then wrote the survivors over
 `jobs.json`, and the pool was gone: trying another Level, or Not Remote, meant paying Apify
 for the same search again. Everything measured in this campaign was only possible because the
@@ -1372,7 +1371,7 @@ Amsterdam pool had been kept by hand outside the app.
 
 `bank.json` now holds what a search returned, keyed by URL so re-searching a city does not
 bank a posting twice and the newest copy of a posting wins. The Filter reads from the Bank
-and never writes to it, so any Level and either work mode can be tried as often as Sina
+and never writes to it, so any Level and either work mode can be tried as often as the user
 likes for the price of the Claude calls alone. Same forgiveness as `jobs.json` — this file is
 the only copy of what a search paid for, so a damaged row is dropped and never the pool.
 Covered by 3.bank (storage) and 5.bank (the wiring, which is where the fault actually was:
@@ -1384,7 +1383,7 @@ listings to filter at any Level, for nothing.
 ### O-6 · The same job from two boards was shown twice · **FIXED**
 
 Found by asking, after everything above was committed, whether the app was now working
-"without errors" — and measuring instead of answering. The real Amsterdam result Sina would
+"without errors" — and measuring instead of answering. The real Amsterdam result the user would
 have opened held **8 duplicate pairs among its 48 listings**: QuantumBlack's Data Scientist on
 LinkedIn and on qarera, Metyis' Data Science Analyst on both, Robeco's Junior Climate Data
 Scientist on LinkedIn and quantjobs, Philips' internship on qarera and startup.jobs, Genmab's
@@ -1427,7 +1426,7 @@ fewer", Mid "anywhere from 2 to 5", Senior "five years or more".
 
 ### O-7 · A source with no key was reported as broken · **FIXED**
 
-Sina, reading the Health Check: `nl.jooble.org | FAILED (no API key configured, so this
+The user, reading the Health Check: `nl.jooble.org | FAILED (no API key configured, so this
 source contributes no listings)` — "this is the problem we have". It was not a problem; it
 was a source he had never set up, printed in red beside things that were genuinely broken,
 which made a healthy run read as a broken one.
@@ -1440,7 +1439,7 @@ search. The reason now names the country that loses the source and where a free 
 from. Queued through the same ordered pass as every other check, so the Log still reads in
 the order sources actually run. Covered by 4.12 and 5.off.
 
-Sina then asked whether he should go and find a Jooble key. Measured first, because the
+The user then asked whether he should go and find a Jooble key. Measured first, because the
 answer was not obvious: across three corpora the national boards are the best sources per
 listing brought — arbeitsagentur.de 741 brought / 40 survived (5.4%), werk.nl 121/6 (5.0%),
 against LinkedIn's 1,512/12 (0.8%) and Glassdoor's 1,578/12 (0.8%) — and both of those work
@@ -1451,7 +1450,7 @@ Amsterdam), and it cost 1 of those 500.
 
 ### O-8 · The Health Check could not say what anything costs · **FIXED**
 
-Sina asked for the two numbers the check was missing: how much Apify credit and how much
+The user asked for the two numbers the check was missing: how much Apify credit and how much
 Claude credit are left, and what a normal search costs.
 
 Apify answers exactly — the account reports its usage and its cap — so that line is a fact:
@@ -1474,7 +1473,7 @@ three came back DROP with quoted reasons. A silent import error was turning ever
 into "keep" — found because the ledger reported nothing and the number was checked rather
 than assumed. Covered by 4.spend and 5.budget.
 
-### O-9 · The search asked for cities Sina never chose · **FIXED (his rule, not a fault)**
+### O-9 · The search asked for cities the user never chose · **FIXED (his rule, not a fault)**
 
 LinkedIn caps one query at 1,000 jobs, so for every selected country the app also asked for
 that country's strongest city — Berlin for Germany, Milan for Italy. It was measured before
@@ -1482,14 +1481,12 @@ being built: a Berlin-only run returned 120 jobs of which **48 were not in the 1
 Germany-wide run had already paid for, and on the real German corpus LinkedIn returned
 exactly 2,000 rows, which is two queries each hitting the cap.
 
-Sina ended it anyway, and his reason is the better one: *"من میخوام فقط جا هایی که انتخاب
-کردم رو ببینم ولا غیر / به هیچ عنوان نباید شهر های دیگه ای که خودت به نظرت خوب اومده رو
-اضافه کنی"*. A tool that quietly searches places you did not ask for is not thorough, it is
+The user ended it anyway, and his reason is the better one: *owner's note: only the places that were chosen are wanted, and no other city may be added on the app's own judgement*. A tool that quietly searches places you did not ask for is not thorough, it is
 untrustworthy — and the cost is real too, at roughly $4 of LinkedIn per country per pass.
 
 Removed from the plan, along with the helper and the budget constant that served it. The
 city table stays, because it answers a different question: which country a city belongs to,
-for any city Sina types (`CITY_COUNTRY` only knows the wizard's own list, and a row whose
+for any city the user types (`CITY_COUNTRY` only knows the wizard's own list, and a row whose
 country cannot be resolved loses its country field and its local-language pass). Verified on
 his own example — Berlin + Munich + Amsterdam produces 9 actor calls and 11 Google query
 lines, and the only place names anywhere in them are Berlin, Munich and Amsterdam. Covered
@@ -1498,9 +1495,7 @@ comes back.
 
 ### O-10 · The money path was one 465-line function · **FIXED**
 
-Sina: *"به خرد ترین و ماژول های کوچک تبدیلش کن که به راحتی بشه مدریت اش کرد … ازت میخوام این
-بخش یکی از امن ترین بخش های برنامه بشه و دیگه مثل بالا نگی اینجا یکی از شکننده ترین بخش های
-برنامه هستش"*. `run_search` was 465 lines in a 1,652-line file that held three unrelated
+The user: *owner's note: split it into the smallest, easily managed modules; this part should become one of the safest, not one of the most fragile*. `run_search` was 465 lines in a 1,652-line file that held three unrelated
 jobs at once, and every question about it could only be asked by running a whole search.
 
 **Tests first**, because refactoring the least-tested and most expensive path in the app is
@@ -1524,7 +1519,7 @@ The phases are now named things that can be read, tested and fixed one at a time
 `_process_plan_item` became `_linkedin_request` / `_indeed_request` / `_glassdoor_request`
 plus a table, so a fourth actor is a function and a line rather than another branch.
 
-**And the redundancy Sina asked about, found by measuring rather than guessing.** The split
+**And the redundancy the user asked about, found by measuring rather than guessing.** The split
 left runner re-exporting 27 names from queries; 18 of them nobody read. Tests were reading
 the vocabulary through `runner` instead of from where it lives, and `app.pipeline`'s public
 API took `KEYWORDS` the same way. All of it now points at the source, and `pyflakes` across
@@ -1536,8 +1531,7 @@ of the three, because it searches the web — was reported at less than it cost.
 
 ### O-11 · Five more functions nobody could hold in their head · **FIXED**
 
-Sina asked for the same treatment across the rest of the app, "طوری باشه که اگر مشکلی پیش
-اومد سریع بفهمیم مشکل چیه". Measured first, so the list is the app's and not a taste: every
+The user asked for the same treatment across the rest of the app, [owner's note: make it so that a problem is quickly understood]. Measured first, so the list is the app's and not a taste: every
 function over 60 lines, with its branch count and how many separate blocks it holds.
 
 | | before | after |
@@ -1557,7 +1551,7 @@ one function was holding several jobs.
 
 1. **Switched-off sources had gone silent in the Health Check.** Turning a missing key from
    FAILED into an OFF line (O-7) made them invisible there, because the Health Check reports
-   what `_preflight_check_api_sources` *returns* and passes it no progress callback. Sina
+   what `_preflight_check_api_sources` *returns* and passes it no progress callback. The user
    asked to be told a source is off — just not in red — so the off list now travels with the
    problems, and the Health Check prints it in amber.
 2. `_fetch_round` in enrich.py was nested purely to reach two `nonlocal` counters, so it
@@ -1573,7 +1567,7 @@ to bottom, and splitting them would add a layer without removing a decision.
 
 ### O-12 · A Not Remote search asked LinkedIn for remote work only · **FIXED**
 
-Found by Sina asking a plain question during the real Germany run — do Remote / Not Remote
+Found by the user asking a plain question during the real Germany run — do Remote / Not Remote
 and the Level change what is *searched*, or only what is filtered? Answering it honestly
 meant reading the request each platform is actually sent, and one of them was wrong:
 
@@ -1582,7 +1576,7 @@ linkedin → urls: 'https://www.linkedin.com/jobs/search/?...&f_WT=2&...'
 ```
 
 `f_WT=2` is LinkedIn's own **remote-only** filter, and it was on every search of every
-country except Italy, whatever work mode Sina had selected. So a Not Remote run asked the
+country except Italy, whatever work mode the user had selected. So a Not Remote run asked the
 largest single source in the app for nothing but remote work — the exact opposite of the
 selection, and silently: the listings that came back looked perfectly normal.
 
@@ -1613,7 +1607,7 @@ working perfectly the whole time; there was simply no way to know that from the 
 
 That is not a cosmetic complaint. A stage that can run over an hour in silence is
 indistinguishable from a hang, and the only other sign of life — Apify credit ticking down —
-stalls too while a batch waits for its run to finish. Sina's reasonable response to a
+stalls too while a batch waits for its run to finish. The user's reasonable response to a
 one-hour silence is to kill the app, which throws away everything already paid for.
 
 `crawl_urls_in_batches` now says how much work there is before it starts, and reports after
@@ -1651,7 +1645,7 @@ Covered by 7.18–7.20.
 
 ### O-15 · A removal left no trace on the listing · **FIXED**
 
-Sina asked for it in one sentence: keep the reason a listing was removed on the end of the
+The user asked for it in one sentence: keep the reason a listing was removed on the end of the
 listing, between markers, so it can be read rather than taken on trust.
 
 It was worth asking for. `drop_evidence` — the phrase Claude must quote from the posting
@@ -1678,7 +1672,7 @@ the whole risk, and the containment is one line at the top of `reapply_filters`:
 `clear_drop_note(job)`, before any step sees the listing. Left in, "Rule 2 - Requires German
 C1" would be read on the next run as the *posting* demanding German. The note is written back
 only where a removal is decided, from the stored verdict, so a cached drop reads like a fresh
-one and a row Sina keeps by hand loses its note instead of keeping a stale claim.
+one and a row the user keeps by hand loses its note instead of keeping a stale claim.
 
 **The first version had a real bug, and only measurement found it.** `set_drop_note` did
 `body.rstrip()` — tidy, and wrong. `description` is hashed into the screening cache key, so a
@@ -1701,11 +1695,11 @@ Covered by section 4.note, including the seven endings a posting can have.
 
 ### O-16 · The language filter caught 13 of 1,778 · **FIXED**
 
-Found by Sina, from the far end, and it is the largest fault of the whole campaign.
+Found by the user, from the far end, and it is the largest fault of the whole campaign.
 
 He read the two REPLY listings the Germany run had shown him, saw
 `Kommunikationsstärke in Deutsch und Englisch` in one of them, and asked the obvious
-question: *"مگه یک فیلتر نداشتیم که اگر زبان دیگه ای غیر از انگلیسی خواست باید حذف بشه؟"*
+question: *owner's note: was there not a filter dropping adverts that ask for a language other than English?*
 
 There is one. It was catching almost nothing:
 
@@ -1761,7 +1755,7 @@ Covered by section 1.language — 16 walls, 11 non-walls, 4 Italian probes and t
 
 ### O-17 · A board's own editorial reached the "apply" list · **FIXED**
 
-Found by Sina reading the nine listings Claude had marked **apply** on the Germany run. Three
+Found by the user reading the nine listings Claude had marked **apply** on the Germany run. Three
 of them were not vacancies at all:
 
 ```
@@ -1832,7 +1826,7 @@ The real answer was an HTTP error, and europa.eu hands a failing caller to
 sorry.ec.europa.eu — whose page, in every EU language, reads *"The server is temporarily
 unavailable. Please try again later."* Within the hour the 403 became a **500**, which settles
 what it is: **their server is down, not blocking us.** (The first write-up of this called it a
-you-are-blocked page. Sina sent a screenshot of the actual page, and it says otherwise.)
+you-are-blocked page. The user sent a screenshot of the actual page, and it says otherwise.)
 
 `_paginate_rows` swallowed it:
 
@@ -1870,7 +1864,7 @@ The real answer was an HTTP error, and  hands a failing caller to
  — whose page, in every EU language, reads *"The server is temporarily
 unavailable. Please try again later."* Within the hour the 403 became a **500**, which settles
 what it is: **their server is down, not blocking us.** (The first write-up of this called it a
-you-are-blocked page. Sina sent a screenshot of the actual page, and it says otherwise.)
+you-are-blocked page. The user sent a screenshot of the actual page, and it says otherwise.)
 
  swallowed it:
 
@@ -1894,21 +1888,21 @@ result rather than an error.
 
 ### What the O campaign did NOT settle
 
-Sina asked, at the end of it, whether everything now works without errors. It did not. He was
+The user asked, at the end of it, whether everything now works without errors. It did not. He was
 then shown the list below and **decided, item by item, that he can live with all of it**. They
 are recorded as his decisions, not as open faults, and are not to be reopened as bugs:
 
-- **2 of 94 Claude DROPs cannot be tied to the posting** — *"این هم اشکالی نداره اکیه"*. The
+- **2 of 94 Claude DROPs cannot be tied to the posting** — *owner's note: that is fine too*. The
   quote guard catches an invented sentence and an irrelevant one; what it cannot catch is a
   real, on-topic quote that does not actually prove the claim, and both remaining cases are in
   that gap. O-15 does not close it but changes what the next one costs to find: the quote is on
   the listing now, so reading a removal no longer takes a script.
-- **Capgemini's two listings still show twice** (O-6) — *"این مهم نیست اکیه"*. One site names
+- **Capgemini's two listings still show twice** (O-6) — *owner's note: that does not matter, fine*. One site names
   the employer "Capgemini", the other "Capgemini Engineering". The rule that would bridge them
   would also merge "Siemens" with "Siemens Healthineers", and losing a real opening costs more
   than showing a duplicate row.
 
-And one item that was on this list and **should never have been**, withdrawn after Sina
+And one item that was on this list and **should never have been**, withdrawn after the user
 questioned it:
 
 - ~~The Not Remote country rule only knows the cities in `geo.CITY_COUNTRY`.~~ He asked the
@@ -1926,14 +1920,14 @@ Three items that were open at the end of O are now closed, and the record should
 - ~~No fresh Apify search has been run since the changes.~~ **The whole-of-Germany run is
   that search**: 5,662 listings, 156.3 minutes, $6.17, no crash — and it is what found O-12,
   O-13 and O-14.
-- ~~The rebuilt exe has not been launched.~~ Sina opened it and used it; the Health Check
+- ~~The rebuilt exe has not been launched.~~ the user opened it and used it; the Health Check
   work (O-7, O-8) came out of that session. The exe is rebuilt again after O-12/13/14.
 
 ## Settled — do not reopen
 
 ### S-1 · One listing per Claude request. Never three.
 
-Sina's decision, and the evidence is his. Grouping listings into one request was measured on
+The user's decision, and the evidence is his. Grouping listings into one request was measured on
 the Job module's 93-listing corpus, same prompt, every size in one batch so nothing else
 could differ:
 
@@ -1956,7 +1950,7 @@ disagreements over 12 listings. That measurement proves nothing: all 12 were DRO
 disagreement was only ever in the KEEPs. It was cited once as a reason to reconsider
 grouping; it is not one.
 
-Saving roughly $7 across ten countries is not worth a listing Sina never sees.
+Saving roughly $7 across ten countries is not worth a listing the user never sees.
 
 ---
 

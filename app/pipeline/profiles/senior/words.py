@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 """The Senior profile's own vocabulary -- every word, in all 13 languages.
 
-Senior: senior individual contributors, and only that: 5 years and more. Keeps senior titles; drops entry, junior, mid and leadership titles -- and Lead, Staff and Principal, which Sina decided are not Senior.
+Senior: senior individual contributors, and only that: 5 years and more. Keeps senior titles; drops entry, junior, mid and leadership titles -- and Lead, Staff and Principal, which the user decided are not Senior.
 
-A FULL COPY, on purpose. Sina's rule for the profiles is the rule he set for the three
-modules: completely separate, every word written out for each one, "حتی اگر Redundancy
-باشه". So this file repeats most of what the Junior profile (app/pipeline/country_rules.py)
+A FULL COPY, on purpose. The user's rule for the profiles is the rule he set for the three
+modules: completely separate, every word written out for each one, [owner's note: even if there is redundancy]. So this file repeats most of what the Junior profile (app/pipeline/country_rules.py)
 and the other profiles hold -- the remote, language, sponsorship and unpaid vocabulary is
 the same today. It is repeated so that tuning a word here can never move another profile.
 
@@ -599,7 +598,7 @@ LANGUAGES: dict = {
 
 # --------------------------------------------------------------------------------------
 # Every accented term also has to match its unaccented spellings, because job ads write
-# both. Sina's requirement, and it is not cosmetic: 463 of the 1,697 terms below carry a
+# both. The user's requirement, and it is not cosmetic: 463 of the 1,697 terms below carry a
 # character outside ASCII, and a posting that writes "Prasenzpflicht" or "praesenzpflicht"
 # instead of "Präsenzpflicht" would otherwise sail past the rule that exists to catch it.
 # Scrapers strip diacritics, HTML entities get mangled, and people simply type without
@@ -710,7 +709,7 @@ def languages_for(country=None, location=None, detected=None) -> tuple:
     """Which language vocabularies apply to a listing.
 
     When the listing's own language has been detected and this module has a vocabulary for
-    it, that vocabulary is what gets loaded -- Sina's design, and it is both more precise
+    it, that vocabulary is what gets loaded -- The user's design, and it is both more precise
     and much cheaper than the alternative: a Belgian listing used to be checked against
     Dutch, French, German and English all at once, so a French phrase could fire on a Dutch
     advert.

@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""The one job title Sina types, and the forms it is searched and recognised in.
+"""The one job title the user types, and the forms it is searched and recognised in.
 
 Until this existed, a field was 522 hand-written items in ten places -- the English query,
 the entry-level phrases, a role word in twelve languages, internship phrases, the direct
 sites, Google, the title filter, the dropdown and two Claude prompts. Moving from data
-science to DevOps took a day and produced eight faults (Test-Campaign-Bugs.md, L). Sina's
-answer: "من بیام اسم یک عنوان شغلی رو بذارم بگم برو دنبال این بگرد ... فقط یک اسم".
+science to DevOps took a day and produced eight faults (Test-Campaign-Bugs.md, L). The user's
+answer: [owner's note: one job title is typed and searched for - only one name].
 
 So the field is now ONE string. Everything that used to be written by hand per field is
 built from it; the words that do not depend on the field -- Werkstudent, Praktikum, Junior,
@@ -13,7 +13,7 @@ Berufseinsteiger, Neolaureato -- stay where they are and never change.
 
 WHY THIS ONE FILE IS SHARED, when the three modules share nothing
 
-Sina's rule is that the Job, Internship and Thesis modules share no vocabulary, so that
+The user's rule is that the Job, Internship and Thesis modules share no vocabulary, so that
 tuning one cannot move another. The title is not vocabulary. It is the single thing all of
 them must agree on exactly: the search asks for it, each filter keeps it, Claude is told it.
 Three copies of the default could disagree -- the search asking for "Data Engineering" while
@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import re
 
-# What the box holds until Sina types something else.
+# What the box holds until the user types something else.
 DEFAULT_SEARCH_TITLE = 'Data Engineering'
 
 # Where each row carries the title it is being judged against. Written by the Filter step,
@@ -38,7 +38,7 @@ DEFAULT_SEARCH_TITLE = 'Data Engineering'
 # for another. No version number to remember to bump.
 ROW_KEY = '_search_title'
 
-# The Level, the other thing Sina chooses in Search -- exactly one at a time. It replaced the
+# The Level, the other thing the user chooses in Search -- exactly one at a time. It replaced the
 # Job / Internship / Thesis checkboxes: Thesis and Internship are their own modules, and the
 # four job levels are profiles of the Job module, each with its own complete vocabulary,
 # level rule and Claude prompt (app/pipeline/profiles/).
@@ -74,9 +74,7 @@ def clean_search_type(value) -> str:
     return text if text in ('thesis', 'internship') else 'any'
 
 
-# Remote or Not Remote, the third thing Sina chooses in Search. His words: "الان بخش Remote به
-# عالی ترین شکل ممکن داره اجرا میشه همین رو باید استفاده کنیم و اگر Not Remote رو زدیم هر چی به
-# غیر از این رو بیاره". Remote is every rule exactly as it was. Not Remote asks the same
+# Remote or Not Remote, the third thing the user chooses in Search. His words: [owner's note: Remote already works as well as it can; reuse it, and with Not Remote bring everything else]. Remote is every rule exactly as it was. Not Remote asks the same
 # question and keeps the other answer: a role that says it is remote is dropped, and one that
 # is on-site, hybrid or silent is kept.
 # 'any' is the third: no Work Location rule at all, remote, hybrid, on-site and silent all
@@ -113,7 +111,7 @@ def is_any_workplace(row_or_mode) -> bool:
 # A job title and the name of its field are the same thing said two ways, and a search needs
 # both. "Junior Data Engineering" is not a title anyone posts; "Junior Data Engineer" is. But
 # "Werkstudent Data Engineering (m/w/d)" and "Data Engineering Intern" are both real. So a
-# title ending in one of these gets its twin, whichever of the two Sina typed.
+# title ending in one of these gets its twin, whichever of the two the user typed.
 #
 # Only these three pairs, because each is exact in both directions. A word list that tried to
 # guess more ("Analytics" -> "Analyst"?) would be guessing, and guessing is what made the

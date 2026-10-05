@@ -53,7 +53,7 @@ _SCREEN_RETRY_ATTEMPTS = 3
 _SCREEN_RETRY_BASE_SECONDS = 1.5
 
 def claude_screen_one(client, job: dict):
-    """Asks Claude the eight questions about one listing, scores it against Sina's profile,
+    """Asks Claude the eight questions about one listing, scores it against the user's profile,
     and reads the employer's name out of the posting (see CLAUDE_SCREEN_SYSTEM_PROMPT).
 
     Returns (drop, reason, match_percent, error, employer). Fails open (drop=False) if the
@@ -114,7 +114,7 @@ def _rejects_structured_output(exc: Exception) -> bool:
 # Truncation also has to invalidate the whole answer, not just an unparseable one. A
 # half-written review is prose about the rules, and prose contains sentences like
 # "No DROP." and "RULE 2 -- REMOTE RULE" -- one stray line beginning "DROP:" in the middle
-# of that reasoning would be read as the verdict and delete a job Sina should have seen.
+# of that reasoning would be read as the verdict and delete a job the user should have seen.
 #
 # 500, not 100, because the schema-constrained answer carries its `checked` pass over the
 # nine rules: measured over 60 real listings it used 195 output tokens on average and 348 at
@@ -166,7 +166,7 @@ def _read_structured_answer(answer: str, job: dict | None = None):
         # drop") and each one still broken often enough to cost real jobs. Asking harder in
         # the prompt cut them from 17 to 11; this is the part that cannot be talked out of.
         # A listing whose quote is not in it goes back to being a KEEP, which is the safe
-        # direction: Sina loses nothing but a line in the review dialog.
+        # direction: The user loses nothing but a line in the review dialog.
         evidence = data.get('drop_evidence')
         if job is not None and not (_evidence_is_real(evidence, job)
                                     and _evidence_fits_rule(rule, evidence)):
@@ -210,7 +210,7 @@ def _screen_once(client, job: dict, max_tokens: int = _SCREEN_MAX_TOKENS):
         # much lower rate -- a real, sizeable, easily-avoidable cost for a Filter run
         # over more than a couple of jobs.
         # The prompt is the one for the Level this row was filtered at (Junior's is
-        # CLAUDE_SCREEN_SYSTEM_PROMPT), followed by Sina's résumé; every row in one Filter
+        # CLAUDE_SCREEN_SYSTEM_PROMPT), followed by the user's résumé; every row in one Filter
         # run carries the same Level and is read against the same résumé, so the cache still
         # holds across the run.
         system_blocks = system_blocks_for(job, current_resume_text())
@@ -333,7 +333,7 @@ _EVIDENCE_MUST_CONTAIN = {
     # "at least eight years of experience, who has led a data science team of five or more"
     # carries no digit, no `experienced` (it says "experience"), and no `lead` (it says
     # "led") -- so the quote was rejected, the DROP became a KEEP, and a role wanting eight
-    # years reached Sina as a junior opening. Counterfactual testing found it: Claude answered
+    # years reached the user as a junior opening. Counterfactual testing found it: Claude answered
     # DROP rule 4 three times out of three, and the guard overturned all three. The same
     # sentence with "8" instead of "eight" was dropped correctly, which is what named the
     # cause.
@@ -403,7 +403,7 @@ def _evidence_is_real(evidence: str, job: dict) -> bool:
 # ONE. This was three, chosen to save about two cents a run, and the 3.3% it cost was paid in
 # exactly the currency that matters: listings wrongly KEPT.
 #
-# Sina reported one of them -- Simon-Kucher's "Intern/Associate Consultant Data Science",
+# The user reported one of them -- Simon-Kucher's "Intern/Associate Consultant Data Science",
 # which says "you must be enrolled at a university and able to work from our Amsterdam office
 # during the internship period" and arrived in a Remote search with a 68% match and
 # apply_verdict 'apply'. The stored row read claude_screen_drop: False. Asked about that exact
@@ -411,7 +411,7 @@ def _evidence_is_real(evidence: str, job: dict) -> bool:
 # internship." It is the shape the table above already describes: an Amsterdam role whose only
 # remote wording is a company perk, in this case "whether it's remotely or in the office".
 #
-# He had already asked for this -- "مگه قرار نشد یکی یکی بفرستیم تا درست کار کنه" -- and the
+# He had already asked for this -- [owner's note: the plan was to send them one by one until it works] -- and the
 # Internship and Thesis modules were changed to _GROUP_SIZE = 1 then. This one was missed, so
 # a Junior search, which is what he runs, kept bundling three. The same mistake as Rule 5
 # living in ten files and being changed in one, and t0_static now checks all three agree.

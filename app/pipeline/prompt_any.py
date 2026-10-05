@@ -1,6 +1,6 @@
 """The Claude prompts for an Any search -- derived from the Not Remote ones, never typed again.
 
-Sina: the Search window and the Filter window offer Remote and Any. Any keeps every listing
+The user: the Search window and the Filter window offer Remote and Any. Any keeps every listing
 whatever it says about where the work is done: remote, hybrid, on-site, or silent. So the
 one thing that differs from the Not Remote prompts is the question of where the work is
 done -- the paragraph "what he is looking for" and rule 1 -- and nothing else may differ.
@@ -13,7 +13,7 @@ tests and the import, loudly, instead of silently sending a half-changed prompt.
 """
 import re
 
-_RULE_1_ANY = """1. **Where the work is done is never a reason to drop.** Sina has asked for roles done
+_RULE_1_ANY = """1. **Where the work is done is never a reason to drop.** The user has asked for roles done
    remotely, hybrid or on site, in any country. Say in `location_basis` what the posting
    says about where the work happens, or that it says nothing, and make the verdict
    agree with it: this rule never drops a listing.
@@ -28,16 +28,16 @@ _RULE_2_INTERNSHIP_ANY = """2. **Working-student roles are not a reason to drop.
 
 _LOOKING_FOR = {
     'job': ("**A job that is not remote**", "**A job done anywhere** — remote, hybrid or on-site, for any\n"
-            "company in any country. That is the point of this search: Sina has asked for roles of\n"
+            "company in any country. That is the point of this search: The user has asked for roles of\n"
             "every kind of workplace.\n"),
     'thesis': ("A **master's thesis in the work named on the Field line of the posting, that is not written",
                "A **master's thesis in the work named on the Field line of the posting**, written\n"
                "remotely, hybrid or on site, at a company or an institute in any country. That is the\n"
-               "point of this search: Sina has asked for theses wherever they are written.\n"),
+               "point of this search: The user has asked for theses wherever they are written.\n"),
     'internship': ("A **paid internship in the work named on the Field line of the posting, that is not",
                    "A **paid internship in the work named on the Field line of the posting**, done\n"
                    "remotely, hybrid or on site, for a company in any country. That is the point of\n"
-                   "this search: Sina has asked for internships wherever they are done.\n"),
+                   "this search: The user has asked for internships wherever they are done.\n"),
 }
 
 

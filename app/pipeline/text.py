@@ -61,7 +61,7 @@ GLASSDOOR_DATE_OPTIONS = {
 # never existed for Indeed -- and sending it cost a two-hour German search its entire Indeed
 # leg, with the actor's own clear complaint never reaching the Log.
 #
-# So there is one list now, and it is the one Sina picks from. Each label carries the right
+# So there is one list now, and it is the one the user picks from. Each label carries the right
 # value for each platform, and a platform that cannot reach that far back gets its own
 # maximum instead of a value it would reject. `note` is what the wizard shows underneath, so
 # the shortfall is visible rather than silent.

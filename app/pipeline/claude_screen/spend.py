@@ -2,7 +2,7 @@
 """What this app has spent on Claude, counted from the tokens the API reports back.
 
 Anthropic does not tell an ordinary API key what the account's balance is -- that lives
-behind the organisation Admin API, which needs a different kind of key Sina does not have.
+behind the organisation Admin API, which needs a different kind of key the user does not have.
 What can be known exactly is what THIS app spent, because every response says how many tokens
 it used. So the app keeps its own ledger: every call adds its tokens and their price to
 claude_spend.json, and the Health Check reads the total back.

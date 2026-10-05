@@ -11,7 +11,7 @@ from .sources_norm import (WORKPLACE_HYBRID, WORKPLACE_ONSITE, WORKPLACE_REMOTE,
                            clean_workplace)
 
 
-# Sina's order. Checked in this sequence, so a listing that is both a thesis project and
+# The user's order. Checked in this sequence, so a listing that is both a thesis project and
 # an internship is filed as a thesis, and this is also the order the Jobs table sorts in.
 CATEGORY_ORDER = ['Thesis', 'PhD', 'Internship', 'Part-Time', 'Full-Time']
 
@@ -21,7 +21,7 @@ CATEGORY_ORDER = ['Thesis', 'PhD', 'Internship', 'Part-Time', 'Full-Time']
 # THIS REPLACED A BARE SUBSTRING SEARCH, AND HERE IS WHY
 #
 # The old rule was four words -- 'part-time', 'part time', 'internship', 'thesis' -- looked
-# for anywhere in the title or the description. Sina found what that costs: a Glovo advert
+# for anywhere in the title or the description. The user found what that costs: a Glovo advert
 # demanding "2-5 years of professional experience outside of an academic and internship
 # setting" was filed as an Internship. The sentence whose whole point is that this is NOT an
 # internship was the sentence that labelled it one.
@@ -47,8 +47,8 @@ CATEGORY_ORDER = ['Thesis', 'PhD', 'Internship', 'Part-Time', 'Full-Time']
 # The title patterns are multilingual on purpose. The old English-only list missed 693 real
 # internships: Traineeship, Stagiair, Werkstudent, Praktikum.
 
-# What a doctoral or postdoctoral post calls itself. Sina asked for these to be their own
-# kind: "کار Full time با کار phd و تحقیقاتی کاملا فرق دارد و باید تفکیک باشند". It is not a
+# What a doctoral or postdoctoral post calls itself. The user asked for these to be their own
+# kind: [owner's note: a full-time job differs completely from a PhD or research post and they must be separated]. It is not a
 # Thesis -- that is a final-year or master placement -- and it is not an ordinary Full-Time
 # job either. Before this they were scattered across four categories: 124 filed Full-Time,
 # 62 Thesis, 24 Part-Time and 12 Internship.
@@ -116,7 +116,7 @@ _THESIS_IN_BODY = re.compile(
 _PART_TIME_TITLE = re.compile(r'(part[- ]time|teilzeit|deeltijd|temps partiel)', re.I)
 
 # Part-Time, read from the body as well as the title -- and the history here matters, because
-# the narrow version cost Sina his entire result.
+# the narrow version cost the user his entire result.
 #
 # Three attempts failed first, and each is still a real trap:
 #
@@ -129,7 +129,7 @@ _PART_TIME_TITLE = re.compile(r'(part[- ]time|teilzeit|deeltijd|temps partiel)',
 #
 # So I narrowed it to the title and two English sentences. THAT WAS MEASURED ON THE WRONG
 # POPULATION. Across all 12,778 German listings the body mentions were indeed dominated by the
-# both-options phrasing -- but of the 742 that match everything else Sina asked for, 94 mention
+# both-options phrasing -- but of the 742 that match everything else the user asked for, 94 mention
 # part-time and only 17 are that phrasing. The other 77 say it plainly, and every one was being
 # filed as Full-Time:
 #
@@ -162,7 +162,7 @@ _PART_TIME_IN_BODY = re.compile(
     r'(?:/|pro|per|a|in der)\s*(?:woche|week|weekly)'
     r')', re.I)
 
-# A full-time job that MAY also be done part-time. Not what Sina means, and it is 211 of the
+# A full-time job that MAY also be done part-time. Not what the user means, and it is 211 of the
 # 1,994 German listings that mention Teilzeit at all -- common enough to need naming, rare
 # enough that refusing to read the body because of it was the wrong trade.
 _PART_TIME_IS_OPTIONAL = re.compile(
@@ -336,7 +336,7 @@ ON_SITE_OR_HYBRID_KEYWORDS = [
 #
 # The boundary is applied HERE and deliberately not to REMOTE_CONFIRMATION_KEYWORDS below,
 # because the two lists fail in opposite directions: a stray match in this list DELETES a
-# job Sina would have wanted, while a stray match in the remote list merely keeps one he
+# job the user would have wanted, while a stray match in the remote list merely keeps one he
 # can ignore -- and Claude re-checks the survivors anyway. Tighten the list that deletes;
 # leave the list that rescues as loose as it is. The same asymmetry decided the leading-only
 # boundary: every real phrase here starts at a word start, so nothing is lost at the front,
@@ -351,7 +351,7 @@ REMOTE_CONFIRMATION_KEYWORDS = [
     # German, and the English phrasings the original six never covered. This list knew no
     # German at all, and most of what a German search returns is German: "Homeoffice
     # möglich" is THE standard way a German employer says a role can be done from home,
-    # and it was worth nothing here. Measured on 80 real listings judged against Sina's
+    # and it was worth nothing here. Measured on 80 real listings judged against the user's
     # actual constraint, adding these took the rule from keeping 4 of 21 usable jobs to
     # keeping 10 -- and to 18 alongside the change in passes_work_location_rule below.
     'homeoffice', 'home office', 'home-office', 'mobiles arbeiten', 'mobile arbeit',
@@ -405,7 +405,7 @@ NO_REMOTE_PHRASES = [
 
 # The "Location:" label rule that used to live here is gone. It deleted any listing whose
 # text named a location other than Italy/Milan/Turin, on the theory that a line reading
-# "Location: Berlin" means "remote, but you must live in Berlin". Sina's call, and he is
+# "Location: Berlin" means "remote, but you must live in Berlin". The user's call, and he is
 # right: a company stating where IT is based is not stating where the WORKER must be, and
 # a remote listing almost always names the company's own city somewhere. The rule was
 # deleting real remote jobs over a sentence that said nothing about the applicant.
@@ -686,7 +686,7 @@ def is_likely_fake(row):
 
 
 # The "it never mentioned English" rule that used to live here is gone, along with the two
-# constants that only served it. Sina removed it for the same reason he removed the
+# constants that only served it. The user removed it for the same reason he removed the
 # location-label rule and the must-prove-it-is-remote requirement: it deleted a listing for
 # being SILENT rather than for saying anything. A posting written in Dutch that never
 # happens to use the word "English" has not told anyone that English is unusable there --
@@ -768,7 +768,7 @@ def _country_pattern(section, country, location, detected=None, vocabulary=None)
     `vocabulary` is the profile whose words are read. None is the Junior profile -- this
     module's own country_rules -- which is every call this app made before the Entry, Mid
     and Senior profiles existed, so all of those behave exactly as they did. Each profile
-    keeps its own complete word lists (Sina: "حتی اگر Redundancy باشه"); this matching
+    keeps its own complete word lists ([owner's note: even if there is redundancy]); this matching
     engine is the one thing they share, and it has no words of its own.
     """
     vocab = vocabulary if vocabulary is not None else country_rules
@@ -815,7 +815,7 @@ def country_rule_hit(section, row, vocabulary=None):
     """The matched term from `section` in this listing's own languages, or ''.
 
     Reads the listing as the board wrote it AND as translated -- so every rule is asked
-    twice: once in the posting's own language, once in English. Sina's requirement, and it
+    twice: once in the posting's own language, once in English. The user's requirement, and it
     is what makes the per-country vocabulary worth having: a Finnish posting is judged on
     its own words before translation could mangle them, and on the English ones afterwards.
 
@@ -841,8 +841,8 @@ def country_language_rule_hit(row, vocabulary=None):
     redundant: it catches shapes the regexes have no level word for ('german required',
     'deutsch zwingend', 'nederlands vereist', 'nederlandstalig').
 
-    But it had no idea English existed. When Sina asked for the pairing to be kept
-    ("اگر به صورت ترکیبی میگفت انگلیسی و یه زبان دیگه باید این رو هم قبول بکنه") and the
+    But it had no idea English existed. When the user asked for the pairing to be kept
+    ([owner's note: a posting asking for English together with another language must be accepted too]) and the
     regex rule was changed to keep it, THIS list went on deleting it: "Fluent Dutch and
     English required" contains 'fluent dutch', and nothing here looked at the rest of the
     sentence. The first real Filter run after the change kept only 10 pairings out of the
@@ -865,7 +865,7 @@ def country_language_rule_hit(row, vocabulary=None):
 def silent_about_english(row, vocabulary=None) -> bool:
     """True when a non-English posting never once names English, in any spelling.
 
-    Sina's rule, and it runs BEFORE translation, which is the whole point: a Dutch employer
+    The user's rule, and it runs BEFORE translation, which is the whole point: a Dutch employer
     who writes 2,000 characters of Dutch and never mentions English almost certainly wants
     Dutch. Deleting it here costs nothing, where deleting it after translation would mean
     paying to translate it first -- on the real Netherlands data this is 503 listings and
@@ -879,7 +879,7 @@ def silent_about_english(row, vocabulary=None) -> bool:
       * The match is on the ORIGINAL text, not a translation, because a translation turns
         "Engels" into "English" and makes every listing look like it mentioned it.
 
-    A listing already in English is never touched: it is written in the language Sina reads.
+    A listing already in English is never touched: it is written in the language the user reads.
 
     And a source that returns no description is exempt, for the same reason it is exempt
     from the Work Location rule: there is no text for the word to appear in, and none to
@@ -911,7 +911,7 @@ def passes_work_location_rule(row, vocabulary=None):
     that runs last on what survives. Same subject, different stage.
 
     It replaced two separate rules that used to run at different points in the Filter, one
-    before translation and one after. They are merged here, as Sina asked, and it reads
+    before translation and one after. They are merged here, as the user asked, and it reads
     rule_text -- the listing as the board wrote it AND as translated -- so both are asked
     at once, in whichever of the two the evidence happens to be.
 
@@ -936,7 +936,7 @@ def passes_work_location_rule(row, vocabulary=None):
     then deleted them anyway, writing "on-site role in Amsterdam" for each, which the text
     never said. So the listings died regardless; the only difference was that they were
     translated and screened first, at real cost, and that the stated reason was invented.
-    Sina's call is that silence in a Dutch job advert means an office job, and that he would
+    The user's call is that silence in a Dutch job advert means an office job, and that he would
     rather not read 128 of them.
 
     The exemption is the part that matters: a source that returns no description at all has
@@ -953,7 +953,7 @@ def passes_work_location_rule(row, vocabulary=None):
     if is_not_remote(row):
         return passes_not_remote_rule(row, vocabulary)
     # LINKEDIN'S OWN TAG, read before any wording. A row from apimaestro/linkedin-jobs-scraper
-    # -api carries `workplace_type` -- the Hybrid / On-site / Remote chip Sina sees on the page
+    # -api carries `workplace_type` -- the Hybrid / On-site / Remote chip the user sees on the page
     # and no other source can give us -- and it is the most reliable thing this rule is ever
     # told. It exists because three adverts in a row that he opened were tagged Hybrid and had
     # been kept: VisionBI (two days at the client's site, and "of gewoon remote" at the end of
@@ -982,7 +982,7 @@ def passes_work_location_rule(row, vocabulary=None):
     # The posting commits the role to office time, whatever else it says. This sits after the
     # checks above and before the thin-description exemption on purpose: it must be able to
     # overrule a stray "remote" in a sentence that is itself describing a hybrid arrangement,
-    # which is the gap Sina found, and it must NOT fire on a source that returned no text.
+    # which is the gap the user found, and it must NOT fire on a source that returned no text.
     if says_office_attendance_is_required(rule_text(row)):
         return False
     if is_true_flag(row.get('thin_description')):
@@ -1043,7 +1043,7 @@ def _remote_only_when_hedged(text, hit) -> bool:
 # statement about the job. More carry it about *architecture* -- "hybriden Architekturen
 # (On-Premise und Cloud)" -- which is the F-2 trap in another language.
 #
-# But the softening left a real gap, and Sina found two listings in it:
+# But the softening left a real gap, and the user found two listings in it:
 #
 #   "BERLIN, DÜSSELDORF, HAMBURG, KÖLN, HYBRID, MÜNCHEN … Hybrides Arbeiten: Ein
 #    individueller Mix aus remote working, Zeit im Office oder beim Kunden vor Ort"
@@ -1111,7 +1111,7 @@ _OFFICE_FIRST = re.compile(r'\boffice[-\s]?first\b|\bb[üu]ro[-\s]?first\b', re.
 # pattern above reads stated OFFICE days, and adverts say it the other way round at least as
 # often: "the freedom to work from home two days a week", "Hybride werken met minimaal 2
 # dagen per week thuiswerken", "eligible for remote work for up to 2 days per week". 96 Bank
-# listings, and one of them is the advert Sina reported.
+# listings, and one of them is the advert the user reported.
 #
 # Capped at three days on purpose: four or five days at home is a remote job with an
 # occasional desk, not a commitment to an office.
@@ -1124,7 +1124,7 @@ _LIMITED_HOME_DAYS = re.compile(
     r'telewerk\w*)\b', re.I)
 
 # A share of the week spent AWAY from the office is a statement about the rest of it. The twin
-# of _LIMITED_HOME_DAYS, for percentages instead of days, and it exists because Sina reported
+# of _LIMITED_HOME_DAYS, for percentages instead of days, and it exists because the user reported
 # HDI's "Data Scientist: Advanced Analytics & AI Engineer" arriving as Full Remote on this:
 #
 #     "Mobile working: Whether from home or on the go - our mobile working model
@@ -1140,14 +1140,13 @@ _LIMITED_HOME_DAYS = re.compile(
 #
 #     1-39%   120        "20% mobile"
 #     40-59%  147        "bis zu 50 % mobiles Arbeiten"
-#     60-69%   63        "60% remote"  <- HDI, the listing Sina reported
+#     60-69%   63        "60% remote"  <- HDI, the listing the user reported
 #     70-79%   10
 #     80-89%    7        "80% Remote", "85% remote"
 #     90-99%   17        "zu etwa 95 % remote möglich"
 #
 # I set the bound at 70 first, on the argument that a 95%-remote post with "Gelegentlich finden
-# Workshops" is work he can do from home. He overruled it in one line -- "آقا Remote باشه دیگه
-# / یعنی چی 70 درصد" -- and he is right, for a reason the percentage hides: the 5% is spent at
+# Workshops" is work he can do from home. He overruled it in one line -- [owner's note: it should be Remote - what does 70 percent mean?] -- and he is right, for a reason the percentage hides: the 5% is spent at
 # an address. HDI's is Hanover or Cologne. A job that needs him in a German office one week in
 # twenty is not a job he can hold from where he lives, and calling it 95% remote does not
 # change that.
@@ -1167,7 +1166,7 @@ _PERCENT_AT_HOME = re.compile(
     r'\b(?:[1-9]|[1-9][0-9])\s*%%?(?!\s*\d)', re.I)
 
 # A workation allowance -- a few weeks a year from wherever you like -- is a perk on an
-# office job, not a remote job. This exists because of the listing Sina reported: Glovo's
+# office job, not a remote job. This exists because of the listing the user reported: Glovo's
 # advert says "office-first culture" and "work from home two days a week", and it reached him
 # anyway, because "the opportunity to work from anywhere for up to three weeks a year" fired
 # the escape hatch below and skipped every check in this rule. The bound is what gives it
@@ -1206,7 +1205,7 @@ def says_office_attendance_is_required(text) -> bool:
     """Does this posting commit the role to time in an office?
 
     Deliberately silent unless it does. Everything this returns True for is removed from a
-    Remote search, so the cost of a false positive is a job Sina never sees.
+    Remote search, so the cost of a false positive is a job the user never sees.
     """
     body = ' '.join(str(text or '').split())
     if not body:
@@ -1239,7 +1238,7 @@ def says_office_attendance_is_required(text) -> bool:
 def passes_not_remote_rule(row, vocabulary=None):
     """The Work Location rule for a Not Remote search: the same words, the other answer.
 
-    Sina's rule: "اگر Not Remote رو زدیم هر چی به غیر از این رو بیاره". Remote keeps a posting
+    The user's rule: [owner's note: with Not Remote, bring everything that is not remote]. Remote keeps a posting
     that says the work can be done away from an office; this drops exactly that posting and
     keeps everything else.
 
@@ -1255,7 +1254,7 @@ def passes_not_remote_rule(row, vocabulary=None):
       4. A remote term, with none of the above -> drop.
       5. Silence -> keep. A posting that never mentions remote work is not a remote role.
 
-    The Milan and Turin exception does not apply here. It exists because Sina can reach any
+    The Milan and Turin exception does not apply here. It exists because the user can reach any
     arrangement in the city he lives in, which is a Remote-search question; a Not Remote
     search keeps every role that is not remote, in those two cities and everywhere else.
     """
@@ -1420,7 +1419,7 @@ def categorize(row):
     filters on.
 
     It stopped being purely informational the day that choice was wired up, which is when
-    its mistakes started reaching Sina. The rules it uses, and the three drafts thrown away
+    its mistakes started reaching the user. The rules it uses, and the three drafts thrown away
     for relabelling thousands of real listings wrongly, are documented at the top of this
     module.
 
@@ -1451,9 +1450,7 @@ def categorize(row):
 #
 # The Level used to be a filter and nothing else: `search_level` picked a profile, the
 # profile's `is_wrong_level` deleted whatever did not match, and no row ever carried what
-# level it actually was. Sina's decision, after seeing the numbers: "نباید Filter کنه باید
-# اون هارو دسته بندی کنه ... اول بر اساس Seniority Groupby میکنی و بعد بر اساس Type و دیگه
-# هیچی نباید حذف بشه" -- group by seniority, then by type, and delete nothing. He picks in
+# level it actually was. The user's decision, after seeing the numbers: [owner's note: it must not filter but categorise: group by Seniority, then Type, and remove nothing] -- group by seniority, then by type, and delete nothing. He picks in
 # the table, the way he picks the Type.
 #
 # So this is `categorize`'s twin: it reads the listing and returns a word, and the Jobs table
@@ -1553,7 +1550,7 @@ def display_category(job: dict) -> str:
     CATEGORY_BADGE_COLORS lookups) -- this is purely a display-time label, computed
     for free from a field that's already known (no Claude call needed), replacing the
     removed Company Popularity feature's per-company Claude web-search cost with a
-    zero-cost signal Sina asked for instead."""
+    zero-cost signal the user asked for instead."""
     # text_of, not a bare `or 'Other'`: a NaN Category is TRUTHY, so `or` passes the
     # float straight through and the caller hands it to QTableWidgetItem, which raises
     # OverflowError and takes the whole Jobs table down with it. Same NaN family that
@@ -1564,7 +1561,7 @@ def display_category(job: dict) -> str:
     return category
 
 
-# Dedup, Sina's design: clean the title down to its words, and if two titles are the same
+# Dedup, the user's design: clean the title down to its words, and if two titles are the same
 # job, let the two DESCRIPTIONS decide. This replaced grouping by company name, which was
 # useless on a real search -- 1,189 of 2,199 Netherlands listings arrive with no company at
 # all (994 from EURES, which republishes without ever naming the employer), so for more
@@ -1577,7 +1574,7 @@ def display_category(job: dict) -> str:
 # Engineer", Heineken's Global Commercial Strategy and Regional Talent internships,
 # Eindhoven's PhD on protein design and PhD on nanoswitches, BJAK's four different AI
 # product roles. At 50% seven real postings died; going from 50% to 90% costs only 67
-# fewer removals out of 2,199 and loses none of them. Sina's rule stands -- if the titles
+# fewer removals out of 2,199 and loses none of them. The user's rule stands -- if the titles
 # are genuinely different, don't delete.
 _DEDUP_TITLE_SIMILARITY_THRESHOLD = 0.90
 _DEDUP_DESCRIPTION_SIMILARITY_THRESHOLD = 0.80
@@ -1630,7 +1627,7 @@ def dedup_quality(job: dict) -> tuple:
     """How good a copy of a listing this is -- higher sorts first, and the best copy is the
     one dedup keeps.
 
-    Which copy survives is not cosmetic: it is the one Claude reads and the one Sina
+    Which copy survives is not cosmetic: it is the one Claude reads and the one the user
     clicks. A EURES republication is a truncated excerpt pointing at a EURES page; the
     employer's own posting has the whole description and a link that still works.
     """

@@ -91,7 +91,7 @@ careful": it is to print the rows and read them before reporting the number.
 
 #### 2. A green test suite is not evidence that the thing works
 
-The two largest faults in this project were found by Sina reading real output, not by 2,400
+The two largest faults in this project were found by the user reading real output, not by 2,400
 passing assertions:
 
 - The **language filter caught 13 of 1,778** German requirements. Every test passed, because
@@ -121,8 +121,8 @@ language demands none. One you would call "vague about seniority" has stated no 
 requirement, so there is nothing to measure. Claude broke this rule 17 times in 111 listings
 before it was forced to quote the posting first.
 
-**The working arrangement is now the one exception, and it is Sina's own reversal.** His
-words, 4 October 2026: *"نه به هیچ عنوان سکوت دیگه نگه داشته نشود"* — a posting that never
+**The working arrangement is now the one exception, and it is the user's own reversal.** His
+words, 4 October 2026: *owner's note: no - silence is not to be kept any more* — a posting that never
 says the work can be done away from an office has not said it can, and it is dropped.
 
 That exception was already half-true and the halves disagreed, which is why this rule needed
@@ -131,7 +131,7 @@ rewriting rather than annotating:
 - **`passes_work_location_rule` always dropped silence** in a Remote search. See `F-4`: 991
   listings, measured, deliberate.
 - **Claude's rung 1d kept it** — "1d. Otherwise → **KEEP**." So the cheap rule deleted a
-  silent posting and the expensive one would have kept it, and which answer Sina got depended
+  silent posting and the expensive one would have kept it, and which answer the user got depended
   on which stage saw the row.
 
 Now both drop it, from one source string applied to all four Remote prompts at once (see area
@@ -141,7 +141,7 @@ words saying the work is unpaid and rule 4 no longer drops at all, and widening 
 to pay would resurrect `O-3` exactly.
 
 For everything other than the working arrangement the rule stands unchanged, and the reason
-it is Sina's stands too: he would rather see a job that turns out to be unsuitable than never
+it is the user's stands too: he would rather see a job that turns out to be unsuitable than never
 see one that was.
 
 **The cure for silence is a better source, never a better guess** — and when no better source
@@ -175,7 +175,7 @@ That sample has caught a real fault every single time it has been taken:
 - the editorial rule's first draft took 4 real postings, all from employers' own sites
 - the language rule's first draft misread *"idealerweise Deutsch"* and *"or the willingness to
   learn"* as requirements
-- and it added Italian to the list of languages Sina lacks, which would have emptied Italy
+- and it added Italian to the list of languages the user lacks, which would have emptied Italy
 
 #### 7. Follow the data to the end, not to the test
 
@@ -185,7 +185,7 @@ creates it:
 - `set_drop_note` rstripped the posting, so the screening cache key changed and 3 of 14 real
   listings were re-screened and **re-billed** on every run
 - Excel's 32,767-character cell limit cut exactly the note that explained a removal
-- `add_application` copies `description` into the record, so a job Sina kept by hand was
+- `add_application` copies `description` into the record, so a job the user kept by hand was
   filed with "WHY THIS WAS REMOVED" attached
 
 None of these failed a test. All three were found by opening the next file the data reaches.
@@ -245,7 +245,7 @@ the working arrangement*), **`T-5`** (the cache key must now *not* change with t
 the assertion was inverted on purpose), **`T-16`**, which overturns the decision in area 16
 to "stop looking" for LinkedIn's workplace tag, and **`T-12`**, which reverses the purpose of
 `O-16` itself. `O-16` was the work of making the language rule catch *"Deutsch und
-Englisch"*; `T-12` is Sina deciding he wants those listings after all. The `O-16` write-up
+Englisch"*; `T-12` is the user deciding he wants those listings after all. The `O-16` write-up
 stays as it is, because the machinery it built is what `T-12` reuses to tell the pairing
 apart — it just hands the answer to a column instead of to the delete loop.
 
@@ -301,7 +301,7 @@ hash — and no wording in a title outranks that.
 
 **A-3 · An index page dropped even when nothing could be taken out of it — FIXED, then
 REVERSED.** For a while a page that could not be emptied was kept, so as not to lose what it
-listed. Sina asked what good a kept page that gave up nothing is. Measured: of 88 that could
+listed. The user asked what good a kept page that gave up nothing is. Measured: of 88 that could
 not be emptied, 76 died to ordinary filters and **every one of the 12 that reached Claude was
 an index page** — 61,845 characters of nothing. Now every index page goes, emptied or not.
 The reasoning that was wrong: keeping a page only saves the vacancies inside it if keeping it
@@ -377,7 +377,7 @@ posting's location field — present on almost every German advert, saying nothi
 whether the work is remote.
 
 **F-4 · 991 listings dropped for saying nothing — RESOLVED, the rule is right.** In a Remote
-search, a posting that never says it can be done remotely is dropped. That is Sina's rule and
+search, a posting that never says it can be done remotely is dropped. That is the user's rule and
 it is deliberate: `passes_work_location_rule` requires a positive statement. Do not "fix" this
 into silence-passes without asking him.
 
@@ -461,7 +461,7 @@ of 12 or more must be vouched for by an experience word.
 are legitimate at those levels; Claude decides.
 
 **O-1 · A Not Remote search kept a job in another country.** `_step_place` reads
-`geo.CITY_COUNTRY` for the cities actually chosen. A Not Remote search means Sina must be able
+`geo.CITY_COUNTRY` for the cities actually chosen. A Not Remote search means the user must be able
 to reach the office, so a posting in another country is not a candidate.
 
 **O-2 · The Thesis and Internship modules reported the opposite of what they did.** A remote
@@ -531,8 +531,7 @@ the real Netherlands run, with Part-Time ticked:
 = 26 left
 ```
 
-> *"میتونی Filter مربوط به Type رو برداری اما من در جدولی که بهم نمایش میده خودم برم انتخاب
-> کنم چه نوع Type کارهایی رو بهم نشون بده"*
+> *owner's note: the Type filter may go, as the kinds of jobs to show are chosen in the table*
 
 So the step is gone and the choice is the Type column's own filter button, where changing his
 mind costs nothing instead of a whole Filter run. Same instruction, same reasoning and the
@@ -556,7 +555,7 @@ Three things about how it was removed:
 
 #### `T-17` · three shapes the Work Location rule could not see
 
-Found by taking Sina's three Hybrid adverts apart word by word (`T-16`). The tag fixes LinkedIn;
+Found by taking the user's three Hybrid adverts apart word by word (`T-16`). The tag fixes LinkedIn;
 Google, Indeed, Glassdoor and the direct APIs carry no tag, and KLM's advert came from Google. So
 the text rule had to learn what it was missing — and **each change was measured on the real
 4,325-row Bank before it was written**, because the rule has a measured softening of its own
@@ -617,7 +616,7 @@ back it must be **added to the checklist deliberately** rather than appear by re
 
 Two separate jobs live in `language.py` and confusing them is the root of most of what went
 wrong here: **detecting** what language a posting is written in, and **deciding** whether it
-demands a language Sina does not have.
+demands a language the user does not have.
 
 #### Detection — why it is `lingua`, not `langdetect`
 
@@ -655,7 +654,7 @@ On short text a detector is unreliable in a specific, repeatable way:
 'Remote'  -> Romanian
 ```
 
-Sina flagged this as suspicious before it was confirmed. Below the threshold the text is
+The user flagged this as suspicious before it was confirmed. Below the threshold the text is
 `unknown`, and that is deliberately **not** the same as `en`: translation skipped `en` *or*
 `unknown` together, so a short listing never got misclassified into the wrong bucket at all.
 
@@ -703,7 +702,7 @@ name in the next.
 
 #### `T-12` · the pairing "English **and** Dutch" is a KEEP
 
-Sina set out the four shapes a posting can have and what he wanted of each, and he had the
+The user set out the four shapes a posting can have and what he wanted of each, and he had the
 first three right about the code as it stood:
 
 | the posting | before 4 Oct | after |
@@ -714,7 +713,7 @@ first three right about the code as it stood:
 | wants English **and** another — *"Deutsch und Englisch"* | dropped | **KEPT, and labelled** |
 | wants English only | kept | unchanged |
 
-> *"اگر به صورت ترکیبی میگفت انگلیسی و یه زبان دیگه باید این رو هم قبول بکنه"*
+> *owner's note: a posting asking for English together with another language must be accepted too*
 
 A posting asking for English alongside Dutch has said the work can be done in a language he
 has. Whether the second one is a wall is a judgement about his own CV, and he would rather
@@ -786,7 +785,7 @@ Deliberately *not* clause-scoped, which is the opposite of the decision made for
 `_LANGUAGE_NICE_TO_HAVE` two paragraphs up — and the reason is the **direction of the error**.
 A qualifier search that reaches too far invents a bonus the posting never offered and keeps a
 listing wrongly. This search reaches too far and keeps a listing wrongly as well; reach too
-*narrowly* and it deletes one Sina asked to see. Only one of those costs him a job, so the
+*narrowly* and it deletes one the user asked to see. Only one of those costs him a job, so the
 two windows are tuned in opposite directions. Both ends are pinned by assertions (40
 characters away counts, 400 does not).
 
@@ -833,7 +832,7 @@ required without English pairing"*, *"English alone insufficient"*. Claude read 
 posting and found the 160-character window had been generous — English appeared nearby but
 not as an alternative to the Dutch. That is the window's documented failure direction working
 as intended: it hands the listing to the careful reader instead of deleting it, and the
-listing is **flagged, not removed**, so Sina still sees it in the review dialog.
+listing is **flagged, not removed**, so the user still sees it in the review dialog.
 
 ##### Rule 2 of the Claude prompt had to move with it, in twelve files
 
@@ -990,7 +989,7 @@ rule passes on the quote being real, which is all `_evidence_is_real` can ask.
 
 **A quote failing either check is treated as no quote, and the DROP becomes a KEEP.** That is
 the safe direction — one listing too many rather than one too few — but it makes the guard the
-last thing standing between a correct removal and a listing in Sina's results, and a pattern
+last thing standing between a correct removal and a listing in the user's results, and a pattern
 can be blind to a *wording* without being blind to the *rule*.
 
 It was. Counterfactual testing of the prompts found rule 4 not firing on
@@ -1058,7 +1057,7 @@ of the retry did: three billed calls to fail three identical times.** The retry 
 Truncation has to invalidate the **whole** answer, not just an unparseable one. A half-written
 review is prose about the rules, and prose contains sentences like "No DROP." and "RULE 2 —
 REMOTE RULE"; one stray line beginning "DROP:" in the middle of that reasoning would be read
-as the verdict and delete a job Sina should have seen.
+as the verdict and delete a job the user should have seen.
 
 The budget is 500 now, not 100, because the schema-constrained answer carries its `checked`
 pass: measured over 60 real listings it used 195 output tokens on average and 348 at worst.
@@ -1107,7 +1106,7 @@ Dropping it would be a guess about a posting whose text may be perfectly good.
 
 #### `M-2` and the résumé
 
-The second pass once judged every listing against a **stale, hard-coded paragraph** about Sina
+The second pass once judged every listing against a **stale, hard-coded paragraph** about the user
 — "entry or junior level, in data, ML or AI" — written before the field became a title he
 types, and never updated when it did. A Data Engineering search was still being judged against
 data science. The résumé replaces it entirely, and its fingerprint is hashed into the cache key
@@ -1121,7 +1120,7 @@ on the per-run system prompt, not inside a batch item.
 
 **The résumé-match minimum is 35%, and the number has a history.** A cybersecurity delivery
 architect passed every rule and scored 35 against a data-engineering profile, while every
-genuine match in the same run scored 65 to 85. Sina asked for everything under 35% to be cut,
+genuine match in the same run scored 65 to 85. The user asked for everything under 35% to be cut,
 so the line sits just above it. Below it a listing is *flagged*, not deleted — it still reaches
 the review dialog and can be kept by hand.
 
@@ -1129,7 +1128,7 @@ the review dialog and can be kept by hand.
 
 ### 5 · Prompts and Levels
 
-**The prompt is Sina's own text.** It replaced a shorter 5-rule paraphrase that Claude judged
+**The prompt is the user's own text.** It replaced a shorter 5-rule paraphrase that Claude judged
 inconsistently. This version gives Claude the same keyword dictionaries the app's own filters
 use, plus four rules the keyword filters do not cover at all (fake job / paid training,
 citizenship, domain fit, degree completion).
@@ -1151,9 +1150,8 @@ once per Level; now once. The assertion that the key must *change* with the Leve
 to assert it must not, with the reasoning written beside it, so reintroducing per-Level wording
 cannot pass quietly.
 
-**`T-4` · rule 4 reports seniority instead of dropping for it.** Sina's instruction, after
-seeing what it cost: *"نباید Filter کنه باید اون هارو دسته بندی کنه … اول بر اساس Seniority
-Groupby میکنی و بعد بر اساس Type و دیگه هیچی نباید حذف بشه"*.
+**`T-4` · rule 4 reports seniority instead of dropping for it.** The user's instruction, after
+seeing what it cost: *owner's note: it must not filter but categorise: group by Seniority, then Type, and remove nothing*.
 
 Measured on the real Netherlands run: **rule 4 fired on 19 of Claude's 90 flags** — nineteen
 listings removed for their seniority, by a prompt, before he ever saw them.
@@ -1180,7 +1178,7 @@ from one source string, in all four Remote prompts: the rung itself, the bullet 
 absent statement a KEEP, the closing instruction that told it to answer KEEP on an absence,
 and the blanket silence paragraph (narrowed to pay and experience). Each substitution had to
 appear exactly once in each file or nothing was written. The Not Remote prompts are untouched.
-See rule 4 of the nine for why this reversal is Sina's and what it is NOT allowed to extend
+See rule 4 of the nine for why this reversal is the user's and what it is NOT allowed to extend
 to.
 
 **This has caused the same fault twice.** `O-5`: a rule meant for every Level ("a minimum of
@@ -1206,12 +1204,12 @@ regenerate the eight `Job-Filter-Claude-Apify*.md` mirrors **from the prompt its
 Since `T-4` the job pass is two documents rather than eight, so a shared rule now reaches
 two constants instead of eight; the Internship and Thesis modules still have their own two
 each, which is why the files on disk are still ten. They are
-what Sina reads to know what Claude is told, and a test compares them byte for byte. Never
+what the user reads to know what Claude is told, and a test compares them byte for byte. Never
 edit a mirror by hand — `M-1` is exactly that drift having already happened once.
 
 #### Three lines of the per-listing prompt that were measured and left alone
 
-- **The `Field:` line carries the job title Sina typed**, on its own line rather than written
+- **The `Field:` line carries the job title the user typed**, on its own line rather than written
   into the rules, so the rules stay the same text for every title — and because this block is
   what the cache key hashes, a verdict reached for one title can never be reused for another.
 - **`Location:` stays `Location:`**, deliberately, while the Thesis and Internship modules
@@ -1226,7 +1224,7 @@ edit a mirror by hand — `M-1` is exactly that drift having already happened on
   from the **title**, and telling Claude only the description counts made it a KEEP.
 
 **The prompt version is a hash of the prompt's own text**, not a hand-maintained number, so any
-future edit to a rule automatically invalidates every cached decision with no risk of Sina
+future edit to a rule automatically invalidates every cached decision with no risk of the user
 forgetting to bump a counter.
 
 **The description cap is a guard, not an economy.** The longest description in the corpus is
@@ -1239,17 +1237,16 @@ exists only against a scraper returning a whole site in one field.
 
 This is where real credit is spent. Every number below was billed.
 
-#### Sina's rule outranks a measured gain
+#### The user's rule outranks a measured gain
 
 > **Tried** · asking each selected country's strongest city separately as well, because
 > LinkedIn caps one query at **1,000 results** (its own documented ceiling, which the actor's
 > `splitByLocation` field exists for). Measured for 24 cents: the same search restricted to
 > Berlin returned 120 jobs, of which **48 were not in the 1,000** the country-wide run had
 > produced. **40% new, from one city.**
-> **What happened** · Sina's answer: *"من میخوام فقط جا هایی که انتخاب کردم رو ببینم ولا غیر /
-> به هیچ عنوان نباید شهر های دیگه ای که خودت به نظرت خوب اومده رو اضافه کنی"*, and
-> *"اگر برلین کلا ۴۸ تا آگهی میده باید با همون ۴۸ بریم دیگه. آگهی میلان به چه درد من میخوره؟"*
-> **Now** · **a city Sina did not choose is never added to the plan.** If he wants Berlin he
+> **What happened** · the answer: *owner's note: only the places that were chosen are wanted, and no other city may be added on the app's own judgement*, and
+> *owner's note: if Berlin gives only 48 adverts, go with those 48; what use is a Milan advert?*
+> **Now** · **a city the user did not choose is never added to the plan.** If he wants Berlin he
 > picks Berlin, and Berlin is searched exactly once. The limit is a ceiling, not a target.
 > **Guarded by** · `O-9`, and section 7 of the run_search suite
 
@@ -1297,8 +1294,8 @@ Glassdoor and is the one whose remote filter does nothing.
 rewrites a boolean query into a semantic one unless told not to, and its own default is to do
 it. Measured on one query, 300 rows, everything else held still: with the rewrite on, 17% of
 titles contained a phrase the query asked for; off, **25%**. The two result sets shared only
-59% of their jobs, so this is a different search rather than a reordering. Sina's instruction
-when the measurement came in: *"اگر واقعا کار میکنه فعالش کن و اصلا نذارش داخل Search Field"*.
+59% of their jobs, so this is a different search rather than a reordering. The user's instruction
+when the measurement came in: *owner's note: if it really works, enable it, and keep it out of the Search field*.
 
 **The precise (level-prefixed) query earns its keep poorly.** Measured on the real Mid run:
 the 40-phrase precise query returned 880 rows for $1.76, of which **784 were already in the
@@ -1311,8 +1308,7 @@ title- and country-dependent, and it should be measured again before being relie
 
 #### `T-18` · the actor panel is a list of dropdowns, with no prose
 
-> *"برای پارامتر های Actor ها توضیح ننویس و زیر هم تمام پارامتر هایی که میتونیم به یک Actor بدیم
-> رو بنویس عبارتش رو و جلوش یک Dropdown بذار"*
+> *owner's note: no explanations for the actors' parameters: list every parameter an actor accepts, each with a dropdown in front*
 
 Each platform's box in the Search window is now one row per parameter: **the parameter's own name
 on the left, a dropdown on the right, nothing else.** The intro paragraph, the per-field hint
@@ -1340,7 +1336,7 @@ measured to work* — which is the rule this table has always had (`T-6`). The p
 **not** repeated per actor (LinkedIn `date_posted`, Glassdoor `daysOld`, Indeed `datePosted`)
 because the wizard's own "Posted within" control already sets all three, and two controls for one
 value is how they disagree. `experienceLevel` is absent because it was measured dead (`T-16`).
-If Sina wants the dead and unmeasured parameters shown anyway, that is a one-line change per field
+If the user wants the dead and unmeasured parameters shown anyway, that is a one-line change per field
 and a decision about whether the window may offer controls that do nothing.
 
 **Level and Work, checked at the same time because he asked whether they still work.** Both do:
@@ -1356,11 +1352,9 @@ and the precise one differs. Neither control was removed.
 
 #### `T-19` · Search offers Type — Any / Thesis / Internship — and no seniority
 
-> *"اون بخش Seniority رو از Search حذف کن / Type رو نگه دار که این موارد رو داشته باشه: Any,
-> Thesis, Internship / Thesis میگرده دنبال Thesis، Internship میگرده دنبال Internship، و Any میگرده
-> دنبال هر چیزی که میتونه پیدا کنه که شامل این موارد هم میشه"*
+> *owner's note: remove Seniority from Search; keep Type with Any, Thesis and Internship, each searching for its own kind and Any for everything*
 
-**Why Seniority came out of Search — measured first.** Sina asked how the Level field really works
+**Why Seniority came out of Search — measured first.** The user asked how the Level field really works
 and whether it does at all. Same 20-row test on Indeed, Glassdoor and LinkedIn with the app's own
 queries (`keywords_for` → `_actor_request`), Netherlands, a month, Not Remote so that no remote
 filter confounds it:
@@ -1446,7 +1440,7 @@ on purpose.** A filter applied at the actor removes, before the module ever sees
 the module would have kept. So `_KINDS_WITH_THEIR_OWN_REMOTE_RULE = ('thesis', 'internship')` and
 `_process_plan_item` passes `not_remote or kind in …` to the request builders — the existing way of
 saying "send no remote filter" — so **only the Job pass is asked for remote-only at the actor.**
-That is Sina's own rule applied to a case it had not reached: *the actor brings what he is looking
+That is the user's own rule applied to a case it had not reached: *the actor brings what he is looking
 for and his own Filter decides.*
 
 **Glassdoor had the same bug from the other side, and it was bigger.** `_glassdoor_request` leaves
@@ -1461,8 +1455,7 @@ the window says No; a request built with no settings keeps what the builder alwa
 
 ##### The vocabularies — four lists, and the search had been sending words nothing recognised
 
-> *"باید در اون دیکشنری ها از همه ی لغت های معادل Internship استفاده کنیم برای هر کشوری که انتخاب
-> کردیم و همین طوری برای Thesis"*
+> *owner's note: the dictionaries must use every equivalent word for Internship in each chosen country, and the same for Thesis*
 
 There are **four** places that decide what an internship or a thesis *is*, and they had drifted —
 rule 5 of the nine, a rule in several places is several rules:
@@ -1505,7 +1498,7 @@ delete*; it is also a real difference, stated here so it is not discovered later
 
 #### `T-20` · the Type column reads the local-language internship and thesis words
 
-> *"آره درستش کن"* — the answer to `T-19`'s open item.
+> *owner's note: yes, fix it* — the answer to `T-19`'s open item.
 
 **The fault.** 33 of the 4,325 Bank rows, and 62 of the 279 an Any search returned, were Dutch
 `Stage Data & AI`, `wo stage Data Science & Machine Learning`, `hbo/ad-stage E-learning` — filed
@@ -1603,10 +1596,9 @@ the search sends that may name a Type, does.**
 > says "Not Remote" in the Search or Filter window describes the state before this amendment;
 > `not_remote` remains an internal mode for old saved settings.
 
-> *"زیر Type یک بخش اضافه کن به اسم Remote و Not Remote / بعدش اگر من Thesis و Internship انتخاب
-> کردم کلا Remote غیر قابل کلیک بشه"*
+> *owner's note: add a Remote / Not Remote row under Type; when Thesis or Internship is chosen, Remote becomes unclickable*
 >
-> *"بعد هر انتخابی که کردم اونجا مستقیما در مقدار پارامتر مربوطه به اون Actor قرار داده بشه"*
+> *owner's note: every choice made there goes directly into that actor's own parameter*
 
 **The row.** Under **Type** the Search window has a row called **Remote / Not Remote** (it was
 labelled *Work*). Choosing **Thesis** or **Internship** makes the **Remote** entry unclickable —
@@ -1655,9 +1647,28 @@ job pass sends `remote=remote` and the other two do not, so that one dropdown is
 every call it nominally covers. It is the one place "directly" is not literally true, and it is there
 because the alternative is the 0-row result `T-19` measured.
 
+#### `T-26` · Thesis and Internship know the other names for the job; the first name and the Persian quotations are gone
+
+> [owner's note: add the equivalents to Thesis and Internship too]
+
+- **Equivalents.** `title_equivalents` (asked of Claude once per title, cached on disk) used to widen only the
+  Job module. Its list now reaches Thesis and Internship in two places. **The field rule:** `find()` takes
+  `other_names` (handed in by `FilterWorker`, so the modules still ask nobody and share nothing), stamps them on
+  every row as `_title_also`, and each module's own `field_words.py` matches the typed title *or any* of them,
+  each with its twin form — "Tirocinio TESI Artificial Intelligence" is no longer off-field for "Data Science".
+  **The search queries:** the broad query's title group and the exact "kind word + title" phrases carry every
+  other name too (`_role_forms`), the typed title first; with equivalents the phrase list is capped at 40 so a
+  query is never silently truncated. With no key or no answer the list is empty and nothing changes.
+  What it does not do: it does not fix the AND of thesis words and title that returns almost nothing for a
+  narrow title (`T-25`) — more alternatives inside the title group help, searching the thesis words alone
+  would help more, and that remains the owner's decision.
+- **Scrub.** The first name is written "the user" throughout (code, prompts, docs); the owner's Persian
+  instructions are rewritten as short English `owner's note:` lines. Only the GitHub user name in URLs and in the
+  license notice keeps the name, and the public README keeps one Persian sentence stating its purpose.
+
 #### `T-24` · Going public: the name, the license, the cleaned repository, and a step-by-step guide
 
-> *"میخوام بذارم به صورت عمومی همه استفاده کنن"* · *"دانلود و استفاده اکیه ولی تغییر و فروش مشکل داره"*
+> *owner's note: the aim is a public release that everyone can use* · *owner's note: downloading and using is fine; changing and selling is not*
 
 - **Name:** JobDesk became Job Finder and then **RoleHound** (window title, brand label, `RoleHound_Export.xlsx`,
   `RoleHound.spec`, `RoleHound.exe`, the Taskbar id). **The per-user data folder stays
@@ -1677,7 +1688,7 @@ because the alternative is the 0-row result `T-19` measured.
   being copied across clean.
 - **What the review found and removed:** no API key, token or password was ever committed (all 72 commits
   scanned); the `archive/` folder (34 files) and personal sentences in comments and docs were removed. Still
-  there, knowingly: the first name "Sina" in prompts and comments, the GitHub user name, and quotations of
+  there, knowingly: the first name "The user" in prompts and comments, the GitHub user name, and quotations of
   the owner's Persian instructions.
 - **Step-by-step guide:** in `README.md`. One correction it made: an earlier draft of the README said to upload
   the résumé in the Search window; it is uploaded in the **Filter** window (**Choose résumé…**), and the
@@ -1685,7 +1696,7 @@ because the alternative is the 0-row result `T-19` measured.
 
 #### `T-25` · Open finding: a Thesis search for "Data Science" returns almost nothing
 
-> *"الان من Thesis جستجو کردم و برام Internship و Full-Time آورده … خیلی خیلی نتایج کم هستن"*
+> *owner's note: a Thesis search returned Internship and Full-Time results, and very few of them*
 
 Measured on 5 October 2026 with capped live runs (Italy, Past 2 weeks). The real search returned 4 rows, none
 a thesis: the query asks for a thesis word **and** the title ("Data Science" / "Data Scientist"), the actors
@@ -1698,8 +1709,7 @@ judge the field, and widen the field rule with equivalents (AI, Machine Learning
 
 #### `T-23` · Remote means Remote — no Milan, Turin or Italy exception
 
-> *"اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin یا Milan بود / اگر خودم بخواد Any رو
-> Search میکنم دیگه"*
+> *owner's note: Remote means Remote even in Turin or Milan; to see everything, search Any*
 
 The home-city exception is gone, everywhere it lived. Remote is judged as Remote in Turin and Milan
 like in any city; the way to see on-site work there is to search **Any**.
@@ -1722,7 +1732,7 @@ like in any city; the way to see on-site work there is to search **Any**.
 
 #### `T-22` · The column filters crashed the program, and now leave a crash log
 
-> *"از اون بخش که برای جدول ها مثل Excel درست کردی وقتی استفاده میکنم برنامه Crash میکنه و بسته میشه"*
+> *owner's note: the program crashes and closes when the Excel-style table filter is used*
 
 Windows logged two `Qt6Widgets.dll` access violations (same offset, `0xc0000005`) in one morning, both
 while a column filter was used just after a Filter run. **Cause, found by reading and not reproduced
@@ -1743,7 +1753,7 @@ checklist (`actor_order`); everything else a search asks is **one** box, "The di
 
 This arrived by being narrowed twice, and the narrowing is the useful part. It began as a box
 per stage and per source — nineteen. Then: switches for the actor-backed sources only. Then
-Sina's final shape: *"فقط برای Google Indeed Glassdoor LinkedIn API ها"*.
+The user's final shape: *owner's note: only for the Google, Indeed, Glassdoor and LinkedIn APIs*.
 
 - **Deep Crawl got no switch of its own.** `run_google = 'google' in actor_order` gates the
   whole phase — the Google query, known and startup sites, Deep Crawl and URL-pattern
@@ -1768,9 +1778,8 @@ does something other than what it says. The pair that used to be the trap before
 
 #### `T-16` · LinkedIn moved to an actor that returns the Hybrid / Remote tag
 
-**The failure that caused it.** Three adverts in a row that Sina opened were tagged **Hybrid**
-on LinkedIn and had been kept as Remote, and he said so in the plainest terms available: *"به
-جرات میتونم بگم 99 درصد کارهایی که آوردی Hybrid هست — این یه شکست بسیار بزرگه"*. I had told him
+**The failure that caused it.** Three adverts in a row that the user opened were tagged **Hybrid**
+on LinkedIn and had been kept as Remote, and he said so in the plainest terms available: *owner's note: about 99 percent of what was returned was Hybrid - a very big failure*. I had told him
 57 listings were "100% safe to apply". That was wrong. Measured afterwards on the 57: 23 said
 fully remote, 17 came from remote-only boards with vague prose, **11 were genuinely doubtful**
 (Charles Schwab: *"we believe in the importance of in-office collaboration"*; Catawiki: *"a hybrid
@@ -1789,7 +1798,7 @@ Three of the four adverts he sent, and why each got through:
 **The tag cannot be read from LinkedIn's public page — checked, not assumed.** A fetch of the
 IDPP advert with the app's fullest ladder gave 274,866 characters of HTML and the word `hybrid`
 appeared **zero** times; `jobLocationType` and `TELECOMMUTE` appeared zero times. The chip is
-rendered only for a logged-in session. So *"give Claude the link instead of the text"* (Sina's
+rendered only for a logged-in session. So *"give Claude the link instead of the text"* (The user's
 question) would show Claude the same page without the tag — or the login wall. It adds nothing.
 
 **It also cannot come from `curious_coder/linkedin-jobs-scraper`.** 26 keys on a live run, none
@@ -1821,8 +1830,7 @@ changed, job ids compared:
 | boolean `OR` / quotes in `keywords` | **honoured** | 100 of 100 titles contained a phrase from a 3-phrase OR query; the same words joined by spaces gave 5 of 15 |
 
 `experienceLevel` was measured and is **not offered**: Seniority is classified in the table and
-no actor is asked about it (Sina, when he saw it in the results: *"ما اصلا قرار نبود دیگه
-Seniority رو کلا در Actor بررسی کنیم"*).
+no actor is asked about it (The user, when he saw it in the results: *owner's note: Seniority was never to be checked in the actor at all*).
 
 **What the swap changes in the code**, in the order a row travels:
 
@@ -1836,7 +1844,7 @@ Seniority رو کلا در Actor بررسی کنیم"*).
   still sends `remote` for a Remote search, which is what every test written before the window had
   a say reads. (Italy was exempt here until `T-23`; it is not any more.) It is a
   *recall* setting and not a decision — nothing is deleted at the actor, every row carries its own
-  tag, and the Filter decides, which is Sina's rule: the actor brings what he is looking for and
+  tag, and the Filter decides, which is the user's rule: the actor brings what he is looking for and
   his own Filter does the rest.
 - `_run_linkedin_pages` — the actor returns **at most 100 rows per call** (`limit` maximum), so one
   search is several calls with `page_number`. Measured depth on one query with `remote` on: page 1
@@ -1873,11 +1881,11 @@ Seniority رو کلا در Actor بررسی کنیم"*).
 Of the 300 the old actor returned, the new one also saw 46 and tagged them: **27 Hybrid, 16
 On-site, 3 Remote — about 6% Remote.** And of the 11 the old text rule had called Remote *and*
 the new actor could tag, **10 were Hybrid or On-site.** The sample is small and the direction is
-what matters, but it agrees with what Sina saw by clicking.
+what matters, but it agrees with what the user saw by clicking.
 
 ##### THE PRICE I FIRST QUOTED WAS WRONG, and it consumed his credit
 
-I told Sina the new actor was "~300 times cheaper per row, $0.002 for 45 rows". **It is 2.5 times
+I told the user the new actor was "~300 times cheaper per row, $0.002 for 45 rows". **It is 2.5 times
 MORE expensive per row: $0.005 a job**, read from the actor's own pricing events
 (`pricingPerEvent.apify-default-dataset-item.eventPriceUsd`). The figure came from a run's
 `usageTotalUsd`, which comes back **empty or zero for a pay-per-event run at the moment it
@@ -1946,7 +1954,7 @@ so that change is an improvement rather than a loss.
 
 The model is the cheap one (`claude-haiku-4-5`). Further wording changes have diminishing returns
 and each costs a measured round; the next real lever is a stronger model for the Rule 1 question
-alone, which is Sina's decision because it is a price. **These are flagged, not deleted** — the
+alone, which is the user's decision because it is a price. **These are flagged, not deleted** — the
 review dialog still shows every one of them.
 
 ##### THE COST LINE IN THE LOG WAS WRONG TOO, for the same reason
@@ -1954,7 +1962,7 @@ review dialog still shows every one of them.
 The live run printed `$0` for every LinkedIn call while buying 12 rows at $0.005. Measured: at
 the moment a pay-per-event run ends, `usageTotalUsd` is **0 and `chargedEventCounts` is also 0**;
 a 10-row run read 0 for ten seconds and then $0.05. The app read the run once. It is the same
-field read at the same wrong moment that first gave Sina a wrong price.
+field read at the same wrong moment that first gave the user a wrong price.
 
 `_settled_usage` now waits for it — polling every 3 s, for at most 45 s — **only** for a run that
 carries `chargedEventCounts` at all (pay-per-event) **and** returned rows (a run that bought
@@ -2059,7 +2067,7 @@ measured — and precise is the cheap top-up that catches the 29 most on-target 
 query's thousand cannot hold. The job pass has a precise shape too now, and it is the
 entry-level one: it used to be skipped, back when the job keywords were role titles and an
 exact phrase could only narrow them. Since the move to DevOps and MLOps the broad query
-returns the whole field, seniors included, and **the junior roles Sina can actually be hired
+returns the whole field, seniors included, and **the junior roles the user can actually be hired
 into never survive LinkedIn's thousand.** `keywords_for` returns `None` for shapes with
 nothing to ask, so a pass that gains nothing costs nothing.
 
@@ -2078,8 +2086,8 @@ it only if the Apify plan's memory goes up. For the same reason `memory_mbytes` 
 **only** for the main Google call, which runs alone after `executor.shutdown(wait=True)`;
 unconditional, each of the two concurrent platforms would claim the full cap at once.
 
-**The three passes — Job, then Internship, then Thesis — run sequentially**, which is Sina's
-instruction (*"آگهی های شغلی پیدا بشه و پرونده اش بسته بشه، بعد Internship، بعد Thesis"*) and
+**The three passes — Job, then Internship, then Thesis — run sequentially**, which is the user's
+instruction (*owner's note: finish the jobs first, then Internship, then Thesis*) and
 also means that **if credit runs out part-way, the Job pass is already done.**
 
 #### `J-2` and the cancel bug — a crash or a cancel must not lose what was paid for
@@ -2108,8 +2116,7 @@ country by country, that meant **dropping the last locations entirely** rather t
 each evenly.
 
 And when the wizard's cap is switched off the value is a large number, not infinity, because
-every one of these fields must be a number the actor accepts. Sina's instruction — *"هیچ Limit
-ای نباید در پیدا کردن آگهی باشد"* — came from the German run, where LinkedIn and Glassdoor each
+every one of these fields must be a number the actor accepts. The user's instruction — *owner's note: there must be no limit on finding listings* — came from the German run, where LinkedIn and Glassdoor each
 returned **exactly 100 listings, the saved cap to the item**: both had more to give and
 neither said so.
 
@@ -2169,7 +2176,7 @@ enrichment, so nothing is fetched for a listing about to be discarded.
    plain-language fix advice. Deliberately not mid-search: interrupting a running search to say
    a site was quiet is exactly the popup this replaced. And **only the sites nothing could be
    read from**: a page whose postings the search already had is not a site with a problem, and
-   naming it sends Sina to fix something that works.
+   naming it sends the user to fix something that works.
 
 #### Two things that must survive a bug
 
@@ -2196,8 +2203,7 @@ proven** is recorded honestly: if it returns, that is the entry to start from.
 
 #### `O-10` · the money path was one 465-line function
 
-Sina: *"به خرد ترین و ماژول های کوچک تبدیلش کن … ازت میخوام این بخش یکی از امن ترین بخش های
-برنامه بشه"*. **Tests first**, because refactoring the least-tested and most expensive path is
+The user: *owner's note: split it into the smallest modules; this part should become one of the safest in the program*. **Tests first**, because refactoring the least-tested and most expensive path is
 exactly where a refactor does damage — Suite 7, entirely offline, around the one function that
 spends real credit — and only then was a line moved.
 
@@ -2239,7 +2245,7 @@ test 4.4c puts the empty mirror first on purpose.
 
 **3 · Same employer, same title, different host.** `O-6`. For the copies the text test cannot
 see: QuantumBlack's Data Scientist was **3,802 characters on qarera and 1,929 on LinkedIn**,
-so their descriptions never reach the threshold. The real Amsterdam result Sina would have
+so their descriptions never reach the threshold. The real Amsterdam result the user would have
 opened held **8 duplicate pairs among its 48 listings** — QuantumBlack, Metyis, Robeco,
 Philips, Genmab, each on two boards.
 
@@ -2258,10 +2264,10 @@ both were shown. A short tail after a pipe is dropped from the comparison key no
 ("Data Engineer | Build the data foundation for the future of care") is the job itself and is
 kept.
 
-**Open, and accepted by Sina.** One job posted as "Capgemini" on one site and "Capgemini
+**Open, and accepted by the user.** One job posted as "Capgemini" on one site and "Capgemini
 Engineering" on another still shows twice. The rule that would bridge them would also merge
 "Siemens" with "Siemens Healthineers", and **losing a real opening costs more than showing a
-duplicate row**. His decision: *"این مهم نیست اکیه"*.
+duplicate row**. His decision: *owner's note: that does not matter, fine*.
 
 ---
 
@@ -2350,8 +2356,7 @@ arbeitsagentur.de adverts reached Claude as a 69-character stub.**
 after two passes, fetching each one alone and unhurried recovered **exactly one**. So the ones
 that never answer are dropped rather than sent onward as a bare job title.
 
-Ten minutes is Sina's own figure, and the trade is his standing one: *"زمان مهم نیست / نمیخوام
-آگهی از دستم بره"* — time is free, a lost listing is not.
+Ten minutes is the user's own figure, and the trade is his standing one: *owner's note: time does not matter, and no listing may be lost* — time is free, a lost listing is not.
 
 #### `N-7` / `J-1` · lxml killed the process outright
 
@@ -2438,7 +2443,7 @@ one with a title.** The addresses differ, so duplicate removal never matched the
 empty, so the field filter kept them — **a missing title is never evidence** — and one reached
 Claude in the Austrian DevOps run and was KEPT, listed as "None".
 
-**This does not delete anything.** Sina's rule is that a raw search shows every listing as
+**This does not delete anything.** The user's rule is that a raw search shows every listing as
 fetched and cleanup happens at Filter, so the row is **corrected**: its address is put back to
 the HTML copy's, and its title and company are read out of the Markdown itself. Filter's
 duplicate check then sees two rows at one address and keeps one.
@@ -2560,7 +2565,7 @@ Both numbers looked perfectly reasonable, which is why nobody questioned them.
 domain knowledge" — measured across five real corpora: **26,445 entities on 27–43% of
 listings**, from the sources that hand over plain text rather than HTML. No keyword verdict
 changed when they were unescaped (measured over all 24,295), so this is not a filtering fix; it
-is what Sina reads in the table and the export, and what Claude is given. **The Bank keeps the
+is what the user reads in the table and the export, and what Claude is given. **The Bank keeps the
 untouched original.**
 
 **`R-2` · Jooble has no API key — BY DESIGN.** Its free tier is capped at **500 calls for the
@@ -2573,7 +2578,7 @@ config-only check for it while every other source gets a real request.
 
 #### `O-4` · the Filter used to eat the pool it filters
 
-Not a wrong verdict — a design fault Sina found **by describing the app back to me**. A search
+Not a wrong verdict — a design fault the user found **by describing the app back to me**. A search
 banked its listings, the Filter judged them, `save_jobs` wrote the survivors over `jobs.json`,
 **and the pool was gone**: trying another Level, or Not Remote, meant paying Apify for the same
 search again.
@@ -2583,7 +2588,7 @@ kept by hand, outside the app.
 
 `bank.json` now holds what a search returned, **keyed by URL** so re-searching a city does not
 bank a posting twice and the newest copy wins. **The Filter reads from the Bank and never
-writes to it**, so any Level and either work mode can be tried as often as Sina likes, for
+writes to it**, so any Level and either work mode can be tried as often as the user likes, for
 about $0.03 instead of $3.
 
 #### Surviving a crash mid-search
@@ -2625,7 +2630,7 @@ lives in OneDrive**, and a sync conflict or a half-finished write produces exact
   scratchpad, never to the real data directory.
 - **`M-5` · the résumé path was fixed at import time.** `resume.py` computed its folder from
   `storage.DATA_DIR` when imported — *before* the test harness moves storage somewhere
-  temporary — so a test saving a résumé would have **replaced the one Sina really uploaded**.
+  temporary — so a test saving a résumé would have **replaced the one the user really uploaded**.
   Resolved on every call now, and Suite 4.40 checks it points inside the test folder.
 
 ---
@@ -2663,7 +2668,7 @@ Batch 3 of 8 done — 287 page(s) read so far, $1.14 spent on this stage.
 
 #### `O-8` · the Health Check could not say what anything costs
 
-And Sina's correction on how to say it: *"بگو به صورت نرمال جستجوی این حالت انقدر هزینه داره"* —
+And the user's correction on how to say it: *owner's note: state what a normal search of this kind costs* —
 quote what a **normal search** costs, not a per-listing figure.
 
 **An OK line can still carry something worth reading.** That detail used to be dropped on the
@@ -2680,7 +2685,7 @@ Covered in [area 6](#6--the-search-the-money-path) — the actor's own complaint
 the value and the alternatives, and it went out as an indented grey line among hundreds of
 progress ticks. Two hours of a German search ran without Indeed.
 
-#### Details of the Log that came from Sina asking
+#### Details of the Log that came from the user asking
 
 - **A live-ticking timer** on the combined Google call, which can take a minute or more. With
   only a summary line appearing once everything was done, **there was no way to tell the stage
@@ -2689,7 +2694,7 @@ progress ticks. Two hours of a German search ran without Indeed.
 - **Nested timers**: the Pre-API check ticks inside the outer Google header, so there is one
   continuous Google timer with a sub-timer underneath.
 - **Startup boards get their own section**, visually separate from the general-purpose ones.
-- **A check's suffix names what was checked, not how many passed** — Sina's ask; pass/fail
+- **A check's suffix names what was checked, not how many passed** — the user's ask; pass/fail
   still decides the colour.
 - **Any timer left running is stopped** when the phase ends abnormally.
 
@@ -2738,7 +2743,7 @@ every affected listing is screened again and paid for again.
 > those four **the reason a job was removed would be the one thing missing from the export.**
 > `_description_for_export` moves it to the front of that one cell.
 
-> **3 · `add_application` copies `description` into the record**, so a job Sina kept by hand
+> **3 · `add_application` copies `description` into the record**, so a job the user kept by hand
 > would be filed with "WHY THIS WAS REMOVED" attached. The note comes off in the same loop that
 > records the override.
 
@@ -2751,7 +2756,7 @@ before any rule reads a listing — that one line is what makes the feature safe
 
 #### `spend.summary()['total_usd']` is the lifetime total, not the run's cost
 
-This was reported to Sina as a run cost and was wrong: the Germany Claude run cost **$0.3465**,
+This was reported to the user as a run cost and was wrong: the Germany Claude run cost **$0.3465**,
 not the $0.4097 quoted. The per-run figure is `current_run` / `last_run` in
 `%APPDATA%\JobDesk\claude_spend.json`.
 
@@ -2808,7 +2813,7 @@ shifts every later cell silently.
 #### `T-10` · the Seniority column — classified, never filtered
 
 `Seniority` sits **before** `Type`, in both tables and both Excel sheets, because that is the
-order Sina groups by: *"اول بر اساس Seniority Groupby میکنی و بعد بر اساس Type"*. Both have an
+order the user groups by: *owner's note: group by Seniority first, then by Type*. Both have an
 Excel-style `ColumnFilterButton` over them, and **neither is a filter in the Filter window any
 more** — the choice lives in the table, where he can change it without re-running anything.
 
@@ -2836,9 +2841,7 @@ and it earned its place again.
 
 The other half of `T-12`. Keeping the pairing is only useful if he can find it again:
 
-> *"میتونی یک ستون ها اضافه کنی که بشه انتخاب کرد فقط English و English + Other Language /
-> که اگر فقط English رو انتخاب کردم برام اول English هارو نشون بده / در خود همون جدول /
-> مثل فایل Excel"*
+> *owner's note: add columns to choose English only, or English plus another language; English first, in the same table, like Excel*
 
 So the same reading that decides whether to delete also writes down **what it found**, and the
 answer is a column with a `ColumnFilterButton` over it, like Seniority and Type. Tick
@@ -2881,7 +2884,7 @@ having already moved 12→13 when Seniority was added. `styled_columns` is now `
 
 The five places, again: `JOB_HEADERS`, `JOB_COLUMN_WIDTHS`, the `ws.cell` calls, the
 `styled_columns` set, and the Applications sheet. **The Applications sheet deliberately does
-not get this column** — Sina asked for Type there and nothing else, and `add_application`
+not get this column** — the user asked for Type there and nothing else, and `add_application`
 never reads an `English` field, so adding it would widen the by-hand dialog's contract for no
 one's benefit.
 
@@ -2915,13 +2918,13 @@ layout wrappers — and that is where the time goes.
   `KeyError` straight out of the click handler with **no dialog and no log line**. It points at
   the wizard now, which is the one place that can fix a missing token.
 
-#### Things Sina asked for that are load-bearing
+#### Things the user asked for that are load-bearing
 
 - **The detected language is shown per listing**, not only in the Log's per-run summary. *"A
   listing that was judged in the wrong language is the kind of mistake that is invisible until
   you can see which language it was judged in."*
 - **A `skip` from the résumé match deletes nothing** — it is flagged for the review dialog like
-  any other verdict, because the cost of being wrong here is a job Sina never sees.
+  any other verdict, because the cost of being wrong here is a job the user never sees.
 - **Filter is cancellable now.** Its Claude Review step is one sequential API call per listing,
   so a big Filter used to be impossible to stop once started — the longest thing the app does.
 - **The Log protocol is one table**, not a 286-line if/elif chain. Adding a message type is one
@@ -2943,7 +2946,7 @@ layout wrappers — and that is where the time goes.
 ### 14 · Packaging, the exe, icons, git
 
 > **There were two `RoleHound.exe` files.** One in the project root, three weeks old, and one in
-> `dist/`. Sina was opening the root one — which is why a new icon and a night of fixes "had
+> `dist/`. The user was opening the root one — which is why a new icon and a night of fixes "had
 > not changed anything". The root copy is deleted; **the exe is `dist/RoleHound.exe`.**
 
 > **`Icon.png` and `Icon.ico` were two different images** — a brain and an unrelated document
@@ -3002,7 +3005,7 @@ layout wrappers — and that is where the time goes.
   15-minute per-suite ceiling.
 - **`T-11` · a suite that is not in `run_all.py`'s `SUITES` list does not exist.**
   `t8_invariants.py` — the metamorphic and combinatorial work written after the empty German
-  search, the suite Sina specifically asked for — was written, committed, and **never
+  search, the suite the user specifically asked for — was written, committed, and **never
   registered**. The campaign printed `ALL GREEN` for days without running a line of it. Found
   only by reading the runner while adding another suite.
   **When you add a suite, add the row, then check the printed total went up by the number of
@@ -3050,7 +3053,7 @@ theory is cheap to test, test it before acting on it.
 
 LinkedIn's own job page shows a pill saying **On-site**, **Hybrid** or **Remote**. It is the
 employer's own answer, chosen when the advert was posted, and it would settle every case the
-keyword rules have to infer. Sina saw it on a Boehringer Ingelheim advert the app had kept in
+keyword rules have to infer. The user saw it on a Boehringer Ingelheim advert the app had kept in
 a Remote search and asked, reasonably, whether we could read it.
 
 **We cannot.** Three routes, all checked against live data, twice — once weeks ago and again
@@ -3074,7 +3077,7 @@ the markup around each hit:
 <span class="sr-only">Senior Data Engineer … - Remote</span>   a DIFFERENT advert, in the sidebar
 ```
 
-**Decision at the time: dropped, and this was Sina's call.** His reasoning, and it was the
+**Decision at the time: dropped, and this was the user's call.** His reasoning, and it was the
 right one *for the evidence then*: the field would only ever reach us as inference from noisy
 text, and that inference would feed a rule that *removes* listings. An unreliable signal driving
 a removal is the one combination that loses real jobs silently.
@@ -3085,7 +3088,7 @@ a removal is the one combination that loses real jobs silently.
 > 97 LinkedIn-jobs actors and `apimaestro/linkedin-jobs-scraper-api` returns `work_type` on
 > every row (225 of 225 on real data), including the one advert whose own text said "Remote"
 > and whose tag said Hybrid. It is **not** inference from noisy text — it is LinkedIn's own
-> field — so Sina's reasoning above is *satisfied*, not overruled: the signal is now reliable
+> field — so the user's reasoning above is *satisfied*, not overruled: the signal is now reliable
 > enough to drive a removal. The lesson: a negative result about a signal is a claim about the
 > routes tried. Before writing "cannot get" here, try a different *source*, not just a
 > different way into the same one.
@@ -3276,7 +3279,7 @@ extra step after the main loop, via `run_google = 'google' in actor_order and
 bool(cities or countries)`).
 
 **Google now searches selected countries too, not just cities** — originally it only
-ran for `cities`, but Sina explicitly asked for country-level coverage as well, matching
+ran for `cities`, but the user explicitly asked for country-level coverage as well, matching
 how the other three platforms already work. For **every selected country and every
 selected city**, `build_google_job_queries` builds queries in **this exact stage
 order** (now 4 stages, not 3 — a Startup-sites stage was added this session, see
@@ -3299,14 +3302,14 @@ below for its full detail):
    tag, which the Type badge's "... Startup" suffix relies on directly — see
    [Startup Websites Search & Company Popularity](#startup-websites-search--company-popularity).
 3. **Global-extra-sites stage** (1 query line *per group*) — same role terms +
-   location, restricted via `site:` OR-clauses to a fixed list of sites Sina supplied
+   location, restricted via `site:` OR-clauses to a fixed list of sites the user supplied
    that aren't tied to any one country, so they're searched for *every* selected
    location the same way:
    `GOOGLE_GLOBAL_EXTRA_SITES = ['jooble.org', 'work.turing.com', 'work.mercor.com',
    'remoteok.com', 'weworkremotely.com', 'aijobs.net', 'wellfound.com',
    'workatastartup.com', 'remotive.com', 'arc.dev', 'aijobs.ai']`. `remoteok.com`,
    `weworkremotely.com`, `wellfound.com` (major remote-focused boards) and `aijobs.net`
-   (AI/ML/Data-specific) were added first, after Sina asked whether any major job boards
+   (AI/ML/Data-specific) were added first, after the user asked whether any major job boards
    were still missing — none of the sites covered so far were remote-first the way this
    app's own Remote-only rule requires. The last 4 (`workatastartup.com` — Y Combinator's
    own board, YC-backed startups only; `remotive.com` — hand-curated remote board with a
@@ -3324,7 +3327,7 @@ below for its full detail):
    classify it as the global stage.)
    **No longer capped by one line's word budget**: growing this list once pushed the
    worst case (a 2-word location like "United Kingdom") right up against Google's
-   ~32-word query limit. Rather than keep trimming role terms to make room, Sina asked
+   ~32-word query limit. Rather than keep trimming role terms to make room, the user asked
    for the list itself to be split: `_global_extra_sites_clauses()` breaks
    `GOOGLE_GLOBAL_EXTRA_SITES` into groups of `GOOGLE_GLOBAL_SITES_PER_GROUP` sites,
    and `add_location` emits **one query line per group** instead of one line for the
@@ -3347,18 +3350,18 @@ below for its full detail):
    line, at the cost of one more Apify query, not by tightening every line's word
    budget) — worst case across every country/city is 27 words (the open-web stage,
    unaffected by any of this), with the widest known-sites-stage line (Germany, now 7
-   domains) also at 27. Also freed up room in `GOOGLE_QUERY_ROLE_TERMS`: Sina had
+   domains) also at 27. Also freed up room in `GOOGLE_QUERY_ROLE_TERMS`: The user had
    earlier traded off `"Data Analyst"` (5 terms → 4: `Data Scientist`, `Data Engineer`,
    `Machine Learning Engineer`, `AI Engineer`) purely to survive the old single-line
    squeeze — that trim stayed (no reason to revert it), but a future 5th role term would
-   no longer be blocked by the global-sites list specifically. Separately, Sina also
+   no longer be blocked by the global-sites list specifically. Separately, the user also
    trimmed analytics/analyst-flavored terms out of `KEYWORDS` (the much longer,
    unrelated term list used by the LinkedIn/Indeed/Glassdoor actors) entirely — see "The
    search keywords (`KEYWORDS`)" below.
 4. **Open-web stage** (1 query line) — same role terms + location, no site restriction
    beyond the usual LinkedIn/Indeed/Glassdoor exclusion (`GOOGLE_EXCLUDED_TLD_HINTS`) —
    catches a company's own career page or any other job board not in the known-sites,
-   startup-sites, or global-extra-sites lists (Sina's own reasoning: "a specific company
+   startup-sites, or global-extra-sites lists (The user's own reasoning: "a specific company
    from that country might have posted a job on its own website that matches our
    search").
 
@@ -3398,7 +3401,7 @@ global-sites line only once `GOOGLE_GLOBAL_EXTRA_SITES` grows past
 `known`/`startup` sites a given country's own `COUNTRY_JOB_SITES`/
 `COUNTRY_STARTUP_SITES` entry has grown to (still just 1 line per country per stage
 regardless of count — see the word-budget note). This is a real cost consideration
-Sina was explicitly told about before building it, and confirmed he understood and
+The user was explicitly told about before building it, and confirmed he understood and
 wanted anyway — since then, a real cost audit (see "Removed for cost" and the
 `GOOGLE_GLOBAL_SITES_PER_GROUP` note above) has trimmed this down considerably: fewer
 `COUNTRY_JOB_SITES` entries (5 domains removed to their free-API-only equivalents),
@@ -3454,7 +3457,7 @@ which disqualifies it from Filter's company+title fuzzy match entirely — leavi
 an exact-URL match as a safety net, not guaranteed if Google indexed a
 differently-formatted URL (tracking params, a different path) than the dedicated
 actor's own output. A real duplicate could silently survive Filter as an extra,
-lower-quality row sitting alongside the dedicated actor's cleaner one. Sina asked for
+lower-quality row sitting alongside the dedicated actor's cleaner one. The user asked for
 this fixed once the gap was explained — `_is_excluded_job_board` (already proven,
 substring-based, catches any TLD/subdomain) is back in the main loop as the real
 app-side guarantee it was always meant to be, verified with a real simulated-loop test
@@ -3469,7 +3472,7 @@ A known-sites-stage (or, since the global-extra-sites stage was added, a
 global-extra-sites-stage) result — e.g. finn.no's own search page, or
 ziprecruiter.com's — is often itself a *listing* of several jobs, not one job's actual
 page — Google's scrape of it only captures whatever text is on that listing page, not
-the individual postings behind it. Sina explicitly asked whether the individual links
+the individual postings behind it. The user explicitly asked whether the individual links
 on such a page could be opened too, so this was built, tested for real multiple times,
 and iterated based on what actually worked.
 
@@ -3558,7 +3561,7 @@ of the original 42 (`vdab.be`, `arbetsformedlingen.se`, `actiris.brussels`,
 pass using real web search results to find each site's actual search URL format instead
 of guessing blindly (`actiris.be` was also renamed to its real domain,
 `actiris.brussels`, in `COUNTRY_JOB_SITES` itself). `tecnoempleo.com` and `cwjobs.co.uk`
-were added later, after Sina asked whether any good startup/tech-specific boards were
+were added later, after the user asked whether any good startup/tech-specific boards were
 still missing for individual countries — both were researched and confirmed via real,
 live job-posting URLs on the first attempt (Tecnoempleo: Spain-specific tech board;
 CWJobs: UK-specific tech board, part of the StepStone/Totaljobs group).
@@ -3589,7 +3592,7 @@ confirmed dead in the same research pass and never added at all: Sweden's Blocke
 (closed December 2024) and Finland's Oikotie Työpaikat (closed February 2025, `jobly.fi`
 above is its live replacement).
 
-**`GOOGLE_GLOBAL_EXTRA_SITES` confirmed-pattern coverage**: after Sina asked to go
+**`GOOGLE_GLOBAL_EXTRA_SITES` confirmed-pattern coverage**: after the user asked to go
 through the remaining unconfirmed ones directly rather than waiting for real usage to
 surface them, a real Playwright fetch of each (not a guess) settled all 7 that were
 originally left unresearched:
@@ -3609,7 +3612,7 @@ originally left unresearched:
   session — see its own note further up.)
 - **`work.turing.com` and `work.mercor.com` were marked "no public listing at all" here
   — this turned out to be wrong**, corrected in the manual-assisted-search round below
-  once Sina actually opened both himself: both have a real, public, no-login search.
+  once the user actually opened both himself: both have a real, public, no-login search.
   Still no entry in this specific dict, though, for an unrelated reason — their role
   cards have no real `<a href>` for `_deepen_google_results` to follow at all (a
   different failure mode than "no listing"), so they're handled entirely through
@@ -3635,7 +3638,7 @@ below.
 
 ## Direct site search — bypassing Google's location matching entirely
 
-Sina pushed back hard on the "embed the city name as plain text in a Google query"
+The user pushed back hard on the "embed the city name as plain text in a Google query"
 mechanism described above: a genuinely relevant listing on a real job board might never
 literally contain the city name at all (a "Remote" posting usually doesn't name an
 exact city), and — a real, live test proved the opposite failure too — Google's
@@ -3645,7 +3648,7 @@ full-text index can also be fooled into matching the *wrong* place entirely. Sea
 something completely different depending on which of Jooble's country subdomains it's
 run against.
 
-**The fix Sina asked for**: wherever a real, structured location-search mechanism could
+**The fix the user asked for**: wherever a real, structured location-search mechanism could
 be confirmed for a specific site — not Google guessing from indexed text, but a URL
 parameter, path segment, or subdomain the site itself uses internally to filter its own
 results — build that URL directly and crawl it, instead of ever routing that site
@@ -3746,7 +3749,7 @@ deliberately avoided (beyond the aijobs.ai one above):
 Not every URL in `DIRECT_SEARCH_URL_BUILDERS` was verified at the *exact* combination
 RoleHound needs (many are inferred from a confirmed pattern seen on a different city on
 the same site, applied here to Oslo/Berlin/Vienna/Amsterdam/Copenhagen) — and any site,
-confirmed or not, can silently change its URL format at any time in the future. Sina
+confirmed or not, can silently change its URL format at any time in the future. The user
 explicitly asked for this to never fail silently: `_run_direct_site_searches` tracks,
 per constructed URL, whether crawling it actually turned up any real job link (matching
 that domain's confirmed `GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS` glob). If a URL for a
@@ -3781,9 +3784,8 @@ their broader role-term coverage.
 
 ### Real, live testing (not just research) — bugs found and fixed
 
-Sina explicitly asked for this feature to be tested for real, batch by batch, with real
-Apify calls against the actual sites (not mocked data) — "قوی‌ترین تستی که میتونی رو
-انجام بده، هزینه اش اصلا مهم نیست." The first real batch (Norway + Denmark, city-level)
+The user explicitly asked for this feature to be tested for real, batch by batch, with real
+Apify calls against the actual sites (not mocked data) — [owner's note: run the strongest test possible; cost does not matter] The first real batch (Norway + Denmark, city-level)
 surfaced three genuine bugs, all fixed before continuing to further batches:
 
 1. **`duunitori.fi` hung the whole batched crawler call for 10+ minutes** on a single
@@ -3812,7 +3814,7 @@ surfaced three genuine bugs, all fixed before continuing to further batches:
    `DIRECT_SEARCH_URL_BUILDERS` (and its job-URL pattern removed from
    `GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS` too, so `_deepen_google_results` doesn't keep
    wastefully attempting the same blocked deep-crawl whenever jooble.org shows up in a
-   regular Google result). Sina's original Jooble discovery (the Oslo/Minnesota
+   regular Google result). The user's original Jooble discovery (the Oslo/Minnesota
    wrong-subdomain trap) is still fully documented above as the reason this whole
    direct-search feature exists — the site itself just can't be reached by this
    particular tool regardless.
@@ -3821,7 +3823,7 @@ surfaced three genuine bugs, all fixed before continuing to further batches:
    results still mixed in real jobs located in Stavanger, Trondheim, and Gjøvik
    (confirmed identical with both the `municipals[]=` and `municipals[0]=` param
    forms, ruling out a URL-encoding bug — this is the site's own search blending in
-   "similar/nearby" recommendations, a common job-board UX pattern). Since Sina asked
+   "similar/nearby" recommendations, a common job-board UX pattern). Since the user asked
    for genuinely correct results, not just "the site says it filtered," **fix**: a new
    `_mentions_city(city, text)` check in `_run_direct_site_searches` drops any
    individual job-page row (for a city-level task) whose own crawled text doesn't
@@ -3965,8 +3967,8 @@ scraping would.
   session itself (confirmed with screenshots: the checkbox is real and clickable, the
   click does register and move to "Verifying you are human...", but it never resolves
   — Cloudflare is detecting the CDP automation channel, not just headless mode, so no
-  amount of a human sitting there watching gets past it). Sina pushed back on
-  accepting that as final ("تنها راه اتوماتیک کردن این کارهاست" — automating this is
+  amount of a human sitting there watching gets past it). The user pushed back on
+  accepting that as final ([owner's note: the only way is to automate these things] — automating this is
   the only way, he has no time to search manually) and found the real fix himself:
   Jooble has an official REST API (`{domain}.jooble.org/api/{key}`, a plain
   server-to-server POST with no browser involved at all, so Cloudflare never even sees
@@ -3987,18 +3989,18 @@ scraping would.
   `title`/`location`/`snippet`/`salary`/`source`/`type`/`link`/`company`/`updated`/`id`
   all present and correctly mapped.
   - **The free tier is a lifetime cap of 500 requests total per key, not monthly** — a
-    hard constraint Sina flagged before sending the first key. Every real call is
+    hard constraint the user flagged before sending the first key. Every real call is
     tracked in a small local counter file (`data/jooble_usage.json`, one count per
     domain code, via `_read_jooble_usage`/`_record_jooble_usage`), and the log gives an
     explicit low-budget warning once a key drops to 50 or fewer requests remaining, and
     a hard stop (skipped, not attempted) once a key hits 0 — with the exact instructions
     to ask Jooble for a higher limit or a new key. This is the one integration in this
     file where testing itself has a real, non-refundable cost — every verification call
-    made during development was deducted from Sina's own real 500-request budget, not a
+    made during development was deducted from the user's own real 500-request budget, not a
     free sandbox.
   - Adding another country only takes a new `JOOBLE_API_COUNTRIES` entry (domain code →
     country name, matching city or `None`) plus a `jooble_{code}_api_key` in
-    `settings.json` once Sina has requested that domain's key — no other code changes
+    `settings.json` once the user has requested that domain's key — no other code changes
     needed.
 
 This runs additively, in the same step as (and right after) `_run_direct_site_searches`
@@ -4023,7 +4025,7 @@ in `LOG_COLORS`), alongside the existing `WARNING:` (yellow) used for the "check
 line and the two other warning types described above.
 
 **`app.welcometothejungle.com` (formerly Otta, acquired by Welcome to the Jungle in
-January 2024) was investigated separately and more carefully** — Sina initially asked
+January 2024) was investigated separately and more carefully** — the user initially asked
 about `welcometothejungle.com` as a possible multi-country ("France, Germany, Spain,
 Italy, Belgium") addition, which turned out to be wrong (`/de` and `/es` locale paths on
 the main site both 404). A deeper investigation specifically into
@@ -4031,7 +4033,7 @@ the main site both 404). A deeper investigation specifically into
 support" Help Center article, cross-checked against real indexed job postings per
 country — found genuine listings only for France, Germany, Netherlands, Spain, United
 Kingdom, United States, and Canada (plus only Amsterdam/Berlin of the 5 cities; Vienna,
-Oslo, Copenhagen have no presence at all). Sina asked for it to be included wherever one
+Oslo, Copenhagen have no presence at all). The user asked for it to be included wherever one
 of those 7 countries is searched, so — uniquely among `COUNTRY_JOB_SITES` entries — the
 same domain is listed under all 7 of those countries' entries rather than being added to
 `GOOGLE_GLOBAL_EXTRA_SITES` (which would have wastefully queried it for the other 11
@@ -4039,11 +4041,11 @@ countries and 3 unsupported cities it has no real presence in). The plain
 `welcometothejungle.com` (non-`app.` original site, France-specific) was not added —
 only the researched-and-confirmed `app.` subdomain was.
 
-Sina also asked (separately,
+The user also asked (separately,
 per-country, per-site) for a manual-check handoff on the harder remaining failures — see
 `Failed-Sites-Need-Manual-Check.md` (no longer in the repository) was originally
-generated for Sina to open each failing search URL by hand and report back what he sees.
-Sina then asked to resolve as many of these as possible without waiting on manual
+generated for the user to open each failing search URL by hand and report back what he sees.
+The user then asked to resolve as many of these as possible without waiting on manual
 browsing, so a further real-testing round (WebFetch + WebSearch research followed by real
 Apify `playwright:adaptive` crawls for every URL that looked even slightly promising, not
 just guessing again) went through the entire list. Two were found to be simply dead
@@ -4054,11 +4056,11 @@ unfixable, each for a specific, verified reason rather than a generic "didn't wo
   was found and fixed.** `paikat.te-palvelut.fi` (the actual search subdomain) no longer
   resolves via DNS at all. Its real successor, `tyomarkkinatori.fi`, first looked
   JS-only — three guessed parameters (`haku=`, `keyword=`, `ammatti=`) were all silently
-  ignored, each returning the identical unfiltered ~11,700-result count. But Sina
+  ignored, each returning the identical unfiltered ~11,700-result count. But the user
   searched the site himself in a real browser, got a correctly filtered 16-result page,
   and sent back the exact URL from his address bar: `?q=Data%20Scientist`. Confirmed via
   a real Apify test — 16 genuine postings (Poolia IT, Terveystalo, etc.), matching what
-  Sina saw. **Fix**: `_direct_url_tyomarkkinatori_fi` added, `tyomarkkinatori.fi` back in
+  The user saw. **Fix**: `_direct_url_tyomarkkinatori_fi` added, `tyomarkkinatori.fi` back in
   `COUNTRY_JOB_SITES['Finland']` and `DIRECT_SEARCH_URL_BUILDERS`, with a confirmed
   job-detail pattern (`/henkiloasiakkaat/avoimet-tyopaikat/{uuid}/{lang}`) in
   `GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS` too. A good reminder that "JS-only, no URL
@@ -4118,11 +4120,11 @@ unfixable, each for a specific, verified reason rather than a generic "didn't wo
 - **`ziprecruiter.com` (US) and `cadremploi.fr` (France) — reconfirmed still blocked**,
   same as the original manual-check findings (company/location filter pages only for
   ZipRecruiter; a near-empty 290-character response for Cadremploi, consistent with its
-  earlier-documented login-wall redirect). Both remain low-priority per Sina's own
+  earlier-documented login-wall redirect). Both remain low-priority per the user's own
   triage (US already has `dice.com`; France already has `hellowork.com`,
   `francetravail.fr`, and `apec.fr`).
 - **`jobnet.dk` (Denmark) and `empleate.gob.es`/`sepe.es` (Spain) were not re-tested this
-  round** — both are explicitly low-priority in Sina's own triage (Denmark already has
+  round** — both are explicitly low-priority in the user's own triage (Denmark already has
   `jobindex.dk`/`it-jobbank.dk`; Spain already has `infojobs.net`) and neither had a new
   lead to test against.
 
@@ -4131,7 +4133,7 @@ every other candidate was a confirmed dead end (login wall, JS-only search, bloc
 crawler, `href="#!"` trap) or an already-known one re-confirmed with sharper evidence.
 "Still broken after real testing" is itself a useful, final answer for a site, not a
 sign more guessing would eventually work — which is exactly why `tyomarkkinatori.fi`
-(above) only got fixed once Sina, not another guess, supplied the real URL.
+(above) only got fixed once the user, not another guess, supplied the real URL.
 
 ### Removed for cost: domains already covered by a free API
 
@@ -4164,7 +4166,7 @@ zero-quality-loss cost cut for five of the six:
   before this. **This one is the real, accepted trade-off**: the free JobCloud API's
   own rows only carry the job title as `description` (no full JD text — see
   `_fetch_jobcloud`'s own comment), thinner than what a real Deep-Crawl could
-  occasionally find. Sina confirmed he's fine with that trade-off for the cost saved.
+  occasionally find. The user confirmed he's fine with that trade-off for the cost saved.
 
 **Deliberately kept exactly as before**: `arbeitsagentur.de` (Germany). Its free API
 row (`_fetch_arbeitsagentur_de`) only carries a synthesized summary, not the real JD
@@ -4182,9 +4184,8 @@ was left as-is.
 
 ### Manual-assisted search — for sites a human can open but Apify's crawler can't
 
-After the unresolved-sites pass above, Sina pushed on the remaining categories directly:
-"می‌تونی یه Popup درست کنی که از برنامه بزنه بیرون و من اون قسمت Security رو رد کنم که
-برنامه بتونه ادامه‌ی کارش رو انجام بده؟" (can you make a popup that pops out of the app
+After the unresolved-sites pass above, the user pushed on the remaining categories directly:
+[owner's note: can a popup come out of the app so the Security step can be passed and the app can continue?] (can you make a popup that pops out of the app
 so I can clear the security part myself, so the app can continue?). Several of the
 "unfixable" categories above share the same real shape: the site works completely fine
 for a human, and only Apify's crawler infrastructure (a datacenter IP, no cookie-consent
@@ -4193,16 +4194,16 @@ human, briefly, can.
 
 **How it works** (`_run_manual_assisted_search`, wired through `manual_assist_cb`): for
 a curated list of domains (`MANUAL_ASSIST_SITES`), RoleHound launches a real, visible
-Chrome or Microsoft Edge window — whichever is actually installed on Sina's own PC,
+Chrome or Microsoft Edge window — whichever is actually installed on the user's own PC,
 launched via Playwright's `channel` option rather than a bundled/headless browser — and
 navigates it to that site's best-known search URL. A dialog pops up in RoleHound itself
 ("Continue" / "Skip this site") while the worker thread blocks on a `threading.Event`.
-Sina clears whatever's in the way in the real browser window — a captcha, a cookie
+The user clears whatever's in the way in the real browser window — a captcha, a cookie
 wall, a login, or just typing his own search into a JS-only search box — then clicks
 Continue. RoleHound then reads that exact page: if the domain has a confirmed
 individual-job-link pattern, it visits each one (through the same browser, same
 cleared session, no further clicks needed) and extracts title/description from each;
-otherwise it captures whichever page Sina ended up on as a single row, the same honest
+otherwise it captures whichever page the user ended up on as a single row, the same honest
 fallback used elsewhere in this file rather than silently returning nothing.
 
 **11 domains are covered**, each mapped to its confirmed real search URL from the
@@ -4210,30 +4211,30 @@ research above:
 - **Apify-blocked infra** (the crawler gets zero content or an explicit 403,
   confirmed earlier): `duunitori.fi`, `seek.com.au`, `careerone.com.au`,
   `nationalevacaturebank.nl`.
-- **Genuinely login-gated**: `werk.nl`, `adem.public.lu` — Sina logs in himself; RoleHound
+- **Genuinely login-gated**: `werk.nl`, `adem.public.lu` — the user logs in himself; RoleHound
   never touches credentials.
 - **JS-only search, confirmed no URL parameter works**: `vdab.be`, `actiris.brussels`,
-  `jobat.be`, `leforem.be`, `karrierestart.no` — Sina types the search himself.
+  `jobat.be`, `leforem.be`, `karrierestart.no` — the user types the search himself.
 
 **`jooble.org` was originally left out** of this list even though it's the same
 "blocked infra" shape as the first four — its country routing needs the correct
 country subdomain (`no.jooble.org` vs. the global `.org`), the exact Oslo/Minnesota trap
 that started this whole feature, and an automated stage getting that wrong would
 produce wrong-country jobs that look confirmed. Once this feature actually shipped and
-Sina started testing it live, he pushed back on leaving fixable sites out just because
+The user started testing it live, he pushed back on leaving fixable sites out just because
 the fully-automated version would've been risky — with a human genuinely watching every
 result before it's accepted, the risk that justified excluding it stopped applying. See
 `MANUAL_ASSIST_GLOBAL_SITES` below.
 
 ### Manual-assisted search, round 2 — global sites, and two research mistakes corrected
 
-Sina asked to keep going through the sites that still said "go search this one
+The user asked to keep going through the sites that still said "go search this one
 yourself" and see which of those could also get the automatic-popup treatment. Two of
-them turned into real corrections of earlier research, found because Sina tested them
+them turned into real corrections of earlier research, found because the user tested them
 himself in his own browser rather than trusting the write-up:
 
 - **`work.turing.com` and `work.mercor.com` were wrongly marked "no public listing at
-  all"** in the original `GOOGLE_GLOBAL_EXTRA_SITES` research pass. Sina opened both
+  all"** in the original `GOOGLE_GLOBAL_EXTRA_SITES` research pass. The user opened both
   himself, before logging in, and sent back real screenshots: Turing's "Explore roles"
   page has a genuine search box and 257 browsable roles across categories including
   "ML, Data & AI"; Mercor's "Explore opportunities" page showed real project-based
@@ -4242,12 +4243,12 @@ himself in his own browser rather than trusting the write-up:
   because they're remote-work platforms with no country of their own, so they run on
   every search regardless of which countries are selected.
   - `work.turing.com/jobs?search=Data+Scientist` was confirmed to genuinely filter (13
-    results vs. 257 unfiltered) — a real URL parameter, so no typing needed from Sina.
+    results vs. 257 unfiltered) — a real URL parameter, so no typing needed from the user.
     But its role cards have zero real `<a href>` (0 matches in the raw HTML — they're
     JS-only click targets, same shape as `eluta.ca`'s `href="#!"` trap), so
     `job_link_glob` is `None`: the filtered listing page itself is captured as the row.
   - `work.mercor.com/explore`'s search box is entirely client-side — the URL stayed
-    exactly `/explore` even after Sina searched and sent back the address bar's URL, so
+    exactly `/explore` even after the user searched and sent back the address bar's URL, so
     there's no parameter to build. He types the search himself once the browser opens.
 - **`weworkremotely.com` was correctly found to be Cloudflare-blocked, but the original
   test used `headless=True`** — re-tested with `headless=False` (what this feature
@@ -4263,12 +4264,12 @@ himself in his own browser rather than trusting the write-up:
   automated navigation is attempted.
 - **`jooble.org`** was added back in too, using the plain global domain
   (`jooble.org/SearchResult?ukw=...`) rather than any country subdomain, with its
-  already-confirmed job-detail pattern (`jooble.org/desc/**`) — Sina can see and correct
+  already-confirmed job-detail pattern (`jooble.org/desc/**`) — the user can see and correct
   a wrong-country result himself in the open browser, the exact safety net that was
   missing when this was Google-only.
 
 `work.mercor.com` (still no real listing/filter URL) is expected to only ever add one
-row per run — the generic "opportunities" page, filtered by whatever Sina typed himself.
+row per run — the generic "opportunities" page, filtered by whatever the user typed himself.
 This confirms a pattern worth remembering from this whole project: research done by
 reading and guessing can be wrong in either direction (a site can look fixable and not
 be, or look unfixable and actually be fine) — the only fully reliable check is someone
@@ -4283,7 +4284,7 @@ defined city in `CITIES` — checked both, live:
   DPG Media cookie gate as the country-wide URL, but the gate's own `callbackUrl`
   parameter shows it redirects straight back to that exact path once cleared.
 - `werk.nl` has no confirmed city URL (not guessed blindly, consistent with every other
-  domain in this file) — Sina is present anyway and can type "Amsterdam" into its own
+  domain in this file) — the user is present anyway and can type "Amsterdam" into its own
   location field once he's past the DigiD login.
 
 **Packaging**: needs the `playwright` pip package (added to `requirements.txt`) and its
@@ -4300,14 +4301,14 @@ works once packaged, not just in the dev environment.
 `SearchWorker` and passed straight through as `None` for `manual_assist_cb` when
 `False`, which skips this whole stage exactly like no UI being wired up at all — no
 checkbox in the Setup Wizard yet, so toggling it currently means editing the settings
-file directly. This only matters for an unattended run Sina isn't watching, since
+file directly. This only matters for an unattended run the user isn't watching, since
 otherwise the search would sit waiting at the first popup indefinitely.
 
 ### Two yellow warnings, covering different failure modes
 
 Rather than silently doing nothing when a `COUNTRY_JOB_SITES`/`GOOGLE_GLOBAL_EXTRA_SITES`
 site isn't working as expected, RoleHound logs a yellow warning in the Log panel with the
-same simple 3-step format either way, so Sina can go verify and report back what he
+same simple 3-step format either way, so the user can go verify and report back what he
 finds:
 ```
 WARNING: <domain> ... To help:
@@ -4322,14 +4323,14 @@ spamming the log when a domain is simply thin across many countries):
 1. **No confirmed deep-crawl pattern** (`_deepen_google_results`) — the domain *did*
    show up in this run's Google results, but isn't in
    `GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS` yet, so its listing page couldn't be crawled
-   deeper into individual job postings. This was the original warning, built when Sina
+   deeper into individual job postings. This was the original warning, built when the user
    asked for a live feedback loop instead of exhaustively pre-testing every possible
    domain.
 2. **Zero results at all** (`_warn_zero_result_google_sites`) — the domain was supposed
    to be searched for at least one selected country/city (it's in that country's
    `COUNTRY_JOB_SITES` entry, or it's one of the always-searched
    `GOOGLE_GLOBAL_EXTRA_SITES`), but this run's Google results contained nothing from it
-   at all. Sina asked for this as a blanket safety net covering *every* site RoleHound
+   at all. The user asked for this as a blanket safety net covering *every* site RoleHound
    searches via Google, confirmed pattern or not — a domain can go quiet for reasons that
    have nothing to do with a missing deep-crawl pattern (a typo'd/dead/renamed domain,
    Google indexing it poorly, a robots block, or — especially relevant for the
@@ -4398,7 +4399,7 @@ Computer Vision, AI Engineer, ML Engineer, MLOps, Generative AI, GenAI, LLM, Big
 display-only "Show only / Hide" topic filter, not the actual search query) and is kept
 in sync whenever `KEYWORDS` changes.
 
-**Trimmed from 27 to 19 terms** — Sina asked to drop the analytics/analyst-flavored and
+**Trimmed from 27 to 19 terms** — the user asked to drop the analytics/analyst-flavored and
 a couple of rarely-relevant terms entirely (not just from Google's shorter list this
 time): `Data Analysis`, `Data Analyst`, `Data Analytics`, `Analytics Engineer`,
 `Predictive Analytics`, `Predictive Modeling`, `Neural Network`, `Reinforcement
@@ -4436,7 +4437,7 @@ exactly as designed:
 3` means up to ~30 results per city × 5 cities = up to 150 pages scraped in one run —
 still meaningfully more per search than Indeed/Glassdoor/LinkedIn, though far less than
 the earlier 4-query-per-city version (600 pages) before the LinkedIn/Indeed/Glassdoor
-exclusion was added. Sina explicitly said cost wasn't a concern and asked for "the most
+exclusion was added. The user explicitly said cost wasn't a concern and asked for "the most
 accurate and best possible results."
 
 ## Startup Websites Search & Company Popularity
@@ -4495,7 +4496,7 @@ Two new dicts in `pipeline.py`:
 | Sweden | `thehub.io` (shared Nordic board), `www.supjobs.com` | 2 sites; thehub.io had 216 filtered jobs, supjobs.com had 81 pages of listings |
 | Denmark, Finland, Norway | `thehub.io` | 1 each — thehub.io explicitly covers Denmark/Finland/Iceland/Norway/Sweden, added to all 4 in-app countries at once (Iceland isn't in `COUNTRIES`) |
 | Switzerland | `www.startupticker.ch` | 1 site; 40 recently-published jobs, powered by Joinup |
-| Austria | `metajob.at`, `austrianstartups.com` | 2 sites; metajob.at had 225 real, recently-dated Vienna postings — a second, deeper research pass after Sina flagged Austria as especially important to him |
+| Austria | `metajob.at`, `austrianstartups.com` | 2 sites; metajob.at had 225 real, recently-dated Vienna postings — a second, deeper research pass after the user flagged Austria as especially important to him |
 | Italy | `startupjobsitaly.com`, `xjobs.cdpventurecapital.it` | 2 sites; 205 positions + CDP Venture Capital's own portfolio board |
 | Spain | `www.startuphub.ai` | 1 site; 183 open roles explicitly branded "AI and tech startups" |
 | Portugal | `www.startupjobs.pt` | 1 site; real listings from Feedzai, Coverflex, Imaginary Cloud |
@@ -4568,19 +4569,19 @@ a 5-level badge (`Startup`/`Unknown`/`Known`/`Well Known`/`Famous`) assessed via
 separately-billed Claude call with the `web_search_20250305` tool, once per unique
 `(company, country)` pair.
 
-**Removed entirely, at Sina's explicit request**, for two real reasons:
+**Removed entirely, at the user's explicit request**, for two real reasons:
 1. **Cost**: after prompt caching was added to the Claude screening pass (see
    [the Claude final pass](#the-claude-final-pass) below), this was the single largest
    *remaining* recurring Claude cost — a real web-search call per unique company, on
    every Filter run, with no caching of its own.
-2. **It mostly wasn't useful in real use**: Sina reported it mostly came back
+2. **It mostly wasn't useful in real use**: The user reported it mostly came back
    `Unknown`. Investigated for real (not guessed) — a diagnostic batch of real Claude
    calls against known companies (including a genuinely small one) all correctly
    returned real, sensible verdicts, so the *mechanism* worked; the actual root cause,
-   found by inspecting Sina's own real `jobs.json`, was upstream of Claude entirely:
+   found by inspecting the user's own real `jobs.json`, was upstream of Claude entirely:
    most Google-sourced listings have no `company` field at all (Google itself doesn't
    return one), and when `_extract_company_from_text`'s regex heuristic *did* extract
-   something, it sometimes extracted the wrong text — a real example found in Sina's
+   something, it sometimes extracted the wrong text — a real example found in the user's
    own data: the title `"Data Science Expert - Mercor Jobs"` (a `"<Job Title> - <Site
    Name> Jobs"` aggregator-page title, the reverse of the pattern the prefix regex
    assumes) had `"Data Science Expert"` — the job title, not a company — extracted as
@@ -4591,7 +4592,7 @@ separately-billed Claude call with the `web_search_20250305` tool, once per uniq
 
 **What was kept**: the one genuinely free part — a listing found via the Startup
 Websites Search stage (`google_stage == 'startup'`) is, by construction, already known
-to be a startup, no Claude call ever needed for that specific case. Sina asked for this
+to be a startup, no Claude call ever needed for that specific case. The user asked for this
 signal to move into the **Type** badge instead of its own column: `pipeline.
 display_category(job)` appends `" Startup"` to the job's own `Category` (e.g. `"Full-
 Time Startup"`, `"Internship Startup"`) when `google_stage == 'startup'`, otherwise
@@ -4606,7 +4607,7 @@ nothing added in its place.
 ## Pre-flight health check — before every real search
 
 After this session's Jooble/Reed/EURES/France Travail/Remotive/RemoteOK/SwissDevJobs/
-jobs.ch/jobup.ch integrations were all added, Sina asked a natural follow-up: of all
+jobs.ch/jobup.ch integrations were all added, the user asked a natural follow-up: of all
 these mechanisms, which is most likely to silently break, and what can be done about it
 *before* a real search burns Apify credits and Jooble's limited request budget on
 sources that turn out to be down? The answer is `_run_preflight_checks` in
@@ -4643,8 +4644,8 @@ inline field to paste a replacement right there, and a fixed key is both used
 immediately for this run and saved to `settings.json` for next time. Where it isn't
 fixable live (a changed URL pattern, a real block), there's nothing to type — just
 "Continue" to skip that source and carry on, or "Cancel search" to stop entirely before
-spending anything on the real run. This deliberately matches how Sina answered when
-asked what to do here: "فقط هشدار بده، خودکار رد شو و بقیه رو ادامه بده" for anything
+spending anything on the real run. This deliberately matches how the user answered when
+asked what to do here: [owner's note: only warn, skip it automatically and carry on with the rest] for anything
 unfixable, but with a real chance to fix what can actually be fixed, rather than only
 ever skipping.
 
@@ -4721,7 +4722,7 @@ blocking `.call()` has no way to notice a mid-search Cancel click until Apify it
 finishes that run naturally — for a deep-crawl, that can be many minutes — even though
 the rest of the app stayed responsive the whole time (it's a different `QThread` that's
 blocked, not the GUI thread, so the window itself never froze; the Log just went quiet).
-Sina reported this as **"خیلی خیلی مشکل بزرگ"** (a very big problem) after finding he'd
+The user reported this as **owner's note: a very big problem** (a very big problem) after finding he'd
 had to go into the Apify Console himself and manually abort runs — and even then the Log
 showed nothing stopping.
 
@@ -4820,7 +4821,7 @@ its own `FILTER_STEP_START:key|label` / `FILTER_STEP_DONE:
 key|label|detail` progress marker (see [the Log panel](#the-log-panel) above for how
 this renders — a nested "Filter" section with each step as its own live-ticking
 sub-timer). Steps 4 and 5 below check several discrete rules *per listing across a
-loop*, not as one-off actions, so — per Sina's ask that the actual rule names be visible
+loop*, not as one-off actions, so — per the user's ask that the actual rule names be visible
 in the Log, not just each step's own single summary count — each also logs a static
 checklist of rule names (`FILTER_STEP_ITEM:key|label`) right before its own
 `FILTER_STEP_DONE`. This checklist is a static "this rule genuinely ran against every
@@ -4864,7 +4865,7 @@ title text.
 
 ### Step 2 — Removing Duplicates & Fake Listings (`_remove_duplicates_list` / `_remove_fake_listings_list`)
 
-Moved here from `run_search` (Sina asked for a raw search to show every listing exactly
+Moved here from `run_search` (The user asked for a raw search to show every listing exactly
 as fetched, and for Filter to be the one place all cleanup/filtering happens) — same
 algorithm as before, just operating on a plain list of job dicts instead of a pandas
 DataFrame: exact same URL → duplicate; same company+country with an 85%+-similar title
@@ -4958,7 +4959,7 @@ again. A "skip", or a score under `RESUME_MATCH_MINIMUM` (36), is flagged for th
 dialog exactly like a part-one drop; nothing here deletes anything by itself.
 
 This replaced a pass that judged every listing against a paragraph hard-coded in the file
-("entry or junior level, in data, ML or AI") — written before the field became a title Sina
+("entry or junior level, in data, ML or AI") — written before the field became a title the user
 types, and never updated when it did (fault M-2).
 
 ### Step 6 — Checking Sponsorship Visa
@@ -4999,7 +5000,7 @@ used instead — see [Match % column and sort](#match--column-and-sort-jobs-page
 
 ### Language-detection short-text bug fix
 
-Sina reported suspicion that Filter was dropping genuinely-English listings for not
+The user reported suspicion that Filter was dropping genuinely-English listings for not
 containing the literal word "English." Investigation found — and proved with a real,
 reproducible test — that `langdetect` misdetects **short** text badly. Real, actual test
 results: `'AI'`/`'AI'` → detected as **Hungarian**; `'Data'`/`'Data'` → **Indonesian**;
@@ -5079,10 +5080,10 @@ and the old text is kept nowhere.** Read [3 · Language](#3--language) for the c
 and `T-12` for why it deletes so much less than it did.
 
 In short: there is no translation step any more, so nothing is read "after translation". The
-posting is read in its own language, and it is dropped only when it demands a language Sina
+posting is read in its own language, and it is dropped only when it demands a language the user
 lacks **and never names English beside it** — *"Sehr gute Deutschkenntnisse"*, *"vloeiend
 Nederlands"*. A posting that wants English **and** another language is kept and labelled
-`English + Other` in the table, which is Sina's own instruction (`T-12`, `T-13`).
+`English + Other` in the table, which is the user's own instruction (`T-12`, `T-13`).
 
 ### 3. Never mentions English at all (`rules.silent_about_english`)
 Applies only to a posting the detector found is **not** in English, and reads the ORIGINAL
@@ -5146,7 +5147,7 @@ Review"**, of the 7-step `reapply_filters` breakdown above.
 **Deliberately sequential, not parallelized** — unlike the actor calls in Search
 (above) and the translation calls in `translate_many` (below), the Claude loop in
 `reapply_filters` is a plain `for` loop: one job screened at a time, waiting for each
-response before sending the next. Sina explicitly asked for this when Search's actor
+response before sending the next. The user explicitly asked for this when Search's actor
 calls were parallelized, so Claude keeps behaving as a simple, predictable queue rather
 than firing many requests at once — keeps output/log ordering clean and avoids tuning
 concurrency against whatever Anthropic rate-limit tier the API key happens to be on.
@@ -5173,7 +5174,7 @@ read by anyone), company legal-name resolution moved out of this call into its o
 disk-cached, dedup'd step, and Claude's own KEEP/DROP/MATCH decision is now cached
 across Filter re-runs so an unchanged listing is never re-sent at all.
 
-**The system prompt is no longer a short paraphrase — it's Sina's own, much more
+**The system prompt is no longer a short paraphrase — it's the user's own, much more
 complete prompt**, kept verbatim in [`Job-Filter-Claude-Apify.md`](Job-Filter-Claude-Apify.md)
 at the project root and mirrored exactly in `CLAUDE_SCREEN_SYSTEM_PROMPT`
 (keep both in sync if either is edited).
@@ -5193,7 +5194,7 @@ reality. Re-synced.
 It replaced the original 5-rule paraphrase
 after Claude's real-world output was found to be inconsistent — the new version gives
 Claude:
-- Sina's full real profile (residency, citizenship, languages, degree status, real
+- The user's full real profile (residency, citizenship, languages, degree status, real
   experience/projects/skills) so it can judge fit and score a match honestly, never
   fabricating skills he doesn't have.
 - The exact same keyword dictionaries the app's own keyword filters use for Remote,
@@ -5206,7 +5207,7 @@ Claude:
   the company's ability to sponsor a visa), Rule 8 (Domain Fit — is this actually a
   Data/ML/AI-type role at all), and Rule 9 (Degree Completion / University Enrollment —
   originally two parts, catching "must already hold a degree" (Part A) or "must be
-  enrolled at a university in country X" (Part B) requirements Sina can't meet, with an
+  enrolled at a university in country X" (Part B) requirements the user can't meet, with an
   Italy/university exception mirroring the Milan/Turin remote exception — **see below,
   Part A is now disabled**).
 - An explicit instruction to judge by **meaning, not just exact keyword match** — the
@@ -5216,14 +5217,14 @@ Claude:
 
 ### Rule 9 Part A (degree completion) disabled
 
-Sina asked for Part A — dropping a listing that requires an already-completed degree —
+The user asked for Part A — dropping a listing that requires an already-completed degree —
 to be disabled entirely, since he's a current student, not yet graduated, and this rule
 was catching listings he'd genuinely be fine applying to. `CLAUDE_SCREEN_SYSTEM_PROMPT`'s
 Rule 9 text now reads:
 
 ```
 Part A -- Completed degree required: DISABLED, do not apply this part at all -- never DROP a
-posting for this reason. (Sina asked for this to be turned off. Original rule, kept here only
+posting for this reason. (The user asked for this to be turned off. Original rule, kept here only
 for reference in case it's ever turned back on: DROP if the text contains one of these phrases
 and none of these exception words appear anywhere in the text ("pursuing", "currently
 enrolled", "current student", "in progress", "expected graduation", "about to graduate",
@@ -5275,7 +5276,7 @@ The response used to have optional trailing lines with "a short breakdown of wha
 matches and what the real gaps are." A real grep across the whole `app/` tree
 (`title|claude_match|company_legal_name|breakdown`) confirmed this text was never
 stored on any job dict and never displayed anywhere in the UI — it was pure output
-tokens, billed on every single Claude Review call, for something nobody ever read. Sina
+tokens, billed on every single Claude Review call, for something nobody ever read. The user
 asked for it gone. `CLAUDE_SCREEN_SYSTEM_PROMPT`'s "Final Step" and "Output Format"
 sections now explicitly say "no written breakdown or explanation... with nothing else,"
 and `claude_screen_one`'s `max_tokens` dropped from `500` (`800` when it also resolved a
@@ -5288,7 +5289,7 @@ This used to run **inside** `claude_screen_one` itself (`resolve_company_name=Tr
 a second, addendum-driven task tacked onto the same KEEP/DROP/MATCH call, with a real
 `web_search` tool) — with **zero deduplication**: a company posting 5 listings
 triggered 5 separate real, billed web searches for the exact same legal name, on every
-single Filter run, forever. Sina asked for this fixed with a persistent, country-organized
+single Filter run, forever. The user asked for this fixed with a persistent, country-organized
 cache checked *before* ever considering a real query. Now:
 
 - `claude_screen_one` no longer touches company names at all — it's back to a plain,
@@ -5300,7 +5301,7 @@ cache checked *before* ever considering a real query. Now:
 - A new disk cache, `company_legal_names.json` in `storage.DATA_DIR`
   (`_load_company_legal_name_cache`/`_save_company_legal_name_cache`), shaped
   `{country: {normalized_company: legal_name_or_null}}` — organized by country per
-  Sina's request, and with **no expiry**, since a company's officially registered legal
+  The user's request, and with **no expiry**, since a company's officially registered legal
   name essentially never changes (unlike the sponsor lists themselves, which DO refresh
   every 30 days).
 - The whole thing now lives entirely inside `_apply_sponsor_list_matches_to_jobs`
@@ -5318,19 +5319,19 @@ cache checked *before* ever considering a real query. Now:
 
 ### Cross-run caching of Claude's KEEP/DROP/MATCH decision
 
-Sina flagged the real remaining waste directly: **every time Filter was clicked again,
+The user flagged the real remaining waste directly: **every time Filter was clicked again,
 every single listing — even ones already screened, with absolutely nothing changed —
 was sent to Claude in full, again.** Fixed with a content-addressed cache stored right
 on the job dict, no separate cache file needed:
 
 - `_CLAUDE_SCREEN_PROMPT_VERSION` — a `sha256` hash (first 12 hex chars) of
   `CLAUDE_SCREEN_SYSTEM_PROMPT`'s own text, computed once at import time. Deliberately
-  **not** a hand-maintained version counter Sina would have to remember to bump — any
+  **not** a hand-maintained version counter the user would have to remember to bump — any
   future edit to a rule automatically changes this hash.
 - `_claude_screen_cache_key(job)` — hashes `_CLAUDE_SCREEN_PROMPT_VERSION` together
   with the exact same per-listing prompt text `_claude_screen_prompt(job)` builds
   (title/company/location/platform/employment_type/seniority_level/description). This
-  one hash captures **both** invalidation triggers Sina cared about in one mechanism:
+  one hash captures **both** invalidation triggers the user cared about in one mechanism:
   a rule change (prompt version changes) and a content change (a re-fetched listing
   with different text) both correctly force a fresh screen; unchanged content *and* an
   unchanged ruleset hash identically and correctly skip the real API call.
@@ -5396,7 +5397,7 @@ Italy first) is unchanged.
 ## The Job Search page
 
 **Columns**, in order — the three classified ones (Seniority, Type, English?) sit together
-and in that order, because that is the order Sina groups by:
+and in that order, because that is the order the user groups by:
 
 | # | column | what it is |
 |---|---|---|
@@ -5416,7 +5417,7 @@ and in that order, because that is the order Sina groups by:
 | 13 | Remove | |
 
 **There is no Language column.** It showed what the advert was *written* in and was removed
-the moment `English?` existed — *"وقتی ستونی English? هست دیگه Language رو پاک کن"* — because
+the moment `English?` existed — *owner's note: with an English? column present, delete the Language column* — because
 `English?` answers the question it was kept for: what the advert asks of the reader. Only the
 column went. `detected_language` and `needs_translation` are still stamped on every row and
 `silent_about_english` still reads them, so no verdict changed; a test asserts both the
@@ -5666,7 +5667,7 @@ that step.
   `for {countries/cities dash-joined}` (`PREFLIGHT_END:status|locations` in
   `_on_progress_log`, `locations.replace('-', ' - ')`) — status (green success / red
   error) still drives the line's color exactly as before; only the trailing text
-  changed, per Sina's ask that the suffix name *what* was checked, not *how many*
+  changed, per the user's ask that the suffix name *what* was checked, not *how many*
   checks passed.
 - **"Known Websites" and "Startup Websites Search" come from the exact same single,
   combined Google Search actor call.** `KNOWN_SITES_START`/`STARTUP_SITES_START` both
@@ -5772,7 +5773,7 @@ real fetched-and-filtered job data.
 A `Sponsorship Visa` column (Yes / Unknown / Employer's Discretion, colored badge —
 green for Yes, gray for Unknown, purple `#5c4fa8` for Employer's Discretion) was added
 to the Job Search table, the My Applications table, and both Excel export sheets, right
-after Country. Sina's request was specific: for each country, find
+after Country. The user's request was specific: for each country, find
 either (a) a job board that already tags its own listings as visa-sponsored, or (b) an
 official list of visa-sponsoring companies to cross-reference each listing's employer
 against — and default to `Unknown` (never guess "No") wherever neither exists yet for a
@@ -5889,7 +5890,7 @@ a gap for them, it's the honestly-correct answer given the badge's third value.
 ### Italy and Finland reclassified to "Employer's Discretion"; a real research correction
 
 `NO_SPONSORSHIP_PROCESS_COUNTRIES` — countries whose work-visa system needs no special
-employer-side process at all, where Sina can get the visa himself off a plain job offer
+employer-side process at all, where the user can get the visa himself off a plain job offer
 from **any** compliant employer in that country, not just some — grew by two this
 session, both backed by real research documented directly in the code comment above the
 set:
@@ -5948,7 +5949,7 @@ no code change needed.
 
 ### The icon "won't fix itself" across restarts — two real, separate problems found
 
-Sina reported the icon still showing wrong even across app restarts (not just the
+The user reported the icon still showing wrong even across app restarts (not just the
 one-time cache issue above). Two genuinely separate real problems were found and fixed:
 
 1. **The `Icon.ico` file itself was malformed.** Direct inspection with Pillow found it
@@ -6242,7 +6243,7 @@ detail lives in the code comments at each site.
    the Remote rule deleted **100%** of their rows on every Filter run. Two documented
    decisions rested on this not being true: arbeitsagentur.de was deliberately kept on
    the *paid* Google path too "for description quality", and the jobs.ch/jobup.ch
-   trade-off was recorded as "thinner data" when it was really total loss. Sina chose
+   trade-off was recorded as "thinner data" when it was really total loss. The user chose
    to half-exempt them: those rows now carry `thin_description = True`, every DROP
    signal still applies (an explicitly on-site or hybrid listing is still removed) but
    the positive "must say remote" requirement is waived, and Claude's own Remote rule
@@ -6391,7 +6392,7 @@ detail lives in the code comments at each site.
 29. Two unused locals in `reapply_filters` (`total`, and the loop index `i`). Removed.
 30. **Claude's per-listing input is now the dominant cost, not the output.** With the
     breakdown gone and `max_tokens` at 100, each call still sends up to 6,000 characters
-    of description as *uncached* input. Sina reviewed this and chose to keep the full
+    of description as *uncached* input. The user reviewed this and chose to keep the full
     6,000-character window — accuracy over cost — so `_CLAUDE_SCREEN_DESCRIPTION_MAX_CHARS`
     is deliberately unchanged. Recorded here so the trade-off is a decision, not an
     oversight.
@@ -6896,7 +6897,7 @@ split is invisible from the outside.
   like a decision but controls nothing costs the next debugger real time to rule out, so
   both are gone; the reasoning stayed.
 - **A hardcoded absolute path in a test.** `t2_sources.py` read the pipeline source from
-  `C:\Users\Sina\...` — it now resolves relative to the test file, and reads the whole
+  `C:\Users\the user\...` — it now resolves relative to the test file, and reads the whole
   package.
 - **41 orphaned comment lines.** A comment block separated from its statement by two blank
   lines was missed by the first extraction pass, which would have stranded the notes
@@ -7231,7 +7232,7 @@ done.
 
 Google finds a page full of jobs on a site RoleHound has never seen. Until now that was a
 dead end: the page became one row, every posting behind it was lost, and the domain went
-into a dialog asking Sina to open the site, find a posting, and paste its URL back. In one
+into a dialog asking the user to open the site, find a posting, and paste its URL back. In one
 real search **31 domains** were in that state.
 
 Now the app works it out itself, in the same run.
@@ -7288,7 +7289,7 @@ pages — worse than no pattern at all.
 mypy caught a fifth before it ran: `_glob_for` returns `str | None` and its result was
 being handed straight to `fnmatch`.
 
-### What is left for Sina
+### What is left for the user
 
 Only sites a **person** has to clear: a cookie banner, a consent wall, a sign-in, or a
 listing built entirely in JavaScript. The dialog says so now, and explicitly states that

@@ -21,9 +21,7 @@ def job_keywords(title, also=None) -> str:
     'Data Engineering' -> '"Data Engineering" OR "Data Engineer"'
 
     `also` is the other names employers give the same work (see title_equivalents), each one
-    added with its own twin form. Sina asked for exactly this order -- "اول همون نتایج خام رو
-    پیدا کنه / بعد مثلا اگر Data Science بود بعدش Data Scientist رو هم بگرده / بعد مثلا اگر ML
-    Engineer بود ML Engineering رو هم بگرده" -- so the raw names come first and the twins
+    added with its own twin form. The user asked for exactly this order -- [owner's note: first the raw results; then for Data Science also Data Scientist; for ML Engineer also ML Engineering] -- so the raw names come first and the twins
     after, which is the order `search_phrases` builds.
 
     Without `also` this is the query it has always been.
@@ -78,9 +76,9 @@ def entry_keywords(title, also=None) -> str:
 
 
 # ...and for the other job Levels. Junior's is entry_keywords above, exactly as it has always
-# been -- Sina called Junior complete. Each other Level asks the same question in its own
+# been -- The user called Junior complete. Each other Level asks the same question in its own
 # words, as its own search vocabulary (the filters' profiles keep theirs; the two never
-# share). Senior is Senior only, by Sina's rule -- not Lead, Staff or Principal.
+# share). Senior is Senior only, by the user's rule -- not Lead, Staff or Principal.
 #
 # Mid has almost no word of its own in a title: measured, 1% of titles carry one, and 57-63%
 # carry no level word at all. So the Mid precise query is small, and most Mid roles come
@@ -106,8 +104,7 @@ def level_keywords(title, level, also=None) -> str:
     unchanged.
 
     `also` carries the Level's words onto every equivalent title too, which is the third ring
-    Sina asked for: "مثلا اگر AI Engineer بود Junior AI Engineer و Junior AI Engineering رو هم
-    بگرده". This ring only matters for the SEARCH -- a job board matches the exact phrase, so
+    The user asked for: [owner's note: for AI Engineer also search Junior AI Engineer and Junior AI Engineering]. This ring only matters for the SEARCH -- a job board matches the exact phrase, so
     "Junior AI Engineer" really does return listings "AI Engineer" does not, measured at 245
     of them on one real run. The filter needs none of it: its match is word by word, so
     "AI Engineer" already keeps a listing titled "Junior AI Engineer".
@@ -145,7 +142,7 @@ ENTRY_KEYWORDS = entry_keywords(DEFAULT_SEARCH_TITLE)
 # asked for a thesis. Not one of the words `Masterarbeit`, `Abschlussarbeit`, `thesis`,
 # `Praktikum` or `Werkstudent` appears anywhere in a query this app sends.
 #
-# So: three searches, in Sina's order -- Job finished and closed, then Internship, then
+# So: three searches, in the user's order -- Job finished and closed, then Internship, then
 # Thesis -- all landing in one pool that the existing filters separate exactly as they do
 # today.
 #
@@ -181,13 +178,13 @@ ENTRY_KEYWORDS = entry_keywords(DEFAULT_SEARCH_TITLE)
 #
 # THAT HALF IS NOW THE TITLE, FOR ALL THREE PASSES. The role group above was a hand-written
 # data-science list in thirteen languages, kept for Thesis alone while Job and Internship moved
-# to the title. Sina then put Thesis on the title too ("Masterarbeit Data Engineering"), so
+# to the title. The user then put Thesis on the title too ("Masterarbeit Data Engineering"), so
 # the list is gone from here and kept out of the public repository. The kind words below
 # -- Praktikum, Masterarbeit, Tesi di Laurea -- are the half that is translated, and they stay.
 
 # The word a posting uses to say it is an internship, in the languages this app searches.
 # German first and at length because German draws the sharpest distinctions -- Praktikum is
-# a placement, Werkstudent is term-time work alongside a degree, and both are things Sina
+# a placement, Werkstudent is term-time work alongside a degree, and both are things the user
 # would take.
 _INTERNSHIP_GROUP = (
     '(Praktikum OR Praktikant OR Praktikantin OR Werkstudent OR Werkstudentin '
@@ -210,27 +207,36 @@ _THESIS_GROUP = (
     'OR "Final Year Project" OR "Graduation Project" OR "Research Thesis" OR Dissertation '
     'OR "Mémoire de Master" OR "Tesi di Laurea Magistrale" OR Afstudeerproject)')
 
-def internship_role_group(title) -> str:
+def _role_forms(title, also=None) -> list:
+    """Every form of the title to ask for: as typed, its twin, and -- when `also` is given --
+    every other name for the same work with its twin (see title_equivalents), capped."""
+    if not also:
+        return title_forms(title)
+    from ..title_equivalents import filter_titles
+    return _capped(filter_titles(title, also))
+
+
+def internship_role_group(title, also=None) -> str:
     """The role half of the internship query: every form of the title, grouped.
 
     No "Junior" and no "Entry Level" here. An internship is entry-level by definition, and
     adding the word would only shrink what comes back.
     """
-    return '(%s)' % ' OR '.join(quoted(title_forms(title)))
+    return '(%s)' % ' OR '.join(quoted(_role_forms(title, also)))
 
 
-def internship_keywords(title) -> str:
+def internship_keywords(title, also=None) -> str:
     """The broad internship query: the internship words beside the title, read as AND."""
-    return '%s %s' % (_INTERNSHIP_GROUP, internship_role_group(title))
+    return '%s %s' % (_INTERNSHIP_GROUP, internship_role_group(title, also))
 
 
-def thesis_keywords(title) -> str:
+def thesis_keywords(title, also=None) -> str:
     """The broad thesis query: the thesis words beside the title, read as AND.
 
     Every form of the title, as for internships: an advert may say "Masterarbeit Data
     Engineering" or "Thesis: Data Engineer Tooling".
     """
-    return '%s (%s)' % (_THESIS_GROUP, ' OR '.join(quoted(title_forms(title))))
+    return '%s (%s)' % (_THESIS_GROUP, ' OR '.join(quoted(_role_forms(title, also))))
 
 
 INTERNSHIP_KEYWORDS = internship_keywords(DEFAULT_SEARCH_TITLE)
@@ -244,7 +250,7 @@ THESIS_KEYWORDS = thesis_keywords(DEFAULT_SEARCH_TITLE)
 # The query above puts a kind group beside a role group, which the actors read as AND. On a
 # small result set that works perfectly -- the first twenty come back clean. At a thousand
 # it does not, and the measurement is stark: of 1,000 internships Indeed returned for it,
-# **699 were internships and only 273 were in Sina's field.** Marketing, HR, shop
+# **699 were internships and only 273 were in the user's field.** Marketing, HR, shop
 # photography, toolmaking. An actor that runs out of exact matches widens the question
 # rather than returning fewer rows, and nothing downstream asks whether a listing is about
 # data at all.
@@ -285,7 +291,7 @@ _ENGLISH_INTERNSHIP_BEFORE = ('Working Student', 'Internship')
 _ENGLISH_INTERNSHIP_AFTER = ('Intern', 'Internship', 'Trainee')
 
 
-def precise_internship_phrases(title) -> dict:
+def precise_internship_phrases(title, also=None) -> dict:
     """Every exact internship phrase for this title, by language code.
 
     Each language's own internship words are welded to each form of the title. A word that
@@ -293,7 +299,7 @@ def precise_internship_phrases(title) -> dict:
     it becomes a phrase no advert actually contains, and an exact phrase that matches
     nothing is a query slot spent for nothing.
     """
-    forms = title_forms(title)
+    forms = _role_forms(title, also)
     phrases = {'en': ['"%s %s"' % (word, form)
                       for form in forms for word in _ENGLISH_INTERNSHIP_BEFORE]
                + ['"%s %s"' % (form, word)
@@ -312,14 +318,14 @@ _ENGLISH_THESIS_BEFORE = ('Master Thesis', 'Thesis')
 _ENGLISH_THESIS_AFTER = ('Thesis', 'Master Thesis')
 
 
-def precise_thesis_phrases(title) -> dict:
+def precise_thesis_phrases(title, also=None) -> dict:
     """Every exact thesis phrase for this title, by language code.
 
     Each language's own single-word thesis words -- Masterarbeit, Examensarbete, Tesi --
     welded to each form of the title. Two-word ones ("Tesi di Laurea") are left out, for the
     reason given on precise_internship_phrases.
     """
-    forms = title_forms(title)
+    forms = _role_forms(title, also)
     phrases = {'en': ['"%s %s"' % (word, form)
                       for word in _ENGLISH_THESIS_BEFORE for form in forms]
                + ['"%s %s"' % (form, word)
@@ -347,7 +353,7 @@ def precise_thesis_phrases(title) -> dict:
 # & Insights Internship", "Internship / Thesis - Sensory Analytics" -- and dropping the broad
 # query to save $2 would have cost every one of them.
 #
-# Sina's rule settled it before the number arrived: if the two find the same jobs, keep one;
+# The user's rule settled it before the number arrived: if the two find the same jobs, keep one;
 # if they find different jobs and both work, keep both. They find different jobs.
 _PRECISE_REPLACES_BROAD: tuple = ()
 
@@ -356,8 +362,7 @@ _PRECISE_REPLACES_BROAD: tuple = ()
 # ONCE IN ENGLISH, ONCE IN THE COUNTRY'S OWN LANGUAGE
 # =========================================================================================
 #
-# Sina's instruction after seeing I-3: "یه بار باید به زبان اون کشور بگردی و یکبار باید به
-# زبان انگلیسی". Two searches per kind rather than one query carrying both, and the reason is
+# The user's instruction after seeing I-3: [owner's note: search once in the country's own language and once in English]. Two searches per kind rather than one query carrying both, and the reason is
 # the same one that made three passes right in the first place -- the 1,000-result ceiling is
 # **per call**. A single query OR-ing English and German words makes the two share those
 # 1,000 places; two calls give each its own.
@@ -389,7 +394,7 @@ _PRECISE_REPLACES_BROAD: tuple = ()
 # This is the half that IS translated, and the corpus proves it pays: a real German advert
 # reads "JUNIOR CLOUD ENGINEER (M/W/D) — ABSOLVENT:INNEN WILLKOMMEN!". `Absolvent` and
 # `Berufseinsteiger` are words no English query will ever match, on postings that are exactly
-# what Sina can be hired into.
+# what the user can be hired into.
 #
 # `Junior` itself is in every list on purpose: it is a loanword everywhere and an advert that
 # uses it in an otherwise-German title would be missed by a list of German words only.
@@ -456,8 +461,7 @@ _LANGUAGE_LEVEL_WORDS = {
 
 # EVERY WORD A POSTING USES FOR AN INTERNSHIP OR A THESIS, PER LANGUAGE.
 #
-# Sina: "باید در اون دیکشنری ها از همه ی لغت های معادل Internship استفاده کنیم برای هر کشوری که
-# انتخاب کردیم و همین طوری برای Thesis". Each list below is the language's own words, completed
+# [owner's note: the dictionaries must use every equivalent word for Internship in each chosen country, and the same for Thesis]. Each list below is the language's own words, completed
 # against what the Filter's two modules recognise (thesis/words.py, internship/words.py) -- the
 # rule being that a word the search sends must be one the module keeps, or it is fetched and then
 # thrown away. tests/t7 asserts that for every word here, for every country that speaks it.
@@ -527,20 +531,18 @@ _KIND_WORDS = {'internship': _LANGUAGE_INTERNSHIP_WORDS, 'thesis': _LANGUAGE_THE
 # 1,000 the Germany-wide run had already paid for -- so the app asked for each country's
 # strongest city as well.
 #
-# Sina ended that, and his reason outranks the measurement: "من میخوام فقط جا هایی که انتخاب
-# کردم رو ببینم ولا غیر / به هیچ عنوان نباید شهر های دیگه ای که خودت به نظرت خوب اومده رو
-# اضافه کنی". A search asks for the places he picked and nothing else. If he wants Berlin he
+# The user ended that, and his reason outranks the measurement: [owner's note: only the places that were chosen are wanted, and no other city may be added on the app's own judgement]. A search asks for the places he picked and nothing else. If he wants Berlin he
 # picks Berlin -- and then Berlin is searched once, not twice.
 #
 # The table stays because it still answers a different question: which country a city
 # belongs to. CITY_COUNTRY only knows the cities offered in the wizard, and a row whose
 # country cannot be resolved loses its country field and its local-language pass.
 #
-# The ranking inside it is Sina's: the best cities of each country by income and by where
+# The ranking inside it is the user's: the best cities of each country by income and by where
 # data and AI work actually is -- not by population. Duisburg is bigger than Karlsruhe and
 # has a fraction of the work he looks for.
 MAJOR_CITIES = {
-    # Seven, on Sina's instruction: the deepest market of the eighteen.
+    # Seven, on the user's instruction: the deepest market of the eighteen.
     # Munich (highest incomes, Google/Apple/BMW/Siemens), Berlin (Europe's largest startup
     # scene and the most English-speaking workplaces), Frankfurt (European finance, DE-CIX),
     # Hamburg (Airbus, media, logistics), Stuttgart (Mercedes/Porsche/Bosch, industrial
@@ -578,7 +580,7 @@ MAJOR_CITIES = {
 
 
 # Which country each of those cities belongs to. Needed because CITY_COUNTRY only knows the
-# seven cities Sina can pick from the wizard, and a row whose country cannot be resolved is
+# seven cities the user can pick from the wizard, and a row whose country cannot be resolved is
 # a row that loses its country field AND its local-language pass -- the pass would find no
 # languages for "" and skip itself silently, which is the worst kind of bug: a whole search
 # that does nothing and says nothing.
@@ -604,7 +606,7 @@ def keywords_for(kind: str, country: str | None, language: str,
                  shape: str = 'broad', title=None, level=None, also=None) -> str | None:
     """One pass's query, or None when there is nothing to ask.
 
-    `title` is the job title Sina typed; every query is built from it, Thesis included, and a
+    `title` is the job title the user typed; every query is built from it, Thesis included, and a
     missing one falls back to DEFAULT_SEARCH_TITLE.
 
     `language` is 'en' for the English pass and 'local' for the country's own. A local pass
@@ -618,9 +620,9 @@ def keywords_for(kind: str, country: str | None, language: str,
     `level` is the job Level chosen in Search -- entry, junior, mid or senior. Anything else,
     nothing included, is Junior, which is what the job pass has always searched.
 
-    `also` is the other names employers give this job. It widens the two JOB shapes only: the
-    internship and thesis queries weld their own words to the title and widening them is a
-    separate question, not answered here.
+    `also` is the other names employers give this job (see title_equivalents). It widens every
+    pass: the job shapes, and the internship and thesis queries, whose title group and exact
+    phrases carry each other name as well.
     """
     level = str(level or '').lower()
     if level not in _LANGUAGE_LEVEL_WORDS:
@@ -634,18 +636,20 @@ def keywords_for(kind: str, country: str | None, language: str,
             # title itself does not translate.
             return level_keywords(title, level, also) if language == 'en' else None
         codes = ['en'] if language == 'en' else local_languages_for(country or '')
-        table = (precise_internship_phrases(title) if kind == 'internship'
-                 else precise_thesis_phrases(title))
+        table = (precise_internship_phrases(title, also) if kind == 'internship'
+                 else precise_thesis_phrases(title, also))
         phrases: list = []
         for code in codes:
             phrases.extend(table.get(code, ()))
-        return ' OR '.join(dict.fromkeys(phrases)) if phrases else None
+        unique = list(dict.fromkeys(phrases))
+        # Capped only when other names were added: a long query is silently truncated or refused.
+        return ' OR '.join(_capped(unique) if also else unique) if unique else None
 
     if language == 'en':
         if kind == 'job':
             return job_keywords(title, also)
-        return (internship_keywords(title) if kind == 'internship'
-                else thesis_keywords(title))
+        return (internship_keywords(title, also) if kind == 'internship'
+                else thesis_keywords(title, also))
 
     codes = local_languages_for(country or '')
     if not codes:
@@ -657,7 +661,7 @@ def keywords_for(kind: str, country: str | None, language: str,
             entry_words.extend(_LANGUAGE_LEVEL_WORDS[level].get(code, ()))
         else:
             kind_words.extend(_KIND_WORDS[kind].get(code, ()))
-    role_clause = '(%s)' % ' OR '.join(quoted(title_forms(title)))
+    role_clause = '(%s)' % ' OR '.join(quoted(_role_forms(title, also)))
     if kind == 'job':
         # Not the English query translated -- it cannot be, since the title is not
         # translated by anybody, and sending it twice would be one wasted call per country.
@@ -731,7 +735,7 @@ GOOGLE_INTERNSHIP_TERMS = google_internship_terms(DEFAULT_SEARCH_TITLE)
 GOOGLE_THESIS_TERMS = google_thesis_terms(DEFAULT_SEARCH_TITLE)
 
 
-# The passes, in the order Sina asked for them: each one finished and closed before the next
+# The passes, in the order the user asked for them: each one finished and closed before the next
 # begins. `key` is what the wizard's checkboxes send back.
 #
 # Every pass's terms are built from the title at the moment a search starts -- see

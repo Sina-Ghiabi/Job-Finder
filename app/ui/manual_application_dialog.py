@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Add an application Sina made outside RoleHound, filling in by hand what Apply fills in
+"""Add an application the user made outside RoleHound, filling in by hand what Apply fills in
 automatically.
 
-His words: "میخوام در بخش ای که کار های Apply شده رو قرار می دهیم میخوام که بشه به صورت دستی
-هم وارد کرد / شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه
-کنم". RoleHound finds jobs and he applies to them from the Jobs page -- but he also applies to
+His words: [owner's note: applications should also be addable by hand, for example one made on LinkedIn]. RoleHound finds jobs and he applies to them from the Jobs page -- but he also applies to
 things it never found, straight on LinkedIn or a company's own site, and those belonged in
 the same list. A record of what he has applied to is only useful if it is ALL of it.
 
 EVERY FIELD APPLY CARRIES, AND NOTHING ELSE
 
-Then: "ببین چه اطلاعاتی موقعی که دکمه ی Apply میزنیم به صفحه ی add_application انتقال داده
-میشه / در حالت دستی برای تمامی بخش ها یک Input یا یک انتخاب File بزن". So this window is
+Then: [owner's note: check what information Apply passes to add_application; in manual mode give an input or a file picker for every part]. So this window is
 built from `storage.add_application`'s record, field by field, and the FIELDS constant below
 is the list -- one input for every value the automatic path passes, in the four groups they
 naturally fall into:
@@ -24,7 +21,7 @@ naturally fall into:
 The last two groups exist because they are on the record. A row applied to through the app
 carries Claude's reasoning and the search that found it, and months later "why did I think
 this one fitted?" is exactly what the record is for. Entered by hand they are simply empty
-unless Sina has something to put there -- and they are grouped and labelled as what they
+unless the user has something to put there -- and they are grouped and labelled as what they
 are, so the window does not look like it is asking him to guess at Claude's own numbers.
 
 A test holds this to it: a field added to `add_application` and not to FIELDS fails the
@@ -33,7 +30,7 @@ which this project has already been bitten by, in that function's own curated di
 
 THE JOB DESCRIPTION IS A PDF
 
-"برای JobDescription به صورت PDF بگیر". The description is the one field nobody types: it is
+[owner's note: get the job description as a PDF]. The description is the one field nobody types: it is
 pages long, and he already has it as a file. So it is chosen as a PDF (or Word) and its text
 is read out on the spot, by the same reader the résumé uses, and shown back to him -- an
 unreadable or scanned file is refused there and then, with the reason, rather than saved as
@@ -49,7 +46,7 @@ knowing it is one.
 
 WHAT IS REQUIRED
 
-Only the job title. The point is to capture an application Sina has ALREADY made, and
+Only the job title. The point is to capture an application the user has ALREADY made, and
 refusing it over a missing company name would make the feature useless at the moment it is
 used -- on his recollection of a job he applied to last Tuesday. Fields left empty stay
 empty in the table, exactly as they do for a listing a source never filled in.

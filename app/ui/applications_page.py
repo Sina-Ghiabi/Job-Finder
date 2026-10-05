@@ -118,7 +118,7 @@ class ApplicationsPage(QWidget):
         top_row.addWidget(title)
         top_row.addStretch(1)
         # For applications made outside RoleHound -- on LinkedIn, or a company's own site.
-        # Without this the list was a record of what the app found, not of what Sina has
+        # Without this the list was a record of what the app found, not of what the user has
         # actually applied to, and only the second one is worth keeping.
         self.add_by_hand_btn = QPushButton("Add by hand")
         self.add_by_hand_btn.setToolTip("Record a job you applied to somewhere else.")

@@ -9,7 +9,7 @@ the words are really in the listing, and `_evidence_fits_rule` asks whether word
 could carry the rule they are offered for. A quote failing either check is treated as no quote
 at all, and **the DROP becomes a KEEP**.
 
-That is the right direction to fail in -- Sina sees one listing too many rather than one too
+That is the right direction to fail in -- The user sees one listing too many rather than one too
 few -- but it makes the guard the last thing standing between a correct removal and a listing
 in his results, and it is a pair of regular expressions. A pattern can be blind to a wording
 without being blind to the rule.

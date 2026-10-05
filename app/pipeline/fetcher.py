@@ -420,7 +420,7 @@ def _rung_apify(url: str) -> FetchResult:
     The plain call is tried first and the residential-proxy one only if it fails, because
     the plain one opened all eight of the sites this rung actually rescues -- premium was
     measured to add nothing on any of them, so paying for it up front would be spending
-    Sina's Apify credit on nothing.
+    The user's Apify credit on nothing.
     """
     token = _APIFY_TOKEN[0]
     if not token:
@@ -650,7 +650,7 @@ SITEMAP_URL_LIMIT = 50000
 
 # A wall-clock bound, because neither a URL count nor a sub-sitemap count bounds the WAIT.
 # startup.jobs publishes 19 sub-sitemaps holding 50,000 URLs between them; reading them all
-# is minutes, and this runs while Sina is watching a search. A budget stops on whatever it
+# is minutes, and this runs while the user is watching a search. A budget stops on whatever it
 # has, which is the right trade for a fallback route -- a partial sitemap still verifies
 # correctly, it just has fewer candidates to offer.
 SITEMAP_BUDGET_SECONDS = 25.0

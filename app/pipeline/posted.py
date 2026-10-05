@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """When a listing was posted, and whether that is recent enough to keep.
 
-Sina's observation, and the data bore it out immediately: the three paid actors take a date
+The user's observation, and the data bore it out immediately: the three paid actors take a date
 range, but nothing else in the search does. Google results never see it, and neither do the
 two sources that between them supply most of a German search -- EURES and arbeitsagentur.de
 are direct APIs, not actors, and they hand back whatever they have.
@@ -34,7 +34,7 @@ dictionary of 510 phrases across fourteen languages to tell "Veröffentlichungsd
 19.08.2026" from "Eintrittsdatum: 01.10.2026", because an advert carries start dates,
 application deadlines, expiry dates, dates of birth, CSS library version stamps, and above
 all salaries -- "45.000,00" is date-shaped. It worked: 36 of 36 hand-built cases, and all 42
-dates it found in the German corpus were genuine. It was removed anyway, on Sina's decision
+dates it found in the German corpus were genuine. It was removed anyway, on the user's decision
 and on the measurement: those 42 came out of 1,790 undated listings, and only two of them
 were old enough to drop. Two listings do not pay for the one ambiguity that remained -- a
 Hays page carries three "Online since" dates, one for its job and two for the vacancies
@@ -68,7 +68,7 @@ POSTED_DATE_FIELDS = (
 #      41   1788857704                          unix seconds, as a string      (arbeitnow)
 #      15   2026-08-17T16:00:06+00:00           ISO, seconds, offset           (RemoteOK)
 #
-# The list below is far longer than that, deliberately. Sina's instruction: every date
+# The list below is far longer than that, deliberately. The user's instruction: every date
 # format in the world, not only the ones already seen. A source added next month writes
 # whatever its country writes, and a format that is missing here does not fail loudly -- the
 # listing simply reads as undated and slips past the date filter in silence. Each extra
@@ -469,7 +469,7 @@ _LINKEDIN_DAYS = {'past24Hours': 1, 'pastWeek': 7, 'pastMonth': 30, 'anyTime': 0
 def max_age_from_date_settings(date_settings) -> int:
     """The widest range any platform was asked for, in days. 0 means no limit.
 
-    Sina's reasoning: the three paid actors filter by date themselves, and nothing else in
+    The user's reasoning: the three paid actors filter by date themselves, and nothing else in
     the search does -- Google results, EURES and arbeitsagentur.de all arrive with whatever
     age they happen to have. Measured on the German corpus, that meant adverts up to 1,990
     days old, five and a half years.

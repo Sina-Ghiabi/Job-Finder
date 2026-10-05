@@ -1,8 +1,8 @@
-"""Sites that need a real browser -- now opened by one, not by Sina.
+"""Sites that need a real browser -- now opened by one, not by the user.
 
 These sites were collected because Apify's crawler could not read them: a consent wall, a
 bot check, or a list rendered entirely in JavaScript. The original mechanism was honest
-about that and asked for help -- it opened a visible Chrome window, waited for Sina to
+about that and asked for help -- it opened a visible Chrome window, waited for the user to
 clear whatever was in the way, and read the page he ended up on.
 
 Everything that made the human necessary is now done by the fetch ladder. It sends a
@@ -16,7 +16,7 @@ work.turing.com and the rest -- and deleting them along with the mechanism would
 quietly dropped every listing those sites carry.
 
 What a site cannot do any more is ask for help. If the ladder cannot open it, that is
-reported as a problem for the pre-flight window rather than a request that Sina go and
+reported as a problem for the pre-flight window rather than a request that the user go and
 look at it himself.
 """
 from __future__ import annotations

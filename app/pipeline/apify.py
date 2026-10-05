@@ -13,12 +13,12 @@ from .errors import (SearchCancelled)
 # the page it scrapes (a 274,866-character fetch of one advert contained the word "hybrid"
 # zero times -- the chip renders only for a logged-in session), and its remote filter f_WT was
 # measured IGNORED. So every Remote search bought office jobs at $0.002 a row and then guessed
-# from prose, and three adverts in a row that Sina opened were tagged Hybrid on LinkedIn.
+# from prose, and three adverts in a row that the user opened were tagged Hybrid on LinkedIn.
 #
 # This actor returns `work_type` on every row and has a remote filter that is honoured.
 # Measured, same query: 100 of 100 rows tagged Remote with it, and the job IDPP -- whose text
 # says "Working Model: Remote" and whose tag says Hybrid -- came back tagged Hybrid, which is
-# what Sina saw.
+# what the user saw.
 #
 # IT IS MORE EXPENSIVE PER ROW, NOT LESS, and an earlier version of this comment said the
 # opposite. The actor's own price is $0.005 a job (read from its pricing events, not from a
@@ -70,7 +70,7 @@ def _run_actor_cancellable(client: ApifyClient, actor_id: str, run_input: dict,
     """start() + poll + abort(), same real pattern already used by run_search's own
     run_actor_and_fetch for Indeed/LinkedIn/Glassdoor/Google -- used here instead of
     the simpler blocking .call() specifically so Cancel can actually interrupt one of
-    these runs within a few seconds. A real bug Sina reported: with the old .call(),
+    these runs within a few seconds. A real bug the user reported: with the old .call(),
     clicking Cancel while a deep-crawl/direct-site-search/Google-preflight call was
     in flight left the Log frozen (no further lines) for as long as that ONE Apify run
     took to finish on its own -- which for a deep crawl can be minutes -- even though
@@ -99,7 +99,7 @@ def _run_actor_cancellable(client: ApifyClient, actor_id: str, run_input: dict,
 # --------------------------------------------------------------------------------------
 # Crawling a list of URLs without losing any of them
 # --------------------------------------------------------------------------------------
-# Sina's rule for this whole section: do it in small pieces, take as long as it takes, and
+# The user's rule for this whole section: do it in small pieces, take as long as it takes, and
 # lose nothing. Three call sites crawl URL lists (the Google deep crawl, the newly-learned
 # sites, and the direct site search) and each used to do it as one run asking for the
 # account's entire 16,384MB. Apify refuses that outright whenever anything else is running,
@@ -252,6 +252,6 @@ DEFAULT_ACTOR_ORDER = ['indeed', 'glassdoor', 'linkedin']
 
 
 # How often the live "Apify Token - $X.XX credit" line in the Log refreshes during a
-# search -- Sina asked for this after noticing it only ever showed the balance from the
+# search -- The user asked for this after noticing it only ever showed the balance from the
 # very start of the run, even on a long search that kept spending real credit.
 _APIFY_CREDIT_POLL_SECONDS = 10

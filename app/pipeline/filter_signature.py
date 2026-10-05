@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """What makes one Filter run the same as another.
 
-Sina's rule: re-filtering with the same choices must show the previous answer instead of
+The user's rule: re-filtering with the same choices must show the previous answer instead of
 paying for it again, and changing **any one** of them must redo the work from the start.
 
 So the question this module answers is narrow and exact: would a Filter run right now
@@ -11,10 +11,10 @@ everything a verdict depends on, and nothing else.
 WHAT IS IN THE SIGNATURE, AND WHY EACH PART HAS TO BE
 
     the choices        level, work mode, title, countries, cities, and every option the
-                       dialog offers -- these are what Sina picked, and the whole point
+                       dialog offers -- these are what the user picked, and the whole point
     the pool           bank.json's own fingerprint. A new search means new listings; an
                        answer computed over a different pool is not the same answer
-    the resume         its fingerprint. Every fact about Sina comes from it, so a new
+    the resume         its fingerprint. Every fact about the user comes from it, so a new
                        resume is new verdicts -- the same reason claude_screen hashes it
     the prompt         the rules Claude was given. Editing a rule must invalidate the
                        stored answer, and hashing the prompt's own text means nobody has
@@ -64,7 +64,7 @@ FILTER_CHOICE_KEYS = (
 def _stable(value):
     """A value in a form that hashes the same whenever it means the same.
 
-    Lists of choices are sets to Sina -- ticking Germany then Austria is the same selection
+    Lists of choices are sets to the user -- ticking Germany then Austria is the same selection
     as ticking Austria then Germany -- so they are sorted. Everything else is compared as
     the text it displays as, which is what he actually chose.
     """
@@ -111,7 +111,7 @@ def pool_fingerprint(rows: list) -> str:
 def describe(choices: dict) -> str:
     """The choices as one readable line, for the Log.
 
-    Sina reads this to know what he is looking at, so it names the things that change what
+    The user reads this to know what he is looking at, so it names the things that change what
     he sees and stays quiet about the ones left at their default.
     """
     picked = {key: _stable((choices or {}).get(key)) for key in FILTER_CHOICE_KEYS}

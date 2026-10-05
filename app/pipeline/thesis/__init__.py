@@ -5,7 +5,7 @@
     app/pipeline/thesis/                                     this one
     app/pipeline/internship/                                 the third
 
-They share no vocabulary, no rules and no helpers, by Sina's instruction, and each is handed
+They share no vocabulary, no rules and no helpers, by the user's instruction, and each is handed
 its own copy of the listings so none can see another's edits. Merging any two of them back
 together to save duplication is the failure this arrangement exists to prevent.
 """

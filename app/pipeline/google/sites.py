@@ -48,7 +48,7 @@ GOOGLE_SEARCH_ACTOR = 'apify/google-search-scraper'
 # LinkedIn/Indeed/Glassdoor pages Google shouldn't be scraping in the first place). The
 # trade-off: a listing titled exactly "NLP Engineer" or "Data Analyst" with none of
 # these 4 phrases anywhere else on the page could be missed -- accepted deliberately for the cost win.
-# The default title's forms. A real search passes the title Sina typed instead.
+# The default title's forms. A real search passes the title the user typed instead.
 GOOGLE_QUERY_ROLE_TERMS = quoted(title_forms(DEFAULT_SEARCH_TITLE))
 
 
@@ -166,7 +166,7 @@ GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS = {
     # where the exact same domain works fine through the browser-site path since that
     # one always runs a real, visible (headless=False) browser.
     # work.turing.com and work.mercor.com deliberately have no entry here either -- not
-    # because they lack a public listing (an earlier pass wrongly concluded that; Sina
+    # because they lack a public listing (an earlier pass wrongly concluded that; the user
     # actually opened both in his own browser, before logging in, and found real search
     # boxes with real results -- see MANUAL_ASSIST_GLOBAL_SITES below, since Google's
     # own indexed pages here are auto-generated JS cards with no real <a href> to a
@@ -227,12 +227,12 @@ GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS = {
 }
 
 
-# Sina-supplied sites that aren't tied to any one country -- searched for *every*
+# The user-supplied sites that aren't tied to any one country -- searched for *every*
 # selected location (country or city), same as the country-specific known-sites list,
 # just without a country lookup. work.turing.com and work.mercor.com are
 # remote-work-focused platforms; remoteok.com, weworkremotely.com, wellfound.com
 # (formerly AngelList Talent) are major remote-first job boards; aijobs.net is
-# AI/ML/Data-specific -- these last 4 were added after Sina asked whether any major
+# AI/ML/Data-specific -- these last 4 were added after the user asked whether any major
 # remote/AI-focused boards were still missing, since none of the country-specific or
 # original global sites were remote-first the way this app's own Remote-only rule
 # requires. ziprecruiter.com was tried here too but is actually US/Canada/UK-focused,
@@ -266,7 +266,7 @@ GOOGLE_GLOBAL_EXTRA_SITES = [
 ]
 
 
-# GOOGLE_GLOBAL_EXTRA_SITES no longer has to fit in one query line -- Sina asked for a
+# GOOGLE_GLOBAL_EXTRA_SITES no longer has to fit in one query line -- The user asked for a
 # way to keep adding global sites without ever running into Google's ~32-word query
 # limit again. Split into groups of this size, each becoming its own query line per
 # location (build_google_job_queries), so the total number of global sites is only
@@ -286,7 +286,7 @@ GOOGLE_GLOBAL_EXTRA_SITES = [
 GOOGLE_GLOBAL_SITES_PER_GROUP = 8
 
 
-# Dedicated startup/scaleup job boards -- a separate, additive Google stage Sina asked
+# Dedicated startup/scaleup job boards -- a separate, additive Google stage the user asked
 # for after a real research pass (see the "Startup Websites Search" section): sites
 # that specifically curate jobs at startups/scaleups, rather than the general-purpose
 # boards in COUNTRY_JOB_SITES.
@@ -365,7 +365,7 @@ COUNTRY_STARTUP_SITES = {
     # published jobs, dated within days of checking, powered by Joinup -- Switzerland's
     # startup employment platform).
     'Switzerland': ['www.startupticker.ch'],
-    # Austria got a second, deeper research pass after Sina flagged it as especially
+    # Austria got a second, deeper research pass after the user flagged it as especially
     # important to him and the first pass (austrianstartups.com alone) as weak --
     # metajob.at/startup-wien confirmed real and live via a real fetch, with 225 real,
     # recently-dated startup postings in Vienna at the time of checking (companies
@@ -451,7 +451,7 @@ _GOOGLE_QUERY_LOCATION_PATTERN = re.compile(r'\bjobs\s+(.*?)\s+(?:\(|-site:)', r
 # How many total pages (each start URL + every same-domain link found on/from it, one
 # level deep) the deeper-crawl pass below is allowed to fetch per known-sites result --
 # generous, since a real job board's listing/search page can easily link to 10+ of its
-# own job postings (Sina's own example).
+# own job postings (The user's own example).
 GOOGLE_DEEP_CRAWL_PAGES_PER_RESULT = 15
 
 

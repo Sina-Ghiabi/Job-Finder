@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Suite 7 -- run_search, the one path that spends money.
 
-Sina asked for the heaviest tests in the project around this function, so that the code that
+The user asked for the heaviest tests in the project around this function, so that the code that
 costs real Apify credit becomes the safest part of the app. It is also the least-tested by
 nature: a real run costs about three dollars, so nobody exercises it casually, and Suite 6
 (live) only proves the sources answer.
@@ -440,7 +440,7 @@ check_no_raise('a search with no progress callback at all still runs',
 
 
 # --------------------------------------------------------------------------------------
-section('7.11  the plan: every ask is one Sina chose, and nothing is asked twice')
+section('7.11  the plan: every ask is one the user chose, and nothing is asked twice')
 # The count itself is the test. A bug in how the plan is built does not raise, it just
 # spends: the cities-only trap turned 3 actor calls into 57, and nobody would have known
 # from the output. So this pins the arithmetic -- one call per platform per location per
@@ -476,15 +476,14 @@ for _platform, _locations in _by_platform.items():
     check('  ...and asks for all three that were chosen',
           {'Italy', 'Germany', 'Amsterdam'} <= set(_counts), sorted(_counts))
 
-# The rule Sina set, and the one this whole section exists to hold: a search asks for the
+# The rule the user set, and the one this whole section exists to hold: a search asks for the
 # places he picked and for nothing else. LinkedIn used to add each chosen country's
 # strongest city -- Berlin for Germany, Milan for Italy -- to get past its own 1,000-job
-# ceiling, which was worth a measured 48 new jobs in 120. He ended it: "به هیچ عنوان نباید
-# شهر های دیگه ای که خودت به نظرت خوب اومده رو اضافه کنی". Berlin and Milan are the two
+# ceiling, which was worth a measured 48 new jobs in 120. He ended it: [owner's note: no other cities are to be added on the app's own judgement]. Berlin and Milan are the two
 # names that would appear if it ever came back.
 _chosen = {'Italy', 'Germany', 'Amsterdam'}
 for _platform, _locations in _by_platform.items():
-    check('%s asks for nothing Sina did not choose' % _platform,
+    check('%s asks for nothing the user did not choose' % _platform,
           set(_locations) == _chosen, sorted(set(_locations)))
 check('no country drags its major city in behind it',
       not ({'Berlin', 'Milan'} & set(_by_platform['linkedin'])),
@@ -556,7 +555,7 @@ try:
     _runner._run_google_phase = _google_phase._run_google_phase
     _df = run(countries=['Italy'], cities=[], actors=('google',),
               preflight_problems_cb=_cancelling_dialog)
-    check('a broken source is put to Sina before the Google phase spends anything',
+    check('a broken source is put to the user before the Google phase spends anything',
           len(_problems_seen) == 1, _problems_seen)
     check('  ...naming what is broken and why',
           _problems_seen and _problems_seen[0][0]['name'] == 'arbeitsagentur.de',
@@ -608,7 +607,7 @@ check('  ...and nothing is fetched before it finishes',
 # --------------------------------------------------------------------------------------
 section('7.16  the pieces on their own: what each phase does, tested without a search')
 # run_search was 465 lines and could only ever be tested whole -- every question about it
-# had to be asked by running a search. Sina asked for it broken into pieces small enough to
+# had to be asked by running a search. The user asked for it broken into pieces small enough to
 # manage and to fix one at a time. These are those pieces, each called directly.
 
 # -- what one platform is asked, per platform ------------------------------------------
@@ -683,7 +682,7 @@ check('  ...with the date window in the actor\'s own words',
 
 # The work mode has to reach LinkedIn, and this is the test that says so. Found during the
 # real Germany run: f_WT=2 -- LinkedIn's own "remote only" filter -- was sent on every
-# search whatever Sina had chosen, so a Not Remote run asked the largest source in the app
+# search whatever the user had chosen, so a Not Remote run asked the largest source in the app
 # for nothing but remote work. Silent, and the exact opposite of the selection.
 _DATES = {'indeed': '7', 'linkedin': 'pastWeek', 'glassdoor': 7}
 _NR_WINDOW = {'actor_filters': {'linkedin': {'remote': ''}, 'glassdoor': {'remoteWorkType': False}}}
@@ -700,15 +699,14 @@ _actor, _input, _norm = _runner._actor_request(
 check('  ...while a Remote search asks for remote work, as a real field',
       _input.get('remote') == 'remote', _input)
 
-# NO PLACE IS EXEMPT. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin یا Milan بود".
+# NO PLACE IS EXEMPT. [owner's note: Remote means Remote, even in Turin or Milan].
 # A Remote search asks for remote work in Italy, Turin and Milan exactly as it does anywhere.
 for _kind, _place in (('country', 'Italy'), ('city', 'Turin'), ('city', 'Milan')):
     _a, _it, _n = _runner._actor_request(
         'linkedin', 'data engineer', _kind, _place, 'Italy', 500, _DATES, False, {'x': 1})
     check('Italy is asked for remote work only, like everywhere (%s %s)' % (_kind, _place),
           _it.get('remote') == 'remote', _it)
-# EVERY CHOICE GOES IN AS THE ACTOR'S OWN VALUE -- Sina: "بعد هر انتخابی که کردم اونجا مستقیما در
-# مقدار پارامتر مربوطه به اون Actor قرار داده بشه". Each of the actor's four Workplace Type values,
+# EVERY CHOICE GOES IN AS THE ACTOR'S OWN VALUE -- [owner's note: every choice made there goes directly into that actor's own parameter]. Each of the actor's four Workplace Type values,
 # in a Remote search and in a Not Remote one, because the window decides and the work mode no
 # longer does.
 for _val, _sent_value in (('', None), ('remote', 'remote'), ('onsite', 'onsite'),
@@ -868,7 +866,7 @@ for _level, _expect in (('thesis', 'thesis'), ('internship', 'internship'),
 _passes, _title, _job_level, _resolved = _runner._resolve_passes(
     'entry', None, '  data   ENGINEER ', None)
 # Tidied, not rewritten: the spacing is fixed so two parts of one search cannot ask
-# different questions, and the words are left as Sina typed them.
+# different questions, and the words are left as the user typed them.
 check('the title is cleaned once, for the whole run', _title == 'data ENGINEER', _title)
 check('  ...and the job Level travels with it', _job_level == 'entry', _job_level)
 _passes, _title, _job_level, _resolved = _runner._resolve_passes(None, ['nonsense'], 'x', None)
@@ -1110,7 +1108,7 @@ try:
 finally:
     _runner._run_actor_and_fetch = _saved_fetch
 
-# Any in English first, then the country's own language -- Sina's order, for both kinds.
+# Any in English first, then the country's own language -- The user's order, for both kinds.
 _order = []
 _sent.clear()
 try:
@@ -1219,7 +1217,7 @@ section('7.usage  a pay-per-event run reports its cost late, and the Log must no
 # MEASURED on apimaestro/linkedin-jobs-scraper-api: at the moment the run ends usageTotalUsd is 0
 # AND chargedEventCounts is 0; a 10-row run read 0 for ten seconds and then $0.05. The app read it
 # once, so every LinkedIn call was logged as $0.00 while the account paid $0.005 a row -- the
-# same field read at the same wrong moment that first gave Sina a wrong price for this actor.
+# same field read at the same wrong moment that first gave the user a wrong price for this actor.
 import time as _time  # noqa: E402
 
 
@@ -1294,8 +1292,7 @@ finally:
 
 # =========================================== 7.vocab  what is searched is what is kept =======
 section('7.vocab  every word the search sends is one the Filter module recognises')
-# Sina: "باید در اون دیکشنری ها از همه ی لغت های معادل Internship استفاده کنیم برای هر کشوری که
-# انتخاب کردیم و همین طوری برای Thesis".
+# [owner's note: the dictionaries must use every equivalent word for Internship in each chosen country, and the same for Thesis].
 #
 # THE FAULT THIS GUARDS IS ONE VOCABULARY KEPT IN SEVERAL PLACES. The search has its own word
 # lists (search/queries.py); the Thesis and Internship modules each keep their own (thesis/words.py,

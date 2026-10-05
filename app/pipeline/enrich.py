@@ -107,8 +107,7 @@ ENRICH_MIN_USEFUL_CHARS = 300
 # The failures are transient, so the answer is to ask again rather than to ask more politely.
 # The pause is there because a retry that arrives immediately is part of the same burst.
 # Against a search measured in hours it costs nothing, and it needs no Apify credit -- which
-# is exactly the trade Sina has asked for every time: "زمان مهم نیست / نمیخوام آگهی از دستم
-# بره".
+# is exactly the trade the user has asked for every time: [owner's note: time does not matter, and no listing may be lost].
 #
 # What the retries do NOT recover: pages that are genuinely gone. Of the 123 still empty
 # after two passes, fetching each one alone and unhurried recovered exactly one.
@@ -117,7 +116,7 @@ ENRICH_MIN_USEFUL_CHARS = 300
 # answered are dropped rather than sent onward as a bare job title. The gaps lengthen on
 # purpose -- an immediate retry is part of the same burst that failed, and whatever was
 # wrong with the network in one minute is usually still wrong in the next. Ten minutes is
-# Sina's own figure, and the trade is his standing one: time is free, a lost listing is not.
+# The user's own figure, and the trade is his standing one: time is free, a lost listing is not.
 ENRICH_RETRY_PAUSES = (20, 60, 120, 240, 180)
 
 # Words a job posting has and a navigation menu does not, in the languages this app
@@ -235,7 +234,7 @@ def looks_like_chrome_only(description) -> bool:
     asked to judge a job it had not been shown.
 
     Re-fetching them recovered a real posting for eight of the twelve tried, and all of
-    those turned out to be remote roles -- exactly what Sina is looking for, invisible until
+    those turned out to be remote roles -- exactly what the user is looking for, invisible until
     the page was read properly.
 
     The length escape hatch is what separates this from carries_posting_words above, and it
@@ -588,14 +587,14 @@ def enrich_thin_descriptions(rows: list[dict], progress_cb=None, should_cancel=N
     except SearchCancelled:
         raise
 
-    # Whatever never answered is dropped, on Sina's instruction and on the evidence for it.
+    # Whatever never answered is dropped, on the user's instruction and on the evidence for it.
     #
     # This is the one place the app deletes a listing for a reason other than a rule about
     # the job, so it is worth being exact about what is thrown away. Every row here was
     # asked for by name, five times, across ten minutes, and never produced a line of text:
     # its description is still "<title> at <company>", about 69 characters. Nothing can read
     # that -- not the Remote rule, not seniority, not the language step, and not Claude,
-    # which would be scoring a CV against a job title. And Sina cannot read it either.
+    # which would be scoring a CV against a job title. And the user cannot read it either.
     #
     # They are not merely slow. Of the 123 the German corpus was left with after two passes,
     # fetching each one alone and unhurried recovered exactly one: the rest are pages that

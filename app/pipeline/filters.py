@@ -170,7 +170,7 @@ def _remember_dedup(fingerprint: str, kept_indices: list) -> None:
 
 
 def _remove_duplicates_list(jobs: list[dict]) -> tuple[list[dict], int]:
-    """Step 1 of reapply_filters (the Filter button): same URL -> duplicate, then Sina's
+    """Step 1 of reapply_filters (the Filter button): same URL -> duplicate, then the user's
     rule -- clean the two titles down to their words, and if those say it is the same job,
     the two DESCRIPTIONS decide.
 
@@ -188,7 +188,7 @@ def _remove_duplicates_list(jobs: list[dict]) -> tuple[list[dict], int]:
     THE ANSWER IS REMEMBERED, BECAUSE THE POOL USUALLY HAS NOT CHANGED
 
     This is the most expensive thing the Filter does -- 90 seconds on 26,826 rows even after
-    the scan was made parallel -- and Sina re-runs the Filter constantly: a different Level, a
+    the scan was made parallel -- and the user re-runs the Filter constantly: a different Level, a
     different country, Claude on or off. None of those change which rows are duplicates of each
     other. So the verdict is stored against a fingerprint of the pool, and a re-filter of the
     same Bank skips the whole thing.
@@ -325,7 +325,7 @@ def _remove_duplicates_list(jobs: list[dict]) -> tuple[list[dict], int]:
     # and the title pass misses them too whenever a board appends its own tail ("Data Science
     # Analyst at Metyis", "Junior Climate Data Scientist at Robeco | Quant Jobs").
     #
-    # Measured on a real Amsterdam result: 8 pairs survived into the 48 listings Sina was
+    # Measured on a real Amsterdam result: 8 pairs survived into the 48 listings the user was
     # shown, every one of them the same job on two different sites. What identifies them is
     # not the text but the employer: same employer, same job title, two addresses.
     #
@@ -359,7 +359,7 @@ def _remove_duplicates_list(jobs: list[dict]) -> tuple[list[dict], int]:
 
 # Static checklists shown in the Log under their own step, one line per rule, each
 # marked "Checked" once that step's real work (already run against every listing by
-# that point) is done -- Sina asked for the actual rule names visible in the Log
+# that point) is done -- The user asked for the actual rule names visible in the Log
 # itself, not just each step's own single summary count. Order matches the order each
 # rule is actually checked in code (the loop above for FILTER_RULES_STEP_CHECKLIST,
 # CLAUDE_SCREEN_SYSTEM_PROMPT's Rule 1-9 for FILTER_CLAUDE_STEP_CHECKLIST).
@@ -438,12 +438,12 @@ def _step_chosen(jobs, progress_cb, countries, cities, date_range, categories,
                  sponsorship):
     """Apply the Filter window's own choices, and say what each one did.
 
-    Every one of these is silent unless Sina chose it. What each one does when he HAS chosen
+    Every one of these is silent unless the user chose it. What each one does when he HAS chosen
     is documented in chosen_filters, including the two that do not keep a silent listing.
 
     This step also absorbed the old `_step_place`, which asked the same question about the
-    country only in a Not Remote search and answered it leniently. Once Sina asked for the
-    strict answer -- "اگر نوشتم Netherlands یعنی فقط Netherlands میخوام" -- that step could
+    country only in a Not Remote search and answered it leniently. Once the user asked for the
+    strict answer -- [owner's note: if Netherlands is chosen, only Netherlands is wanted] -- that step could
     never remove anything this one had not already removed, so it became a second answer to
     a question that now has one. Its Log line was worth keeping, though: it named every
     country it dropped and how many, which is how a wrong country selection is spotted at a
@@ -467,9 +467,7 @@ def _step_chosen(jobs, progress_cb, countries, cities, date_range, categories,
         #
         # `filter_by_category` used to run here. On the real Netherlands run it removed 295 of
         # the 321 listings that had survived everything else -- every full-time job, because
-        # Part-Time was ticked -- and left him 4. Sina's instruction: "میتونی Filter مربوط به
-        # Type رو برداری اما من در جدولی که بهم نمایش میده خودم برم انتخاب کنم چه نوع Type
-        # کار هایی رو بهم نشون بده".
+        # Part-Time was ticked -- and left him 4. The user's instruction: [owner's note: the Type filter may go, as the kinds of jobs to show are chosen in the table].
         #
         # The Type column and its filter button were already there; what was missing was
         # letting the pool keep its other kinds. `categories` is still accepted and still
@@ -530,11 +528,11 @@ def _step_work_location(jobs, progress_cb, cancelled, profile=None):
 # can never collide with a real section name in country_rules.
 _COUNTRY_LANGUAGE = object()
 
-# The rules the country vocabulary answers, after the Remote rule and in the order Sina
+# The rules the country vocabulary answers, after the Remote rule and in the order the user
 # listed them. Each is (label, section, what it means when it matches).
 COUNTRY_RULE_SECTIONS = [
     # First, and deliberately: a non-English posting that never once names English, in any
-    # spelling. Sina's rule. It runs here rather than after translation because that is
+    # spelling. The user's rule. It runs here rather than after translation because that is
     # what makes it free -- on the real Netherlands data it removes 503 listings and 92%
     # of the entire DeepL bill, none of which now gets translated at all.
     #
@@ -588,7 +586,7 @@ def _country_rule_sections(profile=None) -> list:
 def _step_country_rules(jobs, progress_cb, cancelled, profile=None):
     """The selected countries' own vocabulary, applied in the listing's own language.
 
-    Sina's design, in two halves.
+    The user's design, in two halves.
 
     First, work out what language each posting is actually written in, and record it on the
     row along with whether it is already English. That one answer drives everything
@@ -627,7 +625,7 @@ def _step_country_rules(jobs, progress_cb, cancelled, profile=None):
         if cancelled():
             break
         # Milan and Turin are exempt from the Work Location rule, not from these. A
-        # Milanese posting demanding native Italian is still no use to Sina.
+        # Milanese posting demanding native Italian is still no use to the user.
         matched = ''
         for label, section in sections:
             if section is None:
@@ -673,9 +671,8 @@ def _step_rules(jobs, progress_cb, cancelled, profile=None):
     # THE LEVEL NO LONGER DELETES ANYTHING HERE.
     #
     # `profile.is_wrong_level` used to run in this loop and remove every listing whose level
-    # did not match the one chosen in Search. Sina's instruction, after seeing that Claude's
-    # rule 4 had done the same thing 19 times in one run: "نباید Filter کنه باید اون هارو
-    # دسته بندی کنه ... و دیگه هیچی نباید حذف بشه". So the level is written onto the row as
+    # did not match the one chosen in Search. The user's instruction, after seeing that Claude's
+    # rule 4 had done the same thing 19 times in one run: [owner's note: it must not filter but categorise, and nothing may be removed]. So the level is written onto the row as
     # `Seniority` a few lines below and shown as a column with its own filter button; he
     # narrows by it in the table, where changing his mind costs nothing instead of costing a
     # re-filter.
@@ -713,7 +710,7 @@ def _step_rules(jobs, progress_cb, cancelled, profile=None):
     removed_by_keywords = len(jobs) - len(kept)
     if progress_cb:
         # Static checklist of the 6 rules this step actually ran, in the same order
-        # they're checked above -- Sina asked for these to be visible in the Log, not
+        # they're checked above -- The user asked for these to be visible in the Log, not
         # just the step's own single summary line. All 6 genuinely did run against
         # every listing by the time this fires (the loop above already finished), so
         # every one is real, not a guess.
@@ -759,7 +756,7 @@ def _step_claude(kept, anthropic_api_key, progress_cb, cancelled):
         # Cache-first: a job whose exact screening input (title/company/location/
         # platform/employment_type/seniority_level/description) AND the current
         # CLAUDE_SCREEN_SYSTEM_PROMPT text both hash identically to what produced
-        # its last stored decision needs no real API call at all -- Sina flagged
+        # its last stored decision needs no real API call at all -- The user flagged
         # that every Filter re-run was resending every listing to Claude in full,
         # even ones already checked with nothing changed. See
         # _claude_screen_cache_key for exactly what's hashed and why.
@@ -769,7 +766,7 @@ def _step_claude(kept, anthropic_api_key, progress_cb, cancelled):
         cache_key = _claude_screen_cache_key(job)
         if job.get('claude_screen_cache_key') == cache_key:
             cache_hits += 1
-            # claude_screen_user_kept records that Sina already saw this exact flag
+            # claude_screen_user_kept records that the user already saw this exact flag
             # in ClaudeReviewDialog and chose to keep the listing anyway. Real bug
             # fixed here: without it, the cached DROP verdict re-flagged the same
             # listing on EVERY future Filter run -- and because a cache hit makes no
@@ -779,7 +776,7 @@ def _step_claude(kept, anthropic_api_key, progress_cb, cancelled):
             if job.get('claude_screen_drop') and not job.get('claude_screen_user_kept'):
                 reason = job.get('claude_screen_reason') or 'unspecified reason'
                 # Rewritten from the stored verdict rather than carried over in the text, so
-                # a cached drop reads exactly like a fresh one and a row Sina later keeps by
+                # a cached drop reads exactly like a fresh one and a row the user later keeps by
                 # hand loses its note on the next run instead of keeping a stale claim.
                 set_drop_note(job, reason, job.get('claude_screen_evidence'))
                 claude_flagged.append({'job': job, 'reason': reason})
@@ -815,7 +812,7 @@ def _step_claude(kept, anthropic_api_key, progress_cb, cancelled):
             job.pop('claude_screen_user_kept', None)
 
         # The low-score drop that used to follow here moved to part two with the score:
-        # a role can pass all eight questions and still be nothing to do with Sina, and it
+        # a role can pass all eight questions and still be nothing to do with the user, and it
         # is the résumé match that now says so (see step_resume_match).
         if drop:
             reason = reason or 'unspecified reason'
@@ -890,7 +887,7 @@ def _step_merge_twins(kept, claude_flagged, progress_cb=None):
     The dedup step runs first, before anything has read the posting, and at that point most
     rows carry no employer at all -- the Filter clears the guessed ones on purpose. So the
     same-employer test there only catches the listings that arrived with a company name, and
-    the copies that matter most to Sina slip through: a real Amsterdam result showed him
+    the copies that matter most to the user slip through: a real Amsterdam result showed him
     QuantumBlack's Data Scientist twice, Metyis' Data Science Analyst twice, Robeco's Junior
     Climate Data Scientist twice -- 8 pairs among 48 listings.
 
@@ -949,7 +946,7 @@ def _step_sort(kept, anthropic_api_key, progress_cb):
     if progress_cb:
         progress_cb("FILTER_STEP_START:sort|Sorting Results", 0, 1)
     if anthropic_api_key:
-        # Part two scored every survivor against Sina's résumé -- sort the whole list by
+        # Part two scored every survivor against the user's résumé -- sort the whole list by
         # that match percentage, best match first. A listing with no parseable score
         # (e.g. that one API call errored) sorts last, not first.
         kept.sort(key=lambda j: -(j.get('claude_match') if j.get('claude_match') is not None else -1))
@@ -977,10 +974,10 @@ def _resume_match_flag_reason(job):
 
 def step_resume_match(kept, claude_flagged, anthropic_api_key, progress_cb=None,
                       should_cancel=None):
-    """Part two, for every Level: how well does each survivor match Sina's résumé?
+    """Part two, for every Level: how well does each survivor match the user's résumé?
 
-    Part one decided KEEP or DROP by the Level's profile. This asks the question Sina has
-    when he opens the app -- "چند درصد ... با رزومه ای که آپلود کردی همخونی داره" -- and
+    Part one decided KEEP or DROP by the Level's profile. This asks the question the user has
+    when he opens the app -- [owner's note: what percentage matches the résumé that was uploaded] -- and
     writes the Match %, what fits, what is missing, and apply / check / skip.
 
     A "skip", or a score under RESUME_MATCH_MINIMUM, is flagged the way every other Claude
@@ -1053,7 +1050,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     _fill_missing_company_names -- so the near-duplicate check right after it (which
     groups by company+country) actually has something to group Google rows by, instead
     of only ever catching them via an exact URL match. Step 2 removes duplicates and
-    likely-fake listings (moved here from run_search -- Sina asked for a raw search to
+    likely-fake listings (moved here from run_search -- The user asked for a raw search to
     show every listing exactly as fetched, and for Filter to be the one place all
     cleanup/filtering happens). Then runs translation + the remote/seniority/
     sponsorship/unpaid/language rules -- those are removed immediately, no confirmation
@@ -1137,7 +1134,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
         # entities, on 27-43% of listings, from the sources that hand over plain text rather
         # than HTML (strip_html already unescapes the HTML ones). No keyword verdict changes
         # when they are unescaped -- that was measured too, over all 24,295 listings -- so
-        # this is not a filtering fix; it is what Sina reads in the table and the export, and
+        # this is not a filtering fix; it is what the user reads in the table and the export, and
         # what Claude is given to read. The Bank keeps the untouched original.
         for field in ('title', 'description'):
             if job.get(field) and '&' in str(job[field]):
@@ -1156,7 +1153,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     # Not a vacancy and not a page OF vacancies, so the index-page rules never had anything
     # to fire on, and their addresses are title-shaped, so every other rule read them as a
     # single posting. Three reached the nine listings Claude marked "apply" on the Germany
-    # run, which is where Sina found them.
+    # run, which is where the user found them.
     #
     # It runs here, with the cheap rules: two regexes against a URL and a title, no network.
     # In the Filter rather than only in run_search, because the Bank already holds thousands
@@ -1173,13 +1170,13 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     # DevOps run: `job_field_words.py` was written when the Pool was built and then never
     # imported, and of 411 jobs reaching Claude, 86 were Vertrieb, Verkauf, Copywriter,
     # Customer Support, Maschinenbau and HR -- $0.28 of Claude, per country, spent reading
-    # sales jobs. It now reads the title Sina typed rather than a word list; see that file.
+    # sales jobs. It now reads the title the user typed rather than a word list; see that file.
     #
     # It runs here, first of the content rules, because it is the cheapest of them: one
     # regex against the title, no network, no translation. Everything it removes is work the
     # remote rule, the country rules and Claude do not have to do.
     #
-    # ...but asked literally it was also the WORST rule in the app. Measured on Sina's Bank:
+    # ...but asked literally it was also the WORST rule in the app. Measured on the user's Bank:
     # 7,737 of 8,768 listings removed here, and 56% of a sample of those removals were real
     # data-science jobs titled "Junior AI Engineer", "Machine Learning Engineer", "Software
     # Engineer - Applied AI". Because this step runs first, Claude never saw them and nothing
@@ -1189,7 +1186,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     # One request, and a failed one costs nothing: no equivalents means this rule is exactly
     # as strict as it was before, so the worst case of the widening is the old behaviour.
     other_names = title_equivalents.equivalents_for(title, claude_client, progress_cb)
-    # Which of those titles Sina ticked in the Filter window. Empty means all of them, as
+    # Which of those titles the user ticked in the Filter window. Empty means all of them, as
     # everywhere else in that window. This is the cheap place to narrow a run: a title left
     # out here costs nothing at all, while the same title left in is paid for twice over --
     # once when Claude screens its listings and again when it scores them against the résumé.
@@ -1208,9 +1205,8 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     # Engineer", "Junior Data Engineering" and "Data (Platform) Engineer" -- verified on all
     # of them. Passing the forms as separate names would change no verdict.
     #
-    # It WOULD change what each row is credited to, and that is the bug this avoids. Sina's
-    # rule: "در اون Dropdown فقط باید به من Data Engineer رو نشون میدی اما تمامی این موارد رو
-    # در Filter بررسی میکنی". The window offers base names, so a row credited to the twin form
+    # It WOULD change what each row is credited to, and that is the bug this avoids. The user's
+    # rule: [owner's note: the dropdown shows only Data Engineer, while all of these are checked in the Filter]. The window offers base names, so a row credited to the twin form
     # "Data Engineering" would answer a filter value that is never offered -- ticking "Data
     # Engineer" would hide it.
     jobs, _off_field = job_field_words.remove_off_field(jobs, title, other_names)
@@ -1247,7 +1243,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
     # being in the place, and a search for Amsterdam kept a job in Paris until this step
     # existed. It also clears out the previous city: the saved pool grows with every search,
     # so an Oslo run still held 296 Vienna listings from the week before.
-    # What Sina actually ticked in the Filter window. These ask nothing about the posting's
+    # What the user actually ticked in the Filter window. These ask nothing about the posting's
     # meaning -- only whether he asked for this country, this kind of role, this age of
     # advert -- so they run before every rule that costs reading, and long before Claude.
     #
@@ -1274,7 +1270,7 @@ def reapply_filters(jobs: list[dict], progress_cb=None, anthropic_api_key=None, 
                             + removed_off_field + removed_by_choice + len(_gone))
 
     # Claude's two parts only exist when a Claude key is configured AND a résumé has been
-    # uploaded. Every fact about Sina now comes from the résumé, so without one both parts
+    # uploaded. Every fact about the user now comes from the résumé, so without one both parts
     # would judge against nobody -- they are skipped, loudly, rather than run blind.
     claude_flagged = []
     claude_key = anthropic_api_key

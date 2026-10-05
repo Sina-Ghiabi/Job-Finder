@@ -12,10 +12,8 @@ from PySide6.QtWidgets import (
 class PreflightProblemsDialog(QDialog):
     """The one window that reports anything RoleHound could not reach.
 
-    Sina asked for exactly this shape: "بگه مشکل اینه و اگر میتونی حلش کنی حل کن اگر نه رد
-    شو" -- name the problem, offer a live fix where one genuinely exists (a missing or
-    expired API key), otherwise let him skip it. Later: "اگر هر مشکلی در URL یا API بود در
-    اون پنجره بهم بگه و بگه چطوری درستش کنم با هوش مصنوعی" -- so it now covers URLs as well
+    The user asked for exactly this shape: [owner's note: say what the problem is; fix it if possible, otherwise skip it] -- name the problem, offer a live fix where one genuinely exists (a missing or
+    expired API key), otherwise let him skip it. Later: [owner's note: a problem with a URL or API is reported in that window, with AI advice on fixing it] -- so it now covers URLs as well
     as APIs, and each problem carries Claude's own step-by-step fix advice (`fix_advice`,
     written by pipeline.explain_problems).
 

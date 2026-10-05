@@ -103,7 +103,7 @@ class LogLines:
 
     def _log_preflight_start(self, message: str):
         # Nested under the outer 'Google' header (started before this fires -- see
-        # run_search) so Sina sees ONE continuous Google timer covering the whole
+        # run_search) so the user sees ONE continuous Google timer covering the whole
         # phase, with Pre-API Check as its own nested, independently-ticking
         # sub-timer underneath it.
         self.log_panel.start_timer_line('preflight', '    Pre-API Check', group='platform:Google')
@@ -155,7 +155,7 @@ class LogLines:
 
     def _log_preflight_end(self, message: str):
         # status|locations (dash-joined countries/cities this check covered) --
-        # replaced the old (passed/checked) count per Sina's ask: the suffix now
+        # replaced the old (passed/checked) count per the user's ask: the suffix now
         # names what was checked, not how many items passed. Pass/fail still
         # decides the line's color exactly as before.
         status, locations = message[len('PREFLIGHT_END:'):].split('|', 1)
@@ -171,7 +171,7 @@ class LogLines:
     def _log_known_sites_start(self, message: str):
         # Real, live-ticking timer -- started right as the one combined Google
         # Search actor call that produces the known-site results begins (it can
-        # take a minute or more). Sina asked for this directly: with only a
+        # take a minute or more). The user asked for this directly: with only a
         # summary line appearing once everything was already done, there was no
         # way to tell this stage had actually started instead of the app being
         # stuck.
@@ -201,7 +201,7 @@ class LogLines:
 
     def _log_startup_sites_start(self, message: str):
         # Same combined actor call as Known Websites -- its own section, per
-        # Sina's ask, so startup/scaleup-specific boards are visually separate
+        # The user's ask, so startup/scaleup-specific boards are visually separate
         # from the general-purpose ones.
         self.log_panel.start_timer_line('startup_sites', '    Startup Websites Search', group='platform:Google')
 
@@ -275,7 +275,7 @@ class LogLines:
     def _log_filter_start(self, message: str):
         # Same nested Object pattern as the Google section: one header timer
         # ('Filter'), with each of its 7 steps as its own nested, independently
-        # ticking Running -> Finished timer underneath -- Sina asked for exactly
+        # ticking Running -> Finished timer underneath -- The user asked for exactly
         # this shape here too, simple and readable at a glance.
         self.log_panel.start_timer_line('filter', 'Filter')
 
@@ -288,7 +288,7 @@ class LogLines:
 
     def _log_filter_step_item(self, message: str):
         # One rule/check name per line, nested under its own step, marked
-        # "Checked" (green) -- Sina asked for the actual rule names to be visible
+        # "Checked" (green) -- The user asked for the actual rule names to be visible
         # in the Log itself, not just each step's own single summary count. Always
         # emitted right before that step's own FILTER_STEP_DONE, so every rule
         # listed here genuinely already ran against every listing by this point.

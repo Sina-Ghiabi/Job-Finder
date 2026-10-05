@@ -1,12 +1,12 @@
 """Per-country, per-language filter vocabulary.
 
-Sina's design. Every rule the Filter applies is a question about words, and until now those
+The user's design. Every rule the Filter applies is a question about words, and until now those
 words were almost all English -- which meant a Dutch, Finnish or Portuguese posting had to
 survive translation before any of them could read it correctly. This module holds the same
 questions asked in the posting's OWN language, so a listing is judged twice: once as the
 board wrote it, and again in English after translation.
 
-For each language there are the six sections Sina specified:
+For each language there are the six sections the user specified:
 
   1. REMOTE     -- three lists, because the question has three answers:
                    `remote`      the posting says the work is done away from an office
@@ -1015,7 +1015,7 @@ LANGUAGES: dict = {
 
 # --------------------------------------------------------------------------------------
 # Every accented term also has to match its unaccented spellings, because job ads write
-# both. Sina's requirement, and it is not cosmetic: 463 of the 1,697 terms below carry a
+# both. The user's requirement, and it is not cosmetic: 463 of the 1,697 terms below carry a
 # character outside ASCII, and a posting that writes "Prasenzpflicht" or "praesenzpflicht"
 # instead of "Präsenzpflicht" would otherwise sail past the rule that exists to catch it.
 # Scrapers strip diacritics, HTML entities get mangled, and people simply type without
@@ -1126,7 +1126,7 @@ def languages_for(country=None, location=None, detected=None) -> tuple:
     """Which language vocabularies apply to a listing.
 
     When the listing's own language has been detected and this module has a vocabulary for
-    it, that vocabulary is what gets loaded -- Sina's design, and it is both more precise
+    it, that vocabulary is what gets loaded -- The user's design, and it is both more precise
     and much cheaper than the alternative: a Belgian listing used to be checked against
     Dutch, French, German and English all at once, so a French phrase could fire on a Dutch
     advert.

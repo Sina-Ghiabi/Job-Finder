@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """The Internship module's own Claude pass. Its own prompt, its own schema, its own plumbing.
 
-Sina's instruction: all three modules get a prompt of their own -- "قطعا هر 3 ماژول باید
-برای Claude اون Prompt جدا و خاص خود را داشته باشند". So nothing here is imported from
+The user's instruction: all three modules get a prompt of their own -- [owner's note: each of the three modules must have its own separate Claude prompt]. So nothing here is imported from
 claude_screen/, which belongs to the Job module and is working; that file is not touched and
 not read. The repetition between the three is the point.
 
@@ -32,7 +31,7 @@ import json
 import re
 import time
 
-# The job title Sina is searching for -- the one thing all three modules agree on. Not a
+# The job title the user is searching for -- the one thing all three modules agree on. Not a
 # rule and not vocabulary; see search_title.py.
 from ..prompt_any import any_workplace_prompt
 from ..search_title import ROW_KEY as TITLE_ROW_KEY, clean_title, is_any_workplace, is_not_remote
@@ -44,15 +43,15 @@ from .prompt_not_remote import INTERNSHIP_SYSTEM_PROMPT_NOT_REMOTE
 CLAUDE_MODEL = 'claude-haiku-4-5-20251001'
 
 
-INTERNSHIP_SYSTEM_PROMPT = """# Internship screening for Sina
+INTERNSHIP_SYSTEM_PROMPT = """# Internship screening for the user
 
 Every posting below offers an internship, a working-student role or a traineeship. That part
 is already decided -- do not re-litigate it. Your job is to say whether **this** one is worth
-Sina applying to. If it conflicts with anything below, **DROP**. Otherwise **KEEP**.
+The user applying to. If it conflicts with anything below, **DROP**. Otherwise **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, the university he is enrolled at, his experience and his
 skills — read them there, and nowhere else.
@@ -130,7 +129,7 @@ in a field, so this is never a reason to drop.
    So a named working-student role is a DROP **unless the posting states plainly that this
    role is performed remotely**. A home-office benefit is not that statement. Silence is not
    that statement.
-3. **It is not the work named on the Field line.** That line is the job title Sina is
+3. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same work under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not — however junior.
 4. **It is unpaid** — voluntary, expenses-only, for credit alone, or self-funded. An
@@ -270,7 +269,7 @@ _OUTPUT_SCHEMA: dict = {
         'reason': {'type': 'string',
                    'description': 'Twelve words or fewer, naming the rule. Empty for a KEEP.'},
     },
-    # No `match`: scoring an internship against Sina is the second part's job now, read
+    # No `match`: scoring an internship against the user is the second part's job now, read
     # against his uploaded résumé (claude_screen/worth.py). This part only decides. The
     # field was last, after the verdict, so taking it out cannot move a verdict.
     'required': ['checked', 'field', 'location_basis', 'verdict', 'rule', 'reason'],
@@ -301,9 +300,9 @@ def resume_text() -> str:
 
 def resume_section(text) -> str:
     """This module's own copy of the "His résumé" block, which the rules point to for every
-    fact about Sina. After the rules, so the two are cached together across a run."""
+    fact about the user. After the rules, so the two are cached together across a run."""
     return ('# His résumé\n\n'
-            'Sina uploaded this himself. It is the only source of facts about him.\n\n'
+            'the user uploaded this himself. It is the only source of facts about him.\n\n'
             '<resume>\n%s\n</resume>\n' % str(text or '').strip())
 
 

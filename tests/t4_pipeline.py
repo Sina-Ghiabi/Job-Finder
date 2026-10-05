@@ -112,10 +112,9 @@ df = run([], [])
 check('nothing selected = no calls', CALLS['n'] == 0, CALLS['n'])
 
 section('4.2  multiple platforms run concurrently, all rows collected')
-# Every platform asks for exactly the places Sina chose, and for no others. LinkedIn used to
+# Every platform asks for exactly the places the user chose, and for no others. LinkedIn used to
 # add each country's strongest city on top, to get past its own 1,000-job ceiling -- a real
-# gain, measured at 48 new jobs in 120 from Berlin alone. Sina ended it: "من میخوام فقط جا
-# هایی که انتخاب کردم رو ببینم ولا غیر". So the count is platforms x locations again.
+# gain, measured at 48 new jobs in 120 from Berlin alone. The user ended it: [owner's note: only the places that were chosen are wanted, nothing else]. So the count is platforms x locations again.
 _locations = 6
 df = run(['Italy', 'Germany'], [], actors=('indeed', 'glassdoor', 'linkedin'))
 check('3 platforms x 2 countries, and nothing added to them',
@@ -298,7 +297,7 @@ steps = [m.split('|')[0].split(':')[1] for m in logs if m.startswith('FILTER_STE
 # was written in, so nothing needs turning into English first. That also ended a whole class
 # of ordering bug -- translation REPLACES the description, so detecting the language
 # afterwards answered "English" and the Dutch evidence was never searched for.
-check('exactly the 6 non-Claude steps run, in the order Sina asked for',
+check('exactly the 6 non-Claude steps run, in the order the user asked for',
       steps == ['dedup', 'work_location', 'country', 'rules', 'sponsorship', 'sort'],
       steps)
 check('there is no translation step in the Filter at all',
@@ -369,7 +368,7 @@ jobs = [
 kept, _, _ = p.reapply_filters([dict(j) for j in jobs], progress_cb=None, anthropic_api_key=None,
                                search_title='Data Scientist')
 order = [k['id'] for k in kept]
-# Sina's order: Thesis, then Internship, then Part-Time, then Full-Time.
+# The user's order: Thesis, then Internship, then Part-Time, then Full-Time.
 check('Internship before Part-Time', order.index('it') < order.index('pt'), order)
 check('Part-Time before Full-Time', order.index('pt') < order.index('ft'), order)
 check('Italy first within Full-Time', order.index('ftit') < order.index('ft'), order)
@@ -417,7 +416,7 @@ def _queries_for(countries, search_for, languages=None):
 # -- the job pass asks its two questions, and nobody else's ---------------------------
 #
 # This used to check that the job pass sent exactly one query, back when its keywords were
-# role titles and an exact phrase could only narrow them. Sina moved the field to DevOps and
+# role titles and an exact phrase could only narrow them. The user moved the field to DevOps and
 # MLOps and asked for every junior and entry-level form of them, which a single broad query
 # cannot deliver: LinkedIn fills its thousand places with senior roles and the junior ones
 # never fit inside it. So the job pass now asks twice -- broadly, then for the entry-level
@@ -434,7 +433,7 @@ for _choice, _why in ((None, 'nothing selected'), (['job'], 'jobs only')):
           [x[:40] for x in _t])
 
 # -- the field is the job title in the box ----------------------------------------------
-# Sina's rule: one title he types replaces every field vocabulary. With nothing typed, the
+# The user's rule: one title he types replaces every field vocabulary. With nothing typed, the
 # default title is asked -- and nothing left over from DevOps or data science.
 _t = [text for _p, text in _queries_for(['Germany'], ['job'])]
 check('the job pass asks for the default title',
@@ -480,7 +479,7 @@ for _word, _why in (('Praktikum', 'internships'), ('Masterarbeit', 'theses'),
 
 # -- Thesis is on the title too ---------------------------------------------------------
 #
-# It kept its data-science vocabulary while Job and Internship moved to DevOps, and then Sina
+# It kept its data-science vocabulary while Job and Internship moved to DevOps, and then the user
 # put it on the title as well: "Masterarbeit Data Engineering". What must stay is the thesis
 # half -- Masterarbeit, Examensarbete -- which is the half that is translated.
 _thesis = [text for _p, text in _queries_for(['Germany'], ['thesis'],
@@ -1064,7 +1063,7 @@ check('Jooble is NEVER called over the network (protects the lifetime budget)',
       not any('jooble' in str(u).lower() for u in _net), _net)
 
 # A source with no key at all is now REPORTED, where it used to be skipped in silence on
-# the grounds that it was "not a problem, just not set up yet". For a country Sina did not
+# the grounds that it was "not a problem, just not set up yet". For a country the user did not
 # select that is still true, and the loop is scoped to this run's countries so it never
 # fires there. For one he DID select it is a national job board switched off with nothing
 # saying so -- a check of the real saved settings found all fifteen Jooble keys, the Reed
@@ -1073,7 +1072,7 @@ check('Jooble is NEVER called over the network (protects the lifetime budget)',
 (_c, _p, _pr, _off), _msgs, _net = _preflight_run([_jc], jooble_keys={})
 check('a selected country whose Jooble key is missing is reported',
       f'{_code}.jooble.org' in _reported_names(_msgs), _reported_names(_msgs))
-# It used to be reported as FAILED. Sina, reading a Log full of red for sources he had
+# It used to be reported as FAILED. The user, reading a Log full of red for sources he had
 # simply never set up: "this is not a problem we have". A source with no key is switched
 # off, not broken, and a healthy run must not read as a broken one -- so it gets its own
 # verdict, stays out of the failure list, and never interrupts a search with a dialog.
@@ -1237,7 +1236,7 @@ _YC_ITEM = {
 }
 _yc = p._workatastartup_rows([_YC_ITEM])
 check('a Y Combinator record becomes one row', len(_yc) == 1)
-check('the platform is the site Sina knows', _yc[0]['platform'] == 'workatastartup.com')
+check('the platform is the site the user knows', _yc[0]['platform'] == 'workatastartup.com')
 check('the country is left to the listing, not the search',
       _yc[0]['country'] is None, _yc[0]['country'])
 check('the real description is kept', 'fullstack engineer' in _yc[0]['description'])
@@ -1267,7 +1266,7 @@ section('4.12c  every direct source searches every role term, not just one')
 #     unique across all four: 1481
 #
 # 1,105 real listings -- 75% of that source -- were invisible, in every country.
-# The terms are now the forms of the one title Sina types, but the finding is why both
+# The terms are now the forms of the one title the user types, but the finding is why both
 # halves of the search send every one of them, and the same ones.
 check('the direct sources use the same terms as the Google phase',
       p.DIRECT_API_ROLE_TERMS == [t.strip('"') for t in p.GOOGLE_QUERY_ROLE_TERMS],
@@ -1359,7 +1358,7 @@ check('cities-only produces ONE item for that city, not one per country',
 _plan, _goog, _tot = _runner._build_search_plan(['indeed', 'linkedin'], ['Italy', 'Spain'], ['Berlin'])
 check('2 platforms x (2 countries + 1 city), and not one location more',
       len(_plan) == 6, (len(_plan), [x[2] for x in _plan]))
-check('  ...every one of them a place Sina chose',
+check('  ...every one of them a place the user chose',
       {x[2] for x in _plan} == {'Italy', 'Spain', 'Berlin'}, sorted({x[2] for x in _plan}))
 # The rule that replaced the split list: a country never drags its cities in behind it.
 _plan2, _g2, _t2 = _runner._build_search_plan(['linkedin'], ['Germany'], ['Berlin'])
@@ -1497,9 +1496,9 @@ check('the stub is never overwritten by a failure',
       boom['description'] == 'Data Scientist at Acme GmbH')
 
 # -- and after every attempt, a listing with no text at all is dropped ---------------
-# Sina's rule, and the measurement behind it: of the 123 German listings still empty after
+# The user's rule, and the measurement behind it: of the 123 German listings still empty after
 # two passes, fetching each one alone recovered exactly one. A row whose description is
-# still "<title> at <company>" cannot be read by any rule, by Claude, or by Sina.
+# still "<title> at <company>" cannot be read by any rule, by Claude, or by the user.
 gone = _thin()
 rows = [gone, _thin(url='https://example.invalid/job/2', desc=REAL_JD)]
 n, calls = _run_enrich(rows, status=404)
@@ -1958,7 +1957,7 @@ for _t in ('How to Become a Data Scientist | Blog',
            'CV Tips for Data Engineers'):
     check(f'article rejected: {_t[:38]}', not _verdict(_t))
 
-# and the postings it must still accept -- over-rejecting is what loses Sina jobs
+# and the postings it must still accept -- over-rejecting is what loses the user jobs
 check('a real posting is accepted',
       _verdict('Job Vacancy: Senior Data Scientist - Python, ML // DATATRONiQ | IT Jobs'))
 check('a German posting is accepted', _verdict('Data Scientist (w/m/d)'))
@@ -2571,7 +2570,7 @@ section('4.23  a failure found mid-search reaches the problems window')
 
 from app.pipeline import preflight as _pf
 
-# The two halves of Sina's request, end to end: a site that cannot be opened must not
+# The two halves of the user's request, end to end: a site that cannot be opened must not
 # interrupt the search with a popup, and must still be REPORTED afterwards -- with
 # Claude's fix advice attached -- rather than scrolling past in the log.
 _reported = {'problems': None, 'calls': 0}
@@ -2612,7 +2611,7 @@ check('  ...and marked as a URL problem, not an API one',
       _reported['problems'][0].get('kind') == 'url')
 
 # _warn_zero_result_google_sites is what finds them. It used to end in a dialog asking
-# Sina to go and hunt for the right URL; it must now only report.
+# The user to go and hunt for the right URL; it must now only report.
 _probs = []
 _found = _google._warn_zero_result_google_sites(
     [], [], [], progress_cb=None, extra_broken_domains=['dead.invalid'], problems=_probs)
@@ -2629,7 +2628,7 @@ _google._warn_zero_result_google_sites([], [], [], progress_cb=None,
 check('a clean run reports no problems', _probs == [], _probs)
 
 # A site that DELIVERED must never be reported as having gone quiet. On a real Netherlands
-# search this told Sina he had lost seventeen sites when he had lost seven: startup.jobs
+# search this told the user he had lost seventeen sites when he had lost seven: startup.jobs
 # had returned 52 listings, magnet.me 6, jobfluent.com 5, nationalevacaturebank.nl 3, and
 # four more came in through the browser stage. Two separate causes, both here.
 _ROWS_FROM_BROWSER_STAGE = [
@@ -3476,7 +3475,7 @@ check('every listing in the group is in the one prompt',
 # The mix-up test, and the bad-number tests after it, force a group of three for
 # themselves. Production sends ONE listing per request -- bundling three agreed with
 # one-at-a-time only 96.7% of the time and every disagreement was a listing wrongly KEPT, one
-# of which Sina reported -- but the grouping code is still there, and the property these
+# of which the user reported -- but the grouping code is still there, and the property these
 # prove is the one that matters if it is ever used again: an answer lands on the listing its
 # NUMBER names, never on its position in the reply.
 _REAL_GROUP_SIZE = _cs_screen._BATCH_GROUP_SIZE
@@ -3719,8 +3718,8 @@ for _level in ('entry', 'junior', 'mid', 'senior'):
 #
 # This asserted eight distinct prompts -- four Levels times Remote and Not Remote -- and the
 # guard beside it said the Levels differed only in the level paragraph and rule 4. Those were
-# the only two differences, so when Sina asked for seniority to be classified rather than
-# filtered ("نباید Filter کنه باید اون هارو دسته بندی کنه") and both passages were replaced
+# the only two differences, so when the user asked for seniority to be classified rather than
+# filtered ([owner's note: it should not filter, it should categorise]) and both passages were replaced
 # with one shared text, the four Levels collapsed into one document.
 #
 # What that buys, beyond the thing he asked for: a verdict reached for one Level is now valid
@@ -3781,7 +3780,7 @@ for _module, _remote_text, _nr_text in (
     check('%s: Not Remote drops only a stated remote role' % _module,
           '→ DROP.' in _nr_text and 'city he lives in' not in _flat_n)
 
-# The .md files beside the app are the copies Sina reads; they must be the prompts exactly.
+# The .md files beside the app are the copies the user reads; they must be the prompts exactly.
 _MIRRORS = {'Job-Filter-Claude-Apify.md': ('junior', 'remote'),
             'Job-Filter-Claude-Apify-Not-Remote.md': ('junior', 'not_remote')}
 for _label in ('Entry', 'Mid', 'Senior'):
@@ -4172,7 +4171,7 @@ _ledger_path.unlink(missing_ok=True)
 
 section('4.twins  one job on two boards, caught once Claude has named the employer')
 
-# A real Amsterdam result showed Sina 48 listings with 8 duplicate pairs in them: QuantumBlack's
+# A real Amsterdam result showed the user 48 listings with 8 duplicate pairs in them: QuantumBlack's
 # Data Scientist on LinkedIn and on qarera, Metyis' Data Science Analyst on both, Robeco's
 # Junior Climate Data Scientist on LinkedIn and quantjobs. The first dedup cannot see them --
 # it runs before anything has read the posting, when most rows carry no employer at all, and
@@ -4243,7 +4242,7 @@ section('4.entities  HTML entities are unescaped before anyone reads the listing
 
 # M-6, open since the M campaign and now measured: 26,445 entities across the five real
 # corpora, on 27-43% of listings, and ZERO keyword verdicts change when they are unescaped.
-# So this is not a filtering fault -- it is what Sina reads in the table and the export, and
+# So this is not a filtering fault -- it is what the user reads in the table and the export, and
 # what Claude is handed.
 _ENT = [{'title': 'Data Scientist, Risk &amp; Pricing', 'company': 'A',
          'url': 'https://example.invalid/e1', 'country': 'Netherlands',
@@ -4317,8 +4316,7 @@ def _place_run(mode, countries, cities=None):
 _nl = _place_run('not_remote', ['Netherlands'])
 check('Not Remote drops a job in a country nobody searched', 'fr' not in _nl, _nl)
 check('  ...and keeps the one in the searched country', 'nl' in _nl, _nl)
-# These three used to assert the opposite, and the change is Sina's: "اگر نوشتم
-# Netherlands یعنی فقط Netherlands میخوام". The rule was timid on the grounds that a wrong
+# These three used to assert the opposite, and the change is the user's: [owner's note: if Netherlands is chosen, only Netherlands is wanted]. The rule was timid on the grounds that a wrong
 # drop costs a real job, and it kept an unknown country, a list of countries, and a board's
 # "Worldwide". Counted on the real Bank those three hatches were keeping 309 rows out of the
 # 13,967 a Netherlands filter kept -- they were not protecting much, and he had asked for
@@ -4335,7 +4333,7 @@ check('Not Remote drops the remote listing, wherever it is',
 # The WORK LOCATION rule still never asks where a remote job is -- remote work can be done
 # from anywhere, so the rule stays off in a Remote search, exactly as before. What asks now
 # is the Filter window's own country choice, which is a different question: not "could he do
-# this job" but "did he ask to see this country". Sina ticked Netherlands + Remote and got
+# this job" but "did he ask to see this country". The user ticked Netherlands + Remote and got
 # German listings back, because nothing in a Remote run ever looked at the tick. So: no
 # country chosen, the place is never mentioned; a country chosen, it is honoured.
 check('Remote never asks where the job is when no country was chosen',
@@ -4348,7 +4346,7 @@ check('  ...but a country ticked in the Filter window IS honoured in a Remote ru
 # The Dutch survivor is proved in section 4.chosen, on rows built for it.
 check('with neither country nor city chosen the rule does nothing',
       'fr' in _place_run('not_remote', []), _place_run('not_remote', []))
-# Sina's own settings for the Amsterdam run were cities=['Amsterdam'], countries=[] -- a city
+# The user's own settings for the Amsterdam run were cities=['Amsterdam'], countries=[] -- a city
 # search stores no country, so without this the rule would never fire on a real search.
 _by_city = _place_run('not_remote', [], ['Amsterdam'])
 check('a city alone says which country was searched', 'fr' not in _by_city, _by_city)
@@ -4408,7 +4406,7 @@ for _label, _finder, _row in (
 
 
 # ---------------------------------------------------------------------------- 4.note ----
-# Sina's request: the reason a listing was removed has to stay on the end of the listing,
+# The user's request: the reason a listing was removed has to stay on the end of the listing,
 # between markers, so a removal can be read rather than taken on trust. The danger the whole
 # design turns on is that the note lives in `description`, which is also what every rule and
 # Claude READ -- so these check both halves: that it is written, and that it never counts as
@@ -4486,7 +4484,7 @@ _kept_twins, _removed_twins = p.filters._remove_duplicates_list([_twin_a, _twin_
 check('a note on one copy does not hide a duplicate', _removed_twins == 1,
       (len(_kept_twins), _removed_twins))
 
-# End to end through reapply_filters, which is where Sina will actually see it: the note is
+# End to end through reapply_filters, which is where the user will actually see it: the note is
 # stripped from every row before any rule reads it, and written back only onto a removal.
 _notes_seen = []
 
@@ -4520,7 +4518,7 @@ check('reapply_filters strips a stale note before any rule reads the listing',
 
 # -------------------------------------------------------------------------- 4.chosen ----
 section('4.chosen  every choice in the Filter window actually filters')
-# Sina picked Junior, Remote, Netherlands, Part-Time, Internship and got back German
+# The user picked Junior, Remote, Netherlands, Part-Time, Internship and got back German
 # full-time listings. The rules were all correct; four of them were never called, and the
 # fifth -- the country -- was only ever consulted by the Not Remote place rule, which returns
 # immediately in a Remote search. That is why these tests go through reapply_filters rather
@@ -4587,7 +4585,7 @@ def _ch_filter(rows, **choices):
     return {j.get('url') for j in kept}
 
 
-# --- the country, in a REMOTE search -- the exact shape of Sina's report ------------------
+# --- the country, in a REMOTE search -- the exact shape of the user's report ------------------
 _CH_PLACE = [
     _ch_row('https://example.invalid/nl', country='Netherlands'),
     _ch_row('https://example.invalid/de', country='Germany'),
@@ -4602,7 +4600,7 @@ _ch_nl = _ch_filter(_CH_PLACE, search_countries=['Netherlands'])
 check('choosing Netherlands in a REMOTE search really removes the German listing',
       'https://example.invalid/de' not in _ch_nl, sorted(_ch_nl))
 check('  ...and keeps the Dutch one', 'https://example.invalid/nl' in _ch_nl, sorted(_ch_nl))
-# Strict, because Sina said so: "اگر نوشتم Netherlands یعنی فقط Netherlands میخوام". The
+# Strict, because the user said so: [owner's note: if Netherlands is chosen, only Netherlands is wanted]. The
 # first version waved through anything that did not clearly state a country he had not asked
 # for -- an empty field, a list of countries, a board's "Worldwide". Counted on the real
 # Bank those three hatches were keeping 309 rows out of 13,967, none of which he had asked
@@ -4650,9 +4648,8 @@ _CH_KIND = [
 #
 # It used to run inside reapply_filters and these assertions went through it. On the
 # real Netherlands run, ticking Part-Time removed 295 of the 321 listings that had
-# survived every other rule and left four, so Sina moved the choice into the table:
-# "میتونی Filter مربوط به Type رو برداری اما من در جدولی که بهم نمایش میده خودم برم
-# انتخاب کنم". The Type column's filter button does it now, on a pool that kept
+# survived every other rule and left four, so the user moved the choice into the table:
+# [owner's note: the Type filter may go, as the choice is made in the table]. The Type column's filter button does it now, on a pool that kept
 # everything.
 #
 # The function stays and so do its assertions. It is correct, it is still the thing
@@ -4678,8 +4675,7 @@ check('  ...and nothing ticked keeps every kind',
 check('the Filter keeps every kind even with Part-Time ticked',
       len(_ch_filter(_CH_KIND, categories=['Part-Time'])) == 5,
       sorted(_ch_filter(_CH_KIND, categories=['Part-Time'])))
-# Sina asked for doctoral work to be its own kind: "کار Full time با کار phd و تحقیقاتی کاملا
-# فرق دارد و باید تفکیک باشند". A PhD advert says "thesis" all through its body and is still
+# The user asked for doctoral work to be its own kind: [owner's note: a full-time job differs completely from a PhD or research post and they must be separated]. A PhD advert says "thesis" all through its body and is still
 # not a thesis placement, so ticking Thesis must not bring it back.
 check('a PhD post is its own kind, not Full-Time and not Thesis',
       _ch_kinds_direct(_CH_KIND, ['PhD']) == {'https://example.invalid/phd'},
@@ -4691,7 +4687,7 @@ check('  ...and ticking Full-Time does not either',
       'https://example.invalid/phd' not in _ch_kinds_direct(_CH_KIND, ['Full-Time']),
       sorted(_ch_kinds_direct(_CH_KIND, ['Full-Time'])))
 
-# --- the job titles Sina ticked in the Filter window ---------------------------------------
+# --- the job titles the user ticked in the Filter window ---------------------------------------
 # Mutation testing found nothing was watching this: making reapply_filters ignore `fields`
 # entirely broke no test at all. It is the choice that decides what a run COSTS -- unticking
 # "AI Engineer" takes 512 listings out of Claude's reach on his own pool -- so a change that
@@ -4797,8 +4793,7 @@ check('the Filter worker passes all of them on',
       _inspect.getsource(_worker_src.FilterWorker.run))
 
 # --- the résumé now belongs to the Filter window, not the Search wizard --------------------
-# "باید بخش انتخاب رزومه رو از Search به Filter انتقال بدیم چون ما در Filter رزوممون بررسی
-# میشه" -- the search never opens the résumé; the Filter is what scores against it.
+# [owner's note: the résumé choice moves from Search to Filter, because the résumé is checked in Filter] -- the search never opens the résumé; the Filter is what scores against it.
 check('the Filter window is where the résumé is chosen',
       all(hasattr(_fd_src.FilterDialog, name)
           for name in ('_resume_box', '_choose_resume', '_preview_resume')))

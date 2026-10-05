@@ -8,7 +8,7 @@ expensive, because a page of forty jobs is longer than one job -- 6,885 characte
 median against 3,775 for a real posting.
 
 Sending them costs money and gains nothing: Claude reads a list of other people's jobs and
-is asked whether Sina should apply to it.
+is asked whether the user should apply to it.
 
 WHY THE URL DECIDES AND THE TITLE ONLY VOTES
 
@@ -75,7 +75,7 @@ _LISTING_URL = re.compile(
 # _COUNTS_VACANCIES has anything to fire on -- and their addresses are title-shaped, so every
 # rule above reads them as one posting.
 #
-# Sina found them at the far end of the Germany run, in the nine listings Claude had marked
+# The user found them at the far end of the Germany run, in the nine listings Claude had marked
 # "apply": "How to become a Data Scientist in Germany" (a careers article), "Data Scientist
 # (m/f/d): Salary, tasks & jobs" (Hays' reference page for the role) and "The Helmholtz
 # Information & Data Science Framework" (an organisation describing itself). Claude keeps
@@ -287,7 +287,7 @@ def is_single_posting_url(url) -> bool:
 # Some of what a search collects is a posting that has already been taken down -- the board
 # still serves the address, but the page now says so. Nothing in this app noticed: a page
 # reading "Job Not Found. This job listing has been removed" has a title, a URL and enough
-# text to pass every other check, so it reached Claude and could be shown to Sina as a job
+# text to pass every other check, so it reached Claude and could be shown to the user as a job
 # to apply for.
 #
 # Measured across 26,216 unique listings on disk: 23 say they are gone. Every phrase below
@@ -396,7 +396,7 @@ EMPTIED_KEY = '_listing_page_emptied'
 # Set when a page held postings but every one was already in the search -- the later pages of
 # a paginated listing, in other words. Kept apart from EMPTIED_KEY because the two lead to
 # different words in the Log and one of them is an instruction to go and fix a site. A real
-# German run told Sina that 53 XING pages "gave up nothing"; 162 XING postings were in that
+# German run told the user that 53 XING pages "gave up nothing"; 162 XING postings were in that
 # run's results and 96 came out of those very pages.
 _ALREADY_HAD_KEY = '_listing_page_already_had'
 
@@ -412,7 +412,7 @@ def remove_listing_pages(rows: list) -> tuple:
     recognisable.
 
     For a while those 32 were kept, on the reasoning that discarding them would take
-    whatever they listed with them. Sina asked the question that undoes it: what good is a
+    whatever they listed with them. The user asked the question that undoes it: what good is a
     kept page that gave up nothing? Measured on the second German run, none at all. Of the
     88 that could not be emptied, 76 were dropped by the ordinary filters anyway, and every
     one of the 12 that reached Claude was an index page -- "Data Science Jobs in Germany -
@@ -436,7 +436,7 @@ def remove_listing_pages(rows: list) -> tuple:
     worth naming in the Log rather than a row worth keeping.
 
     Deliberately its own function in its own module rather than another clause inside the
-    filter chain: it answers a question about what a URL IS, not about whether Sina would
+    filter chain: it answers a question about what a URL IS, not about whether the user would
     want the job, and those are different subjects that fail in different ways.
     """
     kept: list = []
@@ -530,7 +530,7 @@ def _collect_links_inside(indexes, known, progress_cb, should_cancel):
                 #
                 # So: ask again ignoring what is already known. If the page does hold
                 # postings we simply had them all, that is a page working perfectly, and
-                # saying otherwise sends Sina to fix a site that is fine.
+                # saying otherwise sends the user to fix a site that is fine.
                 anything = postings_inside(html, str(row.get('url')), set())
                 if anything:
                     row[_ALREADY_HAD_KEY] = True
@@ -645,8 +645,7 @@ def _build_rows_from_links(wanted, progress_cb, should_cancel):
 def expand_listing_pages(rows: list, progress_cb=None, should_cancel=None) -> list:
     """Open every index page in `rows` and return the postings found inside.
 
-    Sina's instruction, and the reason it is worth the wall-clock: "زمان مهم نیست، نمیخوام
-    آگهی از دستم بره". Measured on the real Austrian corpus, nine index pages held 43 job
+    The user's instruction, and the reason it is worth the wall-clock: [owner's note: time does not matter, and no listing may be lost]. Measured on the real Austrian corpus, nine index pages held 43 job
     URLs the search had never seen, every one of them fetched cleanly, and two cleared the
     whole filter chain -- both remote roles at arc.dev that would otherwise have been thrown
     away with the page that listed them.

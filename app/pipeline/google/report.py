@@ -16,7 +16,7 @@ def _warn_zero_result_google_sites(rows: list[dict], countries: list[str], citie
                                     progress_cb=None,
                                     extra_broken_domains: tuple[str, ...] | list[str] = (),
                                     problems: list | None = None) -> list:
-    """Sina asked for this as a blanket safety net covering EVERY site RoleHound searches
+    """The user asked for this as a blanket safety net covering EVERY site RoleHound searches
     via Google (COUNTRY_JOB_SITES and GOOGLE_GLOBAL_EXTRA_SITES alike, confirmed
     deep-crawl pattern or not) -- not just the ones with no confirmed
     GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS entry (that's the separate, narrower check
@@ -26,12 +26,12 @@ def _warn_zero_result_google_sites(rows: list[dict], countries: list[str], citie
     single result from it.
 
     `extra_broken_domains` is _deepen_google_results' own list (domains with no
-    confirmed job-URL pattern) -- merged in here so Sina gets ONE combined report for
+    confirmed job-URL pattern) -- merged in here so the user gets ONE combined report for
     every domain that needs attention this run, regardless of which of the two checks
     found it, instead of two separate warnings.
 
     Returns the problems as a list of dicts and, if `problems` is given, appends them to
-    it. This used to end in a dialog asking Sina to go and find the correct URL himself;
+    it. This used to end in a dialog asking the user to go and find the correct URL himself;
     pattern discovery does that automatically now, so what remains is telling him which
     sites stayed quiet and why."""
     no_pattern_domains = set(extra_broken_domains)
@@ -44,7 +44,7 @@ def _warn_zero_result_google_sites(rows: list[dict], countries: list[str], citie
     # domain as its platform, not 'google', so it was invisible here and got reported as
     # having "returned zero results" in the same run that it delivered listings. On a real
     # Netherlands search that misreported werk.nl, weworkremotely.com, work.turing.com and
-    # work.mercor.com -- four sites Sina was told he had lost and had not.
+    # work.mercor.com -- four sites the user was told he had lost and had not.
     found_domains = {
         urlsplit(r['url']).netloc.lower() for r in rows if r.get('url')
     }
@@ -64,7 +64,7 @@ def _warn_zero_result_google_sites(rows: list[dict], countries: list[str], citie
         broken_domains.update(domain for domain in expected_domains if not _was_found(domain))
 
     # A site that produced listings but has no individual-posting pattern is NOT the same
-    # thing as a site that produced nothing, and merging them cost Sina real trust: told
+    # thing as a site that produced nothing, and merging them cost the user real trust: told
     # that seventeen sites had gone quiet, he had actually lost nine -- startup.jobs had
     # delivered 52 listings, magnet.me 6, jobfluent.com 5, nationalevacaturebank.nl 3.
     # Both still deserve a line, because a site whose postings cannot be opened

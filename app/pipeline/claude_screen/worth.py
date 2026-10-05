@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Part two: how well does each listing that survived match Sina's résumé?
+"""Part two: how well does each listing that survived match the user's résumé?
 
-Sina's design, in his words: Claude "یک بخش داره که با Profile آگهی هارو پیدا میکنه و در بخش
-بعدی میگه چند درصد آگهی هایی که موندن با رزومه ای که آپلود کردی همخونی داره". So Claude
+The user's design, in his words: Claude [owner's note: one part finds listings by the profile, and the next says what percentage of the remaining ones match the uploaded résumé]. So Claude
 works in two parts:
 
     part one   the Level's profile decides KEEP or DROP     (screen.py, and the Thesis and
@@ -10,7 +9,7 @@ works in two parts:
     part two   this file: a match percentage against the     every Level, one Match column
                résumé he uploaded, for what part one kept
 
-Until now this file held a hard-coded paragraph about Sina -- "entry or junior level, in
+Until now this file held a hard-coded paragraph about the user -- "entry or junior level, in
 data, ML or AI" -- written before the field became a title he types and never updated when
 it did, so a Data Engineering search was still being judged against data science. The
 résumé replaces it entirely.
@@ -45,16 +44,16 @@ CACHE_KEY = 'resume_match_cache_key'
 # dialog and can be kept by hand. Moved here from the first part with the score itself. The
 # history of the number: a cybersecurity delivery architect passed every rule and scored 35
 # against a data-engineering profile while every genuine match in the same run scored 65 to
-# 85, and Sina asked for everything under 35% to be cut -- so the line sits just above it.
+# 85, and the user asked for everything under 35% to be cut -- so the line sits just above it.
 MATCH_MINIMUM = 36
 
 _LEVEL_NAMES = {'any': 'Any', 'thesis': 'Thesis', 'internship': 'Internship',
                 'entry': 'Entry', 'junior': 'Junior', 'mid': 'Mid', 'senior': 'Senior'}
 
-_APPLY_SYSTEM_PROMPT = """# Résumé match for Sina
+_APPLY_SYSTEM_PROMPT = """# Résumé match for the user
 
 Every listing below has already been screened and kept. It is in the work named on its Field
-line — the job title Sina is searching for — at the level on its Level line (a Level of Any
+line — the job title the user is searching for — at the level on its Level line (a Level of Any
 means he did not choose one), and nothing in
 it rules him out. Your job is the second question: **how well does this listing match his
 résumé?**
@@ -149,7 +148,7 @@ def _apply_prompt(job: dict) -> str:
 
 def _resume_section(text) -> str:
     return ('# His résumé\n\n'
-            'Sina uploaded this himself. It is the only source of facts about him.\n\n'
+            'the user uploaded this himself. It is the only source of facts about him.\n\n'
             '<resume>\n%s\n</resume>\n' % str(text or '').strip())
 
 
@@ -193,7 +192,7 @@ def claude_resume_match(client, jobs: list, resume_text: str, progress_cb=None,
 
     One request per listing, all sent as one batch at half price. A listing that gets no
     answer is simply absent -- the caller leaves it as it was rather than guessing, because a
-    wrong "skip" here costs Sina a job he never sees.
+    wrong "skip" here costs the user a job he never sees.
     """
     if not jobs:
         return {}

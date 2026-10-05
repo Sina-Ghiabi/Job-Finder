@@ -395,14 +395,14 @@ from .filters import (  # noqa: F401
 
 # The other two modules. Everything above this line is the Job module; these two are its
 # peers, not its helpers. Nothing above imports either of them, they do not import each
-# other, and they share no vocabulary with the Job module or with one another -- Sina's
+# other, and they share no vocabulary with the Job module or with one another -- The user's
 # design, so all three can be edited and broken independently.
 from . import internship as internship_module  # noqa: F401
 from . import thesis as thesis_module  # noqa: F401
 from .internship import find as find_internship_postings  # noqa: F401
 from .thesis import find as find_thesis_postings  # noqa: F401
 
-# What Sina chooses in Search: one job title, one Level, Remote or Not Remote.
+# What the user chooses in Search: one job title, one Level, Remote or Not Remote.
 from .search_title import (  # noqa: F401
     DEFAULT_SEARCH_LEVEL,
     DEFAULT_SEARCH_TITLE,
@@ -419,7 +419,7 @@ from .search_title import (  # noqa: F401
 )
 
 # Telling a page of jobs from a job, and opening the former. Its own module because it
-# answers a question about what a URL IS, not about whether Sina would want the job.
+# answers a question about what a URL IS, not about whether the user would want the job.
 from .pages import (  # noqa: F401
     expand_listing_pages,
     is_gone,

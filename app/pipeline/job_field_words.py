@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Does this listing's title name the job Sina is searching for? — the Job module's own copy.
+"""Does this listing's title name the job the user is searching for? — the Job module's own copy.
 
-A copy, on purpose, and kept beside the Job module's own rules. Sina's rule for the three
+A copy, on purpose, and kept beside the Job module's own rules. The user's rule for the three
 modules is that they share nothing, and that rule is what this file obeys: the Internship and
 Thesis modules each carry their own copy of this check, and tuning one cannot move another.
 The only thing the three agree on is the title itself (app/pipeline/search_title.py).
@@ -10,8 +10,7 @@ THE TITLE SINA TYPES IS THE FIELD
 
 Until the job title box existed, this file was a hand-written list of about 150 field words
 in thirteen languages -- DevOps, platform, infrastructure, data, software, Informatik,
-données. Sina replaced it with one name: "من یک عنوان رو برات مینویسم و باید اون عنوان جای
-همه ی اینها بشینه". So a listing is in the field when its title names that job, and only then.
+données. The user replaced it with one name: [owner's note: one typed title must take the place of all of these]. So a listing is in the field when its title names that job, and only then.
 The word list is kept out of the public repository.
 
 HOW A TITLE "NAMES" THE JOB
@@ -132,8 +131,8 @@ def matched_title(row, search_title=None, also=None):
 def stamp_field_match(rows: list, search_title=None, also=None, scores=None) -> None:
     """Write onto every row which searched title found it, and how similar that title is.
 
-    Two columns in the Jobs table read these, and one of them decides the order Sina sees:
-    "هرچی گفتم نشون بده حتما Order اش بر اساس بیشترین شباهت باشه". The typed title scores 100
+    Two columns in the Jobs table read these, and one of them decides the order the user sees:
+    [owner's note: whatever is shown must be ordered by highest similarity]. The typed title scores 100
     -- it is what he asked for -- and each equivalent carries the score Claude gave it.
 
     A row whose title says nothing is credited to the typed title at 100 rather than left

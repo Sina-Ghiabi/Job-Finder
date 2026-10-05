@@ -130,7 +130,7 @@ else:
     from app import resume as _resume
 
     # Claude reads every fact about the candidate from the résumé, so a live run needs one.
-    # A made-up one, written here: the real résumé is Sina's and belongs in the app's data
+    # A made-up one, written here: the real résumé is the user's and belongs in the app's data
     # folder, not in a test. isolated_storage() has already moved that folder somewhere
     # temporary, so this cannot touch his.
     import docx as _docx

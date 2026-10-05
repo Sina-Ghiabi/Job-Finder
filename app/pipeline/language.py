@@ -115,7 +115,7 @@ _ANTHROPIC_API_KEY: list = [None]
 # (a near no-op, since it's already English) and marked was_translated=True, which then
 # feeds directly into lacks_english_mention() below -- and a real English job posting
 # almost never contains the literal word "English" in its own text (it doesn't need
-# to), so it gets wrongly DROPPED. Sina flagged this exact scenario as suspicious; this
+# to), so it gets wrongly DROPPED. The user flagged this exact scenario as suspicious; this
 # confirmed it. Below this length, detection is too unreliable to trust either way, so
 # text this short is treated as 'unknown' (same as already-empty text) -- which,
 # equally importantly, is NOT the same as 'en': translate_many/maybe_translate already
@@ -257,7 +257,7 @@ _LANGUAGE_LEVEL = (
 # "or" is deliberately NOT a conjunction here. "C1+ level in either English or Spanish",
 # "professional working proficiency in English or Russian" and "if the documents are not in
 # German or English" all mean English on its own is enough -- the opposite of what this rule
-# is looking for. Including it deleted three real listings that ask for nothing Sina lacks.
+# is looking for. Including it deleted three real listings that ask for nothing the user lacks.
 _LANGUAGE_CONJUNCTION = r'(?:and|&|\+|/|plus|as well as|sowie|und)'
 
 # A bounded gap on BOTH sides of the conjunction, because real postings put the level in
@@ -401,7 +401,7 @@ _ENGLISH_PATTERN = re.compile(r'\b(?:%s)\b' % _ENGLISH, re.I)
 # Deliberately not clause-scoped, then. Clause scope is correct for _LANGUAGE_NICE_TO_HAVE,
 # because reaching into the next sentence there would invent a qualifier the posting never
 # attached and DELETE nothing wrongly -- it would keep wrongly. Here the error runs the other
-# way: a window too narrow deletes a listing Sina asked to see. So the window is wide, and
+# way: a window too narrow deletes a listing the user asked to see. So the window is wide, and
 # the cost of its width is some postings that name English somewhere unrelated surviving to
 # Claude. That is the direction he has chosen every time it has come up.
 _ENGLISH_BESIDE_WINDOW = 160
@@ -422,7 +422,7 @@ def _names_english_beside(text: str, hit) -> bool:
     return names_english_beside(text, hit.start(), hit.end())
 
 def requires_language_besides_english(row):
-    """Drops a listing that wants a language Sina does not have INSTEAD of English.
+    """Drops a listing that wants a language the user does not have INSTEAD of English.
 
     Reads the posting in whatever language it was written in. That is a correction, not a
     design: this rule was written when every listing was translated to English before the
@@ -432,12 +432,12 @@ def requires_language_besides_english(row):
 
     What that cost, measured on the 5,442 real German listings of the Germany run: of the
     1,778 that state a German requirement in German, it caught **13**. The other 1,765 went
-    through to Claude, which is both a bill and a gap -- the two REPLY listings Sina found
+    through to Claude, which is both a bill and a gap -- the two REPLY listings the user found
     asked for "Kommunikationsstärke in Deutsch und Englisch" and reached him anyway.
 
     THE PAIRING IS NOW A KEEP, WHICH REVERSES WHAT THIS RULE WAS BUILT TO DO
 
-    Sina set out the four shapes a posting can have and what he wants of each, and he had
+    The user set out the four shapes a posting can have and what he wants of each, and he had
     the first three right about the code as it stood:
 
         says nothing about language   non-English posting  dropped (silent_about_english)
@@ -446,7 +446,7 @@ def requires_language_besides_english(row):
         wants English AND another    "Deutsch und Englisch"             dropped
         wants English only           "Fluent English required"          kept
 
-    Then: "اگر به صورت ترکیبی میگفت انگلیسی و یه زبان دیگه باید این رو هم قبول بکنه". The
+    Then: [owner's note: a posting asking for English together with another language must be accepted too]. The
     third row flips. A posting that asks for English alongside Dutch has said the work can
     be done in a language he has, and whether the second one is a wall is a judgement about
     his own CV that he would rather make himself, looking at the advert.
@@ -479,7 +479,7 @@ def requires_language_besides_english(row):
     text = f"{row.get('title') or ''} {row.get('description') or ''}"
     for pattern in (_LEVELLED_LANGUAGE_PATTERN, _CEFR_PATTERN):
         for hit in pattern.finditer(text):
-            # Sina's reversal, and it is checked first because it is the broadest of the
+            # The user's reversal, and it is checked first because it is the broadest of the
             # three: English named beside the demand means he has been offered a language he
             # reads, and the listing is his to judge.
             if _names_english_beside(text, hit):
@@ -496,7 +496,7 @@ def requires_language_besides_english(row):
     return False
 
 
-# The English column's three answers, in the order Sina reads them: "English only" first,
+# The English column's three answers, in the order the user reads them: "English only" first,
 # because that is the group he asked to see first.
 ENGLISH_NEED_ORDER = ['English only', 'English + Other', 'Other only']
 
@@ -504,9 +504,8 @@ ENGLISH_NEED_ORDER = ['English only', 'English + Other', 'Other only']
 def english_requirement_of(row) -> str:
     """Which of the three language shapes this posting is -- the English column.
 
-    Sina asked for the pairing to stop being deleted and then asked to be able to pick it
-    out in the table: "میتونی یک ستون ها اضافه کنی که بشه انتخاب کرد فقط English و
-    English + Other Language ... مثل فایل Excel". So the same reading that decides whether
+    The user asked for the pairing to stop being deleted and then asked to be able to pick it
+    out in the table: [owner's note: add columns so one can choose English only, or English plus another language, like Excel]. So the same reading that decides whether
     to delete also writes down WHAT it found, and the column is a classification like
     Seniority and Type -- it deletes nothing.
 

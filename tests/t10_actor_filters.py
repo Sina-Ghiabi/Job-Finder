@@ -5,7 +5,7 @@ WHY THIS SUITE EXISTS
 
 f_WT=2 was sent to LinkedIn on every Remote search this app ever ran, and it does nothing:
 the same URL without it returns the identical 300 jobs. For four months the premise of the
-whole search -- Sina works from his desk in Turin and is not moving -- never reached the
+whole search -- The user works from his desk in Turin and is not moving -- never reached the
 largest source in the app, and nothing noticed, because two tests asserted the parameter was
 in the URL and called that "LinkedIn's own remote filter".
 
@@ -94,7 +94,7 @@ check('an unknown platform asks for nothing', af.fields_for('nonesuch') == [])
 # ---------------------------------------------------------------------------------------
 section('10.2  off means off: nothing narrows the search unless he chose it')
 # ---------------------------------------------------------------------------------------
-# Sina's standing rule for this whole project. An actor's own default is not his choice
+# The user's standing rule for this whole project. An actor's own default is not his choice
 # either, so every control's off position sends NO key at all.
 _defaults = {af.SETTINGS_KEY: af.defaults()}
 for _platform in ('linkedin', 'glassdoor', 'indeed'):
@@ -149,7 +149,7 @@ check('  ...and keeps the date window it was already given',
       _in.get('datePosted') == '14', _in)
 
 # LinkedIn, on the actor that replaced curious_coder. Its pair of row-limit keys is gone --
-# `limit` here is a PAGE size of at most 100 and Sina's cap is `maxResults`, an instruction to
+# `limit` here is a PAGE size of at most 100 and the user's cap is `maxResults`, an instruction to
 # _run_linkedin_pages that is removed before anything is sent.
 _li = asked('linkedin', PICKED)
 check('linkedin is asked for the Results limit as the actor\'s own `limit`',
@@ -244,9 +244,7 @@ check('an untouched window reads back exactly the defaults',
       _wizard._selected_actor_filters() == af.defaults(),
       (_wizard._selected_actor_filters(), af.defaults()))
 
-# EVERY PARAMETER IS A DROPDOWN, WITH NO EXPLANATORY TEXT -- Sina: "برای پارامتر های Actor ها
-# توضیح ننویس و زیر هم تمام پارامتر هایی که میتونیم به یک Actor بدیم رو بنویس عبارتش رو و جلوش
-# یک Dropdown بذار". A tick used to be a checkbox and a number a spin box; asserting the kind of
+# EVERY PARAMETER IS A DROPDOWN, WITH NO EXPLANATORY TEXT -- [owner's note: no explanations for the actors' parameters: list every parameter an actor accepts, each with a dropdown in front]. A tick used to be a checkbox and a number a spin box; asserting the kind of
 # widget is how the next edit cannot quietly bring either back.
 from PySide6.QtWidgets import QComboBox, QLabel, QWidget       # noqa: E402
 

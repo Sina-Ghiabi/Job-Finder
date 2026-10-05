@@ -30,7 +30,7 @@ curl_cffi>=0.7
 # notices and half an hour (see _remove_duplicates_list in app/pipeline/filters.py).
 rapidfuzz>=3.9
 
-# Reading the résumé Sina uploads in Search, which Claude screens and scores every listing
+# Reading the résumé the user uploads in Search, which Claude screens and scores every listing
 # against. PDF and Word only, by his rule -- nothing else is accepted. The text is extracted
 # here rather than the file being sent to Claude as a document, so both formats take one
 # path and the résumé can sit in the cached system prompt (see app/resume.py).

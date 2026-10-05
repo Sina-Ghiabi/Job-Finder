@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Suite 8 -- the tests that would have caught the bug that emptied Sina's results.
+"""Suite 8 -- the tests that would have caught the bug that emptied the user's results.
 
 WHY THIS SUITE EXISTS
 
@@ -10,8 +10,7 @@ any single rule -- it was a rule that had been narrowed on a measurement taken o
 population, and nothing in the suite compared the Filter's output to what the pool could
 plausibly yield.
 
-His instruction afterwards: "همه ی اون تست هایی که نام بردی رو باید انجام بدی تا تمام باگ ها
-خارج بشه". No suite finds every bug, and saying otherwise would be a lie. What this one finds
+His instruction afterwards: [owner's note: run all the tests that were named, so that every bug comes out]. No suite finds every bug, and saying otherwise would be a lie. What this one finds
 is the CLASS of bug that hurt him: a filter that silently removes far more than it should.
 
 THE FOUR TECHNIQUES HERE, AND WHAT EACH IS FOR
@@ -23,7 +22,7 @@ THE FOUR TECHNIQUES HERE, AND WHAT EACH IS FOR
      passes Remote must fail Not Remote. A rule can be wrong about a listing and still satisfy
      these -- but it cannot be wrong about ALL of them, and it cannot silently invert.
 
-  2. COMBINATORIAL (t-wise) COVERAGE. Sina asked for this by name -- one at a time, then in
+  2. COMBINATORIAL (t-wise) COVERAGE. The user asked for this by name -- one at a time, then in
      pairs, then threes. Every subset of the conditions is counted on real listings, and a
      subset that empties the pool while each member looks reasonable is exactly the shape of
      what happened to him.
@@ -193,8 +192,7 @@ check('adding other names for the job never loses a listing', _wide >= _narrow,
       (_narrow, _wide))
 
 
-# SILENCE DROPS ONLY IN A REMOTE SEARCH, and Sina asked for that to be certain: "این قانون بالا
-# فقط باید برای Remote ست شود". It already was -- passes_work_location_rule hands a Not Remote
+# SILENCE DROPS ONLY IN A REMOTE SEARCH, and the user asked for that to be certain: [owner's note: the rule above is for Remote only]. It already was -- passes_work_location_rule hands a Not Remote
 # row to passes_not_remote_rule, where silence KEEPS -- and this is the assertion that stops
 # anyone merging the two by accident. Getting it wrong in either direction empties a search.
 for _label, _job, _remote_keeps, _not_remote_keeps in (
@@ -212,7 +210,7 @@ for _label, _job, _remote_keeps, _not_remote_keeps in (
 
 # ======================================================= 8.2  combinatorial ===============
 section('8.2  combinatorial -- every subset of the conditions, on listings that must survive')
-# Sina asked for this shape directly: "اول به صورت تک به تک ... بعد دو به دو ... بعد 3 به 3".
+# The user asked for this shape directly: [owner's note: first one by one, then two by two, then three by three].
 #
 # The assertion is not a count. It is that the two listings which MUST reach him -- a fully
 # remote junior data science role, and a genuinely part-time remote one -- survive every subset
@@ -263,7 +261,7 @@ GOLDEN = [
     # posting to say SOMEWHERE that the work can be done away from an office, and silence drops
     # it. That requirement was removed once and restored: without it, 128 listings that never
     # raised the subject came through, and Claude deleted them anyway with reasons the text did
-    # not contain ("on-site role in Amsterdam"). Sina's call was that silence in a Dutch advert
+    # not contain ("on-site role in Amsterdam"). The user's call was that silence in a Dutch advert
     # means an office job and he would rather not pay to read 128 of them.
     #
     # This suite asserted the opposite on its first run, and reading the rule is what settled
@@ -297,7 +295,7 @@ for _label, _job, _should_survive in GOLDEN:
 #
 # The three below were added because MUTATION TESTING said nothing was watching them. Removing
 # the "not an internship" guard from the category rules broke no test at all, and that guard is
-# the one Sina reported: Glovo's "2-5 years of professional experience outside of an academic
+# the one the user reported: Glovo's "2-5 years of professional experience outside of an academic
 # and internship setting" was being filed as an Internship, on a sentence whose whole point is
 # that it is not one.
 NOT_AN_INTERNSHIP_ADVERT = {
@@ -335,7 +333,7 @@ for _label, _job, _kind in (
 # --- the similarity floor, which mutation testing found nothing was watching ----------------
 # Raising MINIMUM_SIMILARITY to 95 -- so every other name for the job is dropped -- broke no
 # test at all. That is the setting which decides whether "AI Engineer" and "Machine Learning
-# Engineer" reach Sina, and on his own Bank it is worth 712 listings. It is also the number he
+# Engineer" reach the user, and on his own Bank it is worth 712 listings. It is also the number he
 # chose himself, twice, after I argued against it.
 _CANDIDATES = [
     {'title': 'Machine Learning Engineer', 'same_work': 80, 'closest_to': '', 'because': ''},
@@ -343,7 +341,7 @@ _CANDIDATES = [
     {'title': 'Data Analyst', 'same_work': 35, 'closest_to': '', 'because': ''},
     {'title': 'Database Administrator', 'same_work': 20, 'closest_to': '', 'because': ''},
 ]
-check('the similarity floor is the 35 Sina set',
+check('the similarity floor is the 35 the user set',
       title_equivalents.MINIMUM_SIMILARITY == 35, title_equivalents.MINIMUM_SIMILARITY)
 _kept = title_equivalents.close_enough(_CANDIDATES)
 check('a title scoring above the floor is searched for',
@@ -355,10 +353,10 @@ _dropped = [name for name, _score, _why in title_equivalents.too_far(_CANDIDATES
 check('the dropped one is reported with its score, not silently lost',
       _dropped == ['Database Administrator'], _dropped)
 
-# And what Sina turns down himself is remembered per title, which is what replaced the
+# And what the user turns down himself is remembered per title, which is what replaced the
 # blacklist. Nothing here writes to the cache -- rejections are passed in directly.
 _after_reject = title_equivalents.close_enough(_CANDIDATES, ['Data Analyst'])
-check('a title Sina rejected is not searched for again',
+check('a title the user rejected is not searched for again',
       'Data Analyst' not in _after_reject and 'AI Engineer' in _after_reject, _after_reject)
 check('  ...and the Log can say it was his choice, not a score',
       any(name == 'Data Analyst' and 'turned this one down' in why

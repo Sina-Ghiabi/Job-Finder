@@ -26,7 +26,7 @@ from .registers import (SPONSOR_LIST_COUNTRIES, _load_sponsor_list,
                         _sponsor_list_cache_path)
 
 # Countries whose work-visa system needs no special employer-side process at all --
-# Sina can get the visa himself off a plain job offer, and it's genuinely true for
+# The user can get the visa himself off a plain job offer, and it's genuinely true for
 # EVERY company in that country, not just some. Confirmed via real research:
 # - Germany: the Skilled Worker Visa (Residence Act SS18a/18b) and EU Blue Card need
 #   no "sponsor licence" or employer certification of any kind -- any employer with a
@@ -106,7 +106,7 @@ SPONSORSHIP_KEYWORDS = [
 # most common word in German job adverts, and inside "military" and "sanitary" in
 # English ones. Measured on a real 2,901-listing corpus: 992 listings were dropped by
 # this rule, 983 of them by 'itar' alone -- 34% of everything the search had collected,
-# deleted before Sina could ever see it, with no message anywhere.
+# deleted before the user could ever see it, with no message anywhere.
 #
 # The boundary is deliberately leading-only. Every genuine phrase here begins at a word
 # start, so \b at the front loses nothing; leaving the tail open keeps matches like
@@ -181,7 +181,7 @@ def _company_matches_sponsor_list(company: str, normalized_sponsor_names: dict) 
     match on the normalized name first (covers the common case: only a legal suffix,
     punctuation, or casing differs), then falls back to a fuzzy scan for genuinely
     close-but-not-identical spellings -- exactly the "may not match exactly, a small
-    difference" case Sina flagged -- without being loose enough to produce a false 'Yes'."""
+    difference" case the user flagged -- without being loose enough to produce a false 'Yes'."""
     normalized = _normalize_company_name(company)
     if not normalized:
         return False
@@ -316,7 +316,7 @@ def _resolve_legal_names(unique_companies, country_cache, country, client, budge
     """Fill the cache with each company's legal name, within the run's budget.
 
     Four reasons a lookup does not happen, and each one is counted separately so the Log can
-    say which: it is already cached, Claude is not configured, Sina pressed Cancel, or the
+    say which: it is already cached, Claude is not configured, the user pressed Cancel, or the
     run has spent its allowance. A miss is never cached as a permanent guess.
     """
     for key, company in unique_companies.items():
@@ -412,7 +412,7 @@ def _apply_sponsor_list_matches_to_jobs(jobs: list[dict], anthropic_api_key: str
         _match_against_register(country_jobs, normalized_lookup)
 
         # The legal name is resolved for EVERY named company in this country, not only the
-        # ones the register failed to match -- Sina's call, and it is about the data rather
+        # ones the register failed to match -- The user's call, and it is about the data rather
         # than the match. It stays cheap because the answer is cached on disk per company
         # per country, so each company costs one lookup ever, not one per run.
         needing_legal_name = [job for job in country_jobs

@@ -89,7 +89,7 @@ check('NaN match shows the em-dash', matches[1] == '—', matches[1])
 
 # THE LANGUAGE COLUMN IS GONE, and this block used to assert six things about it.
 #
-# Sina removed it once English? existed: "وقتی ستونی English? هست دیگه Language رو پاک کن".
+# The user removed it once English? existed: [owner's note: with an English? column present, delete the Language column].
 # What replaces those assertions is the part that matters -- the column is absent AND the
 # data behind it is not, because silent_about_english still reads detected_language and a
 # column's removal must never become a verdict's.
@@ -106,9 +106,9 @@ check('every column sits under the header that names it',
       [JOB_COLUMNS[i] for i in (4, 5, 6, 7)] == ['Sponsorship Visa', 'Seniority', 'Type', 'English?'],
       JOB_COLUMNS[:9])
 # The English? column: whether the posting wants English only, English alongside a language
-# he lacks, or that other language instead. The third of Sina's classified columns, and he
+# he lacks, or that other language instead. The third of the user's classified columns, and he
 # asked for it as a choice he makes here rather than a rule that deletes:
-# "میتونی یک ستون ها اضافه کنی که بشه انتخاب کرد فقط English و English + Other Language".
+# [owner's note: add columns so one can choose English only, or English plus another language].
 #
 # Read through the page's own ENGLISH_COLUMN constant, like Details and Match % above, for
 # the reason stated there: inserting a column is exactly what breaks a hardcoded index, and
@@ -212,7 +212,7 @@ check('a record with no category still reads as something',
       ap.table.item(0, _apmod.TYPE_COLUMN).text() == 'Other',
       ap.table.item(0, _apmod.TYPE_COLUMN).text())
 
-# And with a category, every kind Sina filters on has to survive the round trip from the
+# And with a category, every kind the user filters on has to survive the round trip from the
 # record to the badge, with its own colour rather than the fallback.
 storage.save_applications([
     {'id': 'c%d' % _n, 'title': _kind, 'category': _kind, 'documents': [],
@@ -271,9 +271,8 @@ check('pasted key is collected and trimmed',
       pd_dlg.resolved_keys == {'reed_uk_api_key': 'newkey'}, pd_dlg.resolved_keys)
 check('continue is not a cancel', pd_dlg.cancelled is False)
 
-# URL problems, with Claude's fix advice -- the window Sina asked to be the one place
-# anything broken is reported: "اگر هر مشکلی در URL یا API بود در اون پنجره بهم بگه و بگه
-# چطوری درستش کنم با هوش مصنوعی".
+# URL problems, with Claude's fix advice -- the window the user asked to be the one place
+# anything broken is reported: [owner's note: a problem with a URL or API is reported in that window, with AI advice on fixing it].
 _url_problem = {'name': 'finn.no', 'reason': 'Returned HTTP 403.', 'fixable': False,
                 'kind': 'url', 'url': 'https://finn.no/job/',
                 'fix_advice': '- Open https://finn.no/job/ in your browser\n'
@@ -660,7 +659,7 @@ else:
 # Now that the protocol is a table rather than a 286-line if/elif chain, it can be
 # checked for COMPLETENESS -- something that was not expressible before. Every structured
 # message the pipeline emits must have a route, or it silently falls through to the
-# generic handler and renders as a raw protocol string in Sina's Log.
+# generic handler and renders as a raw protocol string in the user's Log.
 from app.ui.main_window import _LOG_ROUTES as _ROUTES
 
 check('the route table is non-empty', len(_ROUTES) > 20, len(_ROUTES))
@@ -894,7 +893,7 @@ finally:
     _bs.fetcher.fetch = _saved_fetch
 check('cancel stops the stage before any site is opened', _rows == [], len(_rows))
 
-# The removed mechanism must stay removed -- these are the two things Sina asked never to
+# The removed mechanism must stay removed -- these are the two things the user asked never to
 # see again, and an accidental re-import would bring the popups back.
 import importlib
 for _gone in ('app.pipeline.search.manual_assist', 'app.ui.broken_urls_dialog'):
@@ -941,7 +940,7 @@ import threading as _threading
 from app.ui.preflight_problems_dialog import PreflightProblemsDialog
 
 # The end-of-search report: every one of these is a domain that went quiet, which used to
-# be its own dialog asking Sina to go and hunt for the right URL himself.
+# be its own dialog asking the user to go and hunt for the right URL himself.
 _late = [{'name': d, 'reason': 'no results this run', 'fixable': False, 'kind': 'url',
           'url': 'https://%s/' % d} for d in ('stepstone.de', 'karriere.at', 'xing.com')]
 _d = PreflightProblemsDialog(_late)
@@ -1092,7 +1091,7 @@ section('5.v  a failure is painted red, not green')
 
 # Three real failures used to be logged at the default level, which is GREEN -- so a search
 # that died, a Filter that died, and an export that died all looked like ordinary progress.
-# Sina asked for the opposite: "هرجا مشکلی پیش اومد با رنگ قرمز نشون بده".
+# The user asked for the opposite: [owner's note: show a red mark wherever something goes wrong].
 from app.ui.log_panel import LogPanel, LOG_COLORS
 from PySide6.QtGui import QTextCursor
 
@@ -1215,7 +1214,7 @@ check('the summary line reports the count',
 
 section('5.off  a source with no key reads as switched off, not as a failure')
 
-# Sina, reading a Health Check full of red: "this is not a problem we have". A source he
+# The user, reading a Health Check full of red: "this is not a problem we have". A source he
 # never set up is not broken, and putting it in red beside real failures made a healthy run
 # look broken.
 _host3 = _LogHost()
@@ -1253,7 +1252,7 @@ check('  ...with what is left and how many searches that is',
       _budget_text[:200])
 check('the Claude line reports spending, not a balance it cannot know',
       'Claude spending' in _budget_text and '$0.42' in _budget_text, _budget_text[:320])
-# Sina's correction: the number he wants is what a run costs, not what one listing costs.
+# The user's correction: the number he wants is what a run costs, not what one listing costs.
 check('  ...leading with what one Filter costs',
       'one Filter costs about $0.07' in _budget_text, _budget_text[:320])
 check('a search is priced end to end, Apify and Claude together',
@@ -1406,7 +1405,7 @@ check('  ...which it would not have on the end',
       'WHY THIS WAS REMOVED' not in _xl(_huge['description']))
 
 # Keeping a flagged listing by hand takes the note off at that moment, not at the next
-# Filter run. In between, Sina can apply to it -- and add_application copies `description`
+# Filter run. In between, the user can apply to it -- and add_application copies `description`
 # into the record, so the note would be filed against a job he applied to. This walks the
 # same loop main_window runs on "keep it anyway".
 _kept_by_hand = {'id': 'k', 'title': 'T', 'description': 'A posting.'}
@@ -1434,7 +1433,7 @@ check('  ...and main_window really does this on keep',
 
 
 # ------------------------------------------------------------------- 5.filter-window ----
-# Sina's design: click Filter and every option opens in one window; Submit starts the
+# The user's design: click Filter and every option opens in one window; Submit starts the
 # filtering; clicking Filter again offers one button that takes every filter off. And a
 # Filter already run with exactly these choices must show its previous answer rather than be
 # run again -- changing any one of them must redo the work.
@@ -1551,7 +1550,7 @@ check('a failed Filter forgets the shortcut', storage.load_filter_state() == {},
 
 # ------------------------------------------------------------------------- 5.by-hand ----
 section('5.by-hand  the Add by hand window')
-# The Applications list used to be a record of what RoleHound found, not of what Sina had
+# The Applications list used to be a record of what RoleHound found, not of what the user had
 # applied to. He applies to jobs on LinkedIn and on companies' own sites, and those belong in
 # the same list -- so this window collects one and hands it to the ordinary save path.
 from datetime import datetime as _hand_dt                                 # noqa: E402
@@ -1602,8 +1601,7 @@ check('submitting with no job title is refused', _warned['n'] == 1)
 check('  ...and nothing is saved from it', _empty.job == {}, _empty.job)
 
 # --- every field the automatic path carries has an input here ------------------------------
-# "ببین چه اطلاعاتی موقعی که دکمه ی Apply میزنیم به صفحه ی add_application انتقال داده میشه /
-# در حالت دستی برای تمامی بخش ها یک Input یا یک انتخاب File بزن". This is what keeps the two
+# [owner's note: check what information Apply passes to add_application; in manual mode give an input or a file picker for every part]. This is what keeps the two
 # in step: add_application's record is read out of its own source, and every field it takes
 # off the job dict must be one this window fills in. A field added there and forgotten here
 # fails at this line, instead of quietly saving as empty for the rest of time.
@@ -1642,7 +1640,7 @@ check('  ...including zero, which is a real answer',
       _scored.entered()['claude_match'] == 0, _scored.entered()['claude_match'])
 
 # --- the job description comes out of a PDF ------------------------------------------------
-# "برای JobDescription به صورت PDF بگیر". The text is read out on the spot so an unreadable
+# [owner's note: get the job description as a PDF]. The text is read out on the spot so an unreadable
 # file is refused with its reason, rather than saved as an empty description discovered
 # months later.
 _jd_pdf = Path(tmp) / 'job_description.pdf'
@@ -1720,8 +1718,7 @@ ap.reload()
 
 # ============================================ 5.type  Search offers Type, not Seniority ========
 section('5.type  the Search window offers Any / Thesis / Internship, and no seniority')
-# Sina: "اون بخش Seniority رو از Search حذف کن / Type رو نگه دار که این موارد رو داشته باشه:
-# Any, Thesis, Internship". Measured before it was removed: asking an actor about seniority added
+# [owner's note: remove Seniority from Search; keep Type with Any, Thesis and Internship]. Measured before it was removed: asking an actor about seniority added
 # one to three rows per platform and none for Mid, and the broad query -- the same for every
 # level -- brought 15 to 40 percent senior titles whatever was chosen.
 from PySide6.QtWidgets import QLabel as _QLabel  # noqa: E402
@@ -1778,9 +1775,7 @@ check('  ...and its instructions say what Any means', 'Level of Any' in _worth._
 
 # ======================= 5.lock  Remote / Not Remote under Type; Remote locked for Thesis and Internship ====
 section('5.lock  a Remote / Not Remote row under Type, and Remote is unclickable for Thesis and Internship')
-# Sina: "زیر Type یک بخش اضافه کن به اسم Remote و Not Remote / بعدش اگر من Thesis و Internship انتخاب
-# کردم کلا Remote غیر قابل کلیک بشه". And: "بعد هر انتخابی که کردم اونجا مستقیما در مقدار پارامتر
-# مربوطه به اون Actor قرار داده بشه" -- the choice SETS the actor's own parameters, and what the
+# [owner's note: add a Remote / Not Remote row under Type; when Thesis or Internship is chosen, Remote becomes unclickable]. And: [owner's note: every choice made there goes directly into that actor's own parameter] -- the choice SETS the actor's own parameters, and what the
 # panel shows is what is sent.
 from PySide6.QtWidgets import QLabel as _QL  # noqa: E402
 

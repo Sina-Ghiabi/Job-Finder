@@ -20,7 +20,7 @@ from app.ui.row_button_delegate import RowButtonDelegate
 
 
 def _similarity_of(job: dict) -> int:
-    """How close this listing's title is to the one Sina searched, 0-100.
+    """How close this listing's title is to the one the user searched, 0-100.
 
     A row with no score counts as 100, not 0. Those are the listings kept because they said
     nothing -- silence is not evidence, which is the rule everywhere in this app -- and
@@ -50,7 +50,7 @@ _ENGLISH_TOOLTIPS = {
 
 
 # Seniority before Type, in that order, because that is the order he groups by:
-# "اول بر اساس Seniority Groupby میکنی و بعد بر اساس Type".
+# [owner's note: group by Seniority first, then by Type].
 COLUMNS = [
     "#", "Title", "Company", "Country", "Sponsorship Visa", "Seniority", "Type",
     "English?", "Details", "Match %", "Worth it?", "Found as", "Apply", "Remove",
@@ -59,13 +59,12 @@ SPONSORSHIP_COLUMN = 4
 SENIORITY_COLUMN = 5
 TYPE_COLUMN = 6
 # Which of the three language shapes the posting is: English only, English + Other, or
-# Other only. Sina's third classified column, and it arrived the same way the other two
+# Other only. The user's third classified column, and it arrived the same way the other two
 # did -- as a filter he asked to be turned into a choice he makes in the table:
-# "میتونی یک ستون ها اضافه کنی که بشه انتخاب کرد فقط English و English + Other Language ...
-# مثل فایل Excel".
+# [owner's note: add columns so one can choose English only, or English plus another language, like Excel].
 #
-# THERE IS NO LANGUAGE COLUMN ANY MORE. It showed what the posting was WRITTEN in, and Sina
-# removed it the moment this one existed: "وقتی ستونی English? هست دیگه Language رو پاک کن".
+# THERE IS NO LANGUAGE COLUMN ANY MORE. It showed what the posting was WRITTEN in, and the user
+# removed it the moment this one existed: [owner's note: with an English? column present, delete the Language column].
 # The data is still on every row (`detected_language`, `needs_translation`) and still drives
 # silent_about_english -- only the column went, so nothing about a verdict changed.
 ENGLISH_COLUMN = 7
@@ -76,9 +75,8 @@ ENGLISH_COLUMN = 7
 #
 # The Level used to be a filter and nothing else: it picked a prompt, the prompt's rule 4
 # deleted whatever did not match, and no row ever carried what level it actually was.
-# Measured on the real Netherlands run, rule 4 fired on 19 of 90 flags. Sina's instruction
-# after seeing that: "نباید Filter کنه باید اون هارو دسته بندی کنه ... اول بر اساس Seniority
-# Groupby میکنی و بعد بر اساس Type و دیگه هیچی نباید حذف بشه" -- classify, do not delete,
+# Measured on the real Netherlands run, rule 4 fired on 19 of 90 flags. The user's instruction
+# after seeing that: [owner's note: it must not filter but categorise: group by Seniority, then Type, and remove nothing] -- classify, do not delete,
 # and let him choose here the way he chooses the Type.
 #
 # So rule 4 now reports instead of dropping (the `seniority` field of the screening schema),
@@ -86,18 +84,17 @@ ENGLISH_COLUMN = 7
 # column gets the same Excel-style filter button the Type column has.
 DETAILS_COLUMN = 8
 MATCH_COLUMN = 9
-# Part two of Claude, over the survivors only: the listing read against Sina's own résumé,
+# Part two of Claude, over the survivors only: the listing read against the user's own résumé,
 # giving apply / check / skip with one sentence saying why. It deletes nothing by itself --
 # a "skip" is flagged for the review dialog like any other verdict, because the cost of being
-# wrong here is a job Sina never sees. The sentence is the tooltip; what fits and what is
+# wrong here is a job the user never sees. The sentence is the tooltip; what fits and what is
 # missing are on the Match % cell beside it.
 WORTH_COLUMN = 10
-# Which of the searched job titles found this listing. Sina filters on it -- "only the Data
+# Which of the searched job titles found this listing. The user filters on it -- "only the Data
 # Analyst ones" -- and it exists because the Filter no longer deletes a listing for being found
 # under a neighbouring title; see column_filter.py for why that changed.
 #
-# The similarity SCORE has no column of its own: he asked for it to go ("اون ستون Similarity رو
-# هم پاک کن"). It is still read off every row to ORDER the table, which is the job he gave it
+# The similarity SCORE has no column of its own: he asked for it to go ([owner's note: remove the Similarity column too]). It is still read off every row to ORDER the table, which is the job he gave it
 # in the first place -- closest title first, in every view.
 FOUND_AS_COLUMN = 11
 APPLY_COLUMN = 12
@@ -428,8 +425,7 @@ class JobsPage(QWidget):
             return True
 
         filtered = [j for j in self.all_jobs if matches(j)]
-        # Closest title first, and that is Sina's rule for every view: "هرچی گفتم نشون بده
-        # حتما Order اش بر اساس بیشترین شباهت باشه". A listing with no score sorts as 100,
+        # Closest title first, and that is the user's rule for every view: [owner's note: whatever is shown must be ordered by highest similarity]. A listing with no score sorts as 100,
         # because it was kept for saying nothing rather than for being a distant match.
         filtered.sort(key=lambda job: -_similarity_of(job))
         self._render(filtered)
@@ -599,7 +595,7 @@ class JobsPage(QWidget):
         if match_percent is not None:
             item.setForeground(QColor('#ffffff'))
             item.setBackground(QColor(_match_color(match_percent)))
-        # The Match % is read against the résumé Sina uploaded; what fits and what is
+        # The Match % is read against the résumé the user uploaded; what fits and what is
         # missing are the reasons behind the number, so they sit on it as its tooltip.
         strengths = pipeline.text_of(job.get('resume_strengths')).strip()
         gaps = pipeline.text_of(job.get('resume_gaps')).strip()
@@ -629,7 +625,7 @@ class JobsPage(QWidget):
 
         There is deliberately almost nothing here. This used to build two QPushButtons, each
         in a QWidget wrapper with a layout and a connected signal, and that was 75% of the
-        entire render: 193 seconds for the 20,000 rows Sina reported the app hanging on. The
+        entire render: 193 seconds for the 20,000 rows the user reported the app hanging on. The
         delegate draws the same buttons for the twenty rows actually on screen, which took the
         same 20,000 rows to 1.67 seconds.
         """

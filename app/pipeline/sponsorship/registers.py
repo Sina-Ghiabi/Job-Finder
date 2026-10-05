@@ -95,7 +95,7 @@ def _fetch_arbeitnow_sponsorship(role_term: str) -> list[dict]:
 
 # --- Sponsorship Visa, "type (b)": official company-list countries -----------------
 # Where no job board self-tags sponsorship (the "type (a)" arbeitnow.com case above),
-# Sina asked for the alternative: cross-reference each listing's employer against an
+# The user asked for the alternative: cross-reference each listing's employer against an
 # official register of visa-sponsoring companies. Netherlands is the first one
 # implemented -- IND (the Dutch immigration service) publishes a genuine, official,
 # static-HTML register at the URL below: confirmed via a real fetch+parse to be a plain

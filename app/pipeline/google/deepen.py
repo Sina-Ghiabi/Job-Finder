@@ -72,11 +72,11 @@ def _deep_crawl_plan(rows: list[dict]):
     # from the open web -- including the start_urls block, which is exactly where an
     # open-stage row with a learned pattern now belongs.
 
-    # Sina asked for this directly: when a known-sites-stage result lands on a domain
+    # The user asked for this directly: when a known-sites-stage result lands on a domain
     # with no confirmed job-URL pattern yet (GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS), tell
     # him how to help fix it -- rather than silently doing nothing for that domain like
     # before. Collected here (not logged individually) and merged by the caller with
-    # _warn_zero_result_google_sites' own broken-domain list, so Sina gets ONE combined
+    # _warn_zero_result_google_sites' own broken-domain list, so the user gets ONE combined
     # short log line and ONE combined dialog for every domain that needs a hand this
     # run, regardless of which of the two checks found it.
     warned_domains = set()
@@ -297,7 +297,7 @@ def _deepen_google_results(rows: list[dict], client: ApifyClient, progress_cb=No
     if progress_cb:
         # Live-ticking timer, started right before the one combined crawl call that
         # covers every known-job-board result page -- same reasoning as Known
-        # Websites' own timer: this can take a while, and Sina asked for every Google
+        # Websites' own timer: this can take a while, and the user asked for every Google
         # stage to show a real Running indicator, not just a summary once it's done.
         progress_cb("DEEP_CRAWL_START", 0, 1)
 

@@ -3,8 +3,7 @@
 
 Mid: the working middle of a career, about 3 to 5 years.
 
-A copy of the Junior profile's rules.is_too_senior, line for line, as Sina asked: "دقیقا
-همون قالب ... فقط یه سری چیز های کوچیک باید داخلشون تغییر کنه". Every step it takes is the
+A copy of the Junior profile's rules.is_too_senior, line for line, as the user asked: [owner's note: exactly the same template, with only a few small things changed]. Every step it takes is the
 step is_too_senior takes, in the same order and for the reasons written there:
 
     1. LinkedIn's own seniority field

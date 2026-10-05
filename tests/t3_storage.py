@@ -147,7 +147,7 @@ check('file is strict-valid', bool(strict(storage.JOBS_PATH)))
 
 section('3.x  a damaged or legacy jobs.json -- the file IS the asset')
 
-# A search costs real Apify credit, so jobs.json is not a cache: it is the thing Sina
+# A search costs real Apify credit, so jobs.json is not a cache: it is the thing the user
 # paid for. Every one of these must fail SAFE -- return nothing, never raise, and never
 # leave the file in a worse state than it was found.
 
@@ -180,7 +180,7 @@ for _label, _content in _BAD_FILES:
     check(f'load_jobs survives {_label}', _raised is None, _raised)
     check(f'  ...and returns a list for {_label}', isinstance(_loaded, list), type(_loaded).__name__)
 
-# A legacy row must still render and still be saveable -- Sina may have a jobs.json from
+# A legacy row must still render and still be saveable -- The user may have a jobs.json from
 # before Category/sponsorship_visa/the language cache existed.
 isolated_storage()
 storage.JOBS_PATH.write_text('[{"title": "Old Job", "url": "https://x/1"}]', encoding='utf-8')
@@ -202,7 +202,7 @@ for _label, _content in _BAD_FILES[:8]:
         _raised = '%s: %s' % (type(_e).__name__, _e)
     check(f'load_applications survives {_label}', _raised is None, _raised)
 
-# And settings -- a broken settings.json must not lock Sina out of the app.
+# And settings -- a broken settings.json must not lock the user out of the app.
 for _label, _content in _BAD_FILES[:8]:
     isolated_storage()
     storage.SETTINGS_PATH.write_text(_content, encoding='utf-8')
@@ -260,8 +260,7 @@ section('3.x  an unreadable file is reported, not silently emptied')
 # These loaders return empty rather than raising, which keeps the app alive through a
 # OneDrive sync conflict or a half-finished write. Until this existed they also said
 # nothing -- so a damaged jobs.json looked exactly like a search that found nothing, and
-# the next search would overwrite it. Sina asked for the opposite: "هرجا مشکلی پیش اومد با
-# رنگ قرمز نشون بده که بدونم مشکل داره".
+# the next search would overwrite it. The user asked for the opposite: [owner's note: show a red mark wherever something goes wrong, so a problem is visible].
 
 storage.take_load_problems()  # start from a clean slate
 
@@ -411,7 +410,7 @@ check_no_raise('banking an empty search is fine', lambda: storage.add_to_bank([]
 
 
 # --------------------------------------------------------------------- 3.signature ----
-# Sina's rule for the Filter dialog: re-filtering with the same choices shows the previous
+# The user's rule for the Filter dialog: re-filtering with the same choices shows the previous
 # answer instead of paying for it again, and changing ANY one of them redoes the work.
 #
 # So this module has exactly one way to be wrong that matters -- saying two runs are the same
@@ -456,7 +455,7 @@ check('a new resume changes it',
 check('an edited prompt changes it',
       _sig.filter_signature(_BASE, 'pool-1', 'resume-1', 'prompt-2') != _sign())
 
-# What must NOT change it, because Sina picked the same thing either way.
+# What must NOT change it, because the user picked the same thing either way.
 check('the order of ticked countries does not change it',
       _sign(countries=['Austria', 'Germany']) == _sign(countries=['Germany', 'Austria']))
 check('  ...nor does surrounding whitespace', _sign(countries=[' Germany ']) == _sign())
@@ -478,7 +477,7 @@ check('a re-fetched description does NOT change it',
 check('an empty pool has a fingerprint of its own',
       _sig.pool_fingerprint([]) != _sig.pool_fingerprint(_pool))
 
-# The Log line Sina reads to know what he is looking at.
+# The Log line the user reads to know what he is looking at.
 check('describe names the level and the mode',
       'Junior' in _sig.describe(_BASE) and 'Remote' in _sig.describe(_BASE))
 check('  ...and says Not Remote when that is what was chosen',
@@ -493,8 +492,8 @@ check('  ...and mentions a match floor only when one is set',
 
 
 # ------------------------------------------------------------------------- 3.by-hand ----
-section('3.by-hand  an application Sina typed in himself')
-# "شاید مثلا من برای یک کار در LinkedIn اقدام کردم و میخواستم به کار هام اضافه کنم" -- he
+section('3.by-hand  an application the user typed in himself')
+# [owner's note: an application may have been made on LinkedIn and need adding by hand] -- he
 # applies to things RoleHound never found, and a record of what he has applied to is only
 # useful if it is all of it. The design decision under test: a hand-entered application goes
 # through add_application like every other one, so there is ONE record shape. If it did not,

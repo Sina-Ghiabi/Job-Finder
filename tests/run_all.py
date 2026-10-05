@@ -32,7 +32,7 @@ SUITES = [
     ('Storage', 't3_storage.py'),
     ('Pipeline integration', 't4_pipeline.py'),
     ('UI & export', 't5_ui.py'),
-    # The one path that spends money, given a suite of its own at Sina's request: a real
+    # The one path that spends money, given a suite of its own at the user's request: a real
     # run costs about three dollars, so it is the least casually exercised code in the app
     # and the most expensive to get wrong.
     ('run_search', 't7_run_search.py'),

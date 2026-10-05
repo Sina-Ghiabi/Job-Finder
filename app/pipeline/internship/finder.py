@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The Internship module's own rules. Imports nothing from the Job or Thesis modules.
 
-One of three parallel modules, per Sina's design. When Filter runs, all three read the same
+One of three parallel modules, per the user's design. When Filter runs, all three read the same
 listings at the same time and none of them can affect another -- each is handed its own copy
 of the rows, so even the mutation the salaried module does during translation is invisible
 here.
@@ -11,7 +11,7 @@ SINA'S RULES FOR AN INTERNSHIP, IN ORDER
   1. It has to be an internship, and that is read from the TITLE. An advert offering one
      says so there; one that merely mentions the word is something else -- "Let op: dit is
      geen stageplek" says it is NOT an internship, and reading the body would have taken it.
-  2. Milan or Turin: anything goes -- "اگر Turin Milan بود تمام on-site hybrid remote قبوله".
+  2. Milan or Turin: anything goes -- [owner's note: former rule: anything in Turin or Milan was accepted, on-site, hybrid or remote].
      Anywhere else: remote only.
   3. Unpaid is out.
   4. A language besides English is out.
@@ -29,9 +29,9 @@ from __future__ import annotations
 
 import re
 
-# This module's OWN copy of the title check. Sina's rule: the three modules share nothing,
+# This module's OWN copy of the title check. The user's rule: the three modules share nothing,
 # not even a question they happen to ask identically. See field_words.py.
-from .field_words import row_is_in_field
+from .field_words import ALSO_ROW_KEY, row_is_in_field
 from . import words
 from ..search_title import (LEVEL_ROW_KEY, ROW_KEY as TITLE_ROW_KEY, WORK_MODE_ROW_KEY,
                             clean_title, clean_work_mode, is_any_workplace, is_not_remote)
@@ -93,7 +93,7 @@ def is_internship(row) -> bool:
 
 
 def passes_location_rule(row) -> bool:
-    """Where an internship may be. Sina's rule, and not the salaried one.
+    """Where an internship may be. The user's rule, and not the salaried one.
 
     Milan or Turin -> anything, on-site and hybrid included. Anywhere else -> it has to be
     remote, OR it has to say nothing at all. Silence survives; see the module docstring.
@@ -120,7 +120,7 @@ def passes_location_rule(row) -> bool:
 
 
 def survives(row) -> tuple:
-    """(survives, reason) for one listing, in Sina's order. Cheapest and surest first."""
+    """(survives, reason) for one listing, in the user's order. Cheapest and surest first."""
     if not is_internship(row):
         return False, 'not an internship'
     if _INDEX_PAGE_PATTERN.search(str(row.get('title') or '')):
@@ -134,7 +134,7 @@ def survives(row) -> tuple:
     if not passes_location_rule(row):
         # The rule reads the work mode; the reason has to say so too. In a Not Remote search
         # what this removes is remote work -- reporting that as "cannot be done from Turin"
-        # told Sina the opposite of what happened, on the one line the Log gives it.
+        # told the user the opposite of what happened, on the one line the Log gives it.
         return False, ('remote work, which a Not Remote search excludes'
                        if is_not_remote(row) else 'cannot be done from Turin')
     text = full_text(row)
@@ -152,7 +152,7 @@ def survives(row) -> tuple:
 # Is this readable at all?
 # ---------------------------------------------------------------------------------------
 
-# Sina's rule, and his reasoning: a Dutch employer who writes two thousand characters of
+# The user's rule, and his reasoning: a Dutch employer who writes two thousand characters of
 # Dutch and never once mentions English almost certainly wants Dutch. The Job module has
 # carried it for a long time; these two did not, and a real run ended with a Randstad
 # traineeship written entirely in Dutch on the list.
@@ -165,7 +165,7 @@ def survives(row) -> tuple:
 #
 # 8% sits in the empty middle. At that cut not one of the 128 English postings is mistaken
 # for foreign -- which is the direction that matters, since that mistake DELETES something
-# Sina can read -- and 4 of 118 foreign ones read as English, which merely keeps them.
+# The user can read -- and 4 of 118 foreign ones read as English, which merely keeps them.
 _ENGLISH_MARKERS = ('the', 'and', 'you', 'with', 'for', 'our', 'are', 'your', 'will',
                     'this', 'that', 'have', 'from', 'work', 'team', 'experience')
 _ENGLISH_MARKER_PATTERN = re.compile(r'\b(?:%s)\b' % '|'.join(_ENGLISH_MARKERS))
@@ -261,7 +261,7 @@ _PLACEHOLDER_COMPANIES = frozenset({'siehe beschreibung', 'see description', 'n/
 # & Automation Workflows" against "Werkstudent AI & Automation"), and the bodies are in
 # different languages so they share almost no tokens -- so both the title check and the body
 # check below say "different posting". Both copies reached a real Netherlands run and both
-# were shown to Sina as separate internships.
+# were shown to the user as separate internships.
 # Named languages only, never "any two letters". An earlier draft stripped every
 # two-letter path segment, which would have merged two different postings whose addresses
 # happened to differ in one -- an id, a version, a market code. These are the codes the app
@@ -360,7 +360,7 @@ def remove_duplicates(rows: list) -> tuple:
 
 
 def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=None,
-         search_title=None, search_work_mode=None) -> tuple:
+         search_title=None, search_work_mode=None, other_names=None) -> tuple:
     """The whole Internship module. Returns (kept, removed_by_reason).
 
     `search_title` is the job title in the Search box, and `search_work_mode` its Remote or
@@ -374,7 +374,7 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
     claude.py.
 
     De-duplicating before judging is not an optimisation. Judging first would spend every
-    rule -- and a Claude call -- on four copies of one advert, and hand Sina the same
+    rule -- and a Claude call -- on four copies of one advert, and hand the user the same
     internship four times.
     """
     if progress_cb:
@@ -383,7 +383,9 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
     # Copies, carrying the title in the box NOW and this Level -- never written onto the rows
     # given. The résumé match reads both off the row.
     title = clean_title(search_title)
-    stamp = {TITLE_ROW_KEY: title, LEVEL_ROW_KEY: 'internship',
+    # The other names employers give this job (title_equivalents), handed in by the caller so
+    # this module asks nobody and shares nothing: the field rule matches any of them.
+    stamp = {TITLE_ROW_KEY: title, LEVEL_ROW_KEY: 'internship', ALSO_ROW_KEY: list(other_names or []),
              WORK_MODE_ROW_KEY: clean_work_mode(search_work_mode)}
     found = [dict(row, **stamp) for row in rows if is_internship(row)]
     found, duplicates = remove_duplicates(found)
@@ -408,7 +410,7 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
         for why, count in sorted(reasons.items(), key=lambda kv: -kv[1]):
             progress_cb('FILTER_STEP_ITEM:internship|%s (%d removed)' % (why, count), 0, 1)
 
-    # Every fact about Sina now comes from his résumé, so without one Claude would judge
+    # Every fact about the user now comes from his résumé, so without one Claude would judge
     # against nobody. Skipped, and said so, rather than run blind.
     from . import claude as _claude
     if anthropic_api_key and kept and not _claude.resume_text():
@@ -436,7 +438,7 @@ def _claude_pass(rows: list, api_key: str, progress_cb=None, should_cancel=None)
 
     A listing Claude did not answer about is KEPT. That is the important half: a failed
     request, an unfinished answer or a cancelled batch must never be able to delete a real
-    internship. An extra one on the list costs Sina a minute; a lost one costs him the
+    internship. An extra one on the list costs the user a minute; a lost one costs him the
     internship.
     """
     import anthropic
@@ -462,7 +464,7 @@ def _claude_pass(rows: list, api_key: str, progress_cb=None, should_cancel=None)
             continue
         drop, reason, _match, basis, field = answer
         # No score from this part any more, and no floor on one: how well an internship
-        # matches Sina is read against his résumé in the second part, which also applies
+        # matches the user is read against his résumé in the second part, which also applies
         # the floor (claude_screen/worth.py).
         row[_claude.BASIS_KEY] = basis
         row[_claude.FIELD_KEY] = field

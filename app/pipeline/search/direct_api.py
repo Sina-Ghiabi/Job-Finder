@@ -104,7 +104,7 @@ def _run_direct_api_searches(rows: list[dict], countries: list[str], cities: lis
     is a JSON API RoleHound can call directly (no Apify actor at all needed for these):
     arbetsformedlingen.se (Sweden, country-wide), arbeitsagentur.de (Germany,
     country-wide or Berlin-specific), and -- for each domain in JOOBLE_API_COUNTRIES
-    Sina has supplied his own key for (jooble_api_keys: {'de': '...', 'nl': '...'}) --
+    The user has supplied his own key for (jooble_api_keys: {'de': '...', 'nl': '...'}) --
     that Jooble country domain's real REST API, country-wide or city-specific. This is a
     completely different, unblocked mechanism from jooble.org's Cloudflare-walled
     browser path, see MANUAL_ASSIST_GLOBAL_SITES's removed entry above for why that one
@@ -113,8 +113,7 @@ def _run_direct_api_searches(rows: list[dict], countries: list[str], cities: lis
     # EVERY SOURCE BELOW IS NOW SWITCHABLE.
     #
     # Until this, the thirteen sources in this function ran whenever a search ran, and only
-    # the four Apify platforms could be turned off. Sina asked for a box per source: "میخوام
-    # برای همه از Indeed تا API ها Check-box بذاری که خودمون بتونیم انتخاب کنیم".
+    # the four Apify platforms could be turned off. The user asked for a box per source: [owner's note: a checkbox for every source, from Indeed to the APIs, to choose from].
     #
     # `on` folds that choice into the condition each source already had, so a source still
     # only runs when it applies to a chosen country AND has its key AND he has left it

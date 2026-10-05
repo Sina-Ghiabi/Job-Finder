@@ -3,7 +3,7 @@
 
 WHY THIS IS THE TEST THAT EXPLAINS THE OTHERS
 
-Sina's German search came back empty while 2,559 assertions passed. The obvious question is how
+The user's German search came back empty while 2,559 assertions passed. The obvious question is how
 both can be true, and the answer is that a passing test proves nothing about coverage -- it only
 proves that the thing it looks at is as it was. A rule can be narrowed to uselessness without a
 single assertion touching the narrowed part.

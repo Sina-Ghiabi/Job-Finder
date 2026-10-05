@@ -224,7 +224,7 @@ def _record_jooble_usage(domain_key: str) -> int:
 
 def _fetch_jooble(domain_code: str, country: str, role_term: str, api_key: str,
                    location: str | None = None, on_request_sent=None) -> list[dict]:
-    """Any Jooble country domain Sina has his own real API key for (see
+    """Any Jooble country domain the user has his own real API key for (see
     JOOBLE_API_COUNTRIES). Confirmed real response fields (checked against a live
     de.jooble.org call): title, location, snippet (a truncated description, not the
     full JD), salary, source (the original site Jooble aggregated it from), type, link
@@ -265,7 +265,7 @@ def _fetch_jooble(domain_code: str, country: str, role_term: str, api_key: str,
     return rows
 
 
-# Sina's own real Reed.co.uk Jobseeker API key, requested from reed.co.uk/developers/
+# The user's own real Reed.co.uk Jobseeker API key, requested from reed.co.uk/developers/
 # jobseeker and confirmed working with a real call: real "Data Scientist" postings in
 # London etc., each with the *full* job description text (richer than Jooble's
 # snippet-only response) -- title, employer, location, salary range, dates,
@@ -391,9 +391,9 @@ def _eures_rows(jvs: list, iso2_to_country: dict) -> list[dict]:
     return rows
 
 
-# Sina's own real France Travail (formerly Pôle emploi) API credentials, requested from
+# The user's own real France Travail (formerly Pôle emploi) API credentials, requested from
 # francetravail.io/data/api/offres-emploi -- OAuth2 client_credentials, confirmed
-# working with a real call only after Sina additionally *subscribed* his application to
+# working with a real call only after the user additionally *subscribed* his application to
 # the "Offres d'emploi v2" product in the francetravail.io catalog (creating the
 # application and getting client_id/secret wasn't enough on its own -- the token
 # endpoint returned "invalid_scope" until that separate subscription step was done).
@@ -629,7 +629,7 @@ def _jobcloud_rows(domain: str, documents: list) -> list[dict]:
 # Every other country with a real national source has it wired in directly:
 # arbeitsagentur.de for Germany, arbetsformedlingen.se for Sweden. The Netherlands had
 # nothing. Its only Netherlands-specific source was nl.jooble.org, which needs a key
-# Sina has not configured, so a Dutch search ran on EURES and three global boards and no
+# The user has not configured, so a Dutch search ran on EURES and three global boards and no
 # national board at all.
 #
 # werk.nl is the UWV's own board -- Dutch employers are legally required to report
@@ -724,7 +724,7 @@ def _werk_nl_rows(items: list, city: str | None = None) -> list[dict]:
 # for the crawler to deepen into.
 #
 # It is worth the trouble rather than writing off: YC companies are unusually
-# remote-friendly and hire at exactly the level Sina is looking at. Confirmed with real
+# remote-friendly and hire at exactly the level the user is looking at. Confirmed with real
 # runs before this was written -- 15 postings back, each with a real
 # workatastartup.com/jobs/NNNNN URL, a company, a location and a description.
 #

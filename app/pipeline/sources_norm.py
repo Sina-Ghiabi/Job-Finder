@@ -378,7 +378,7 @@ def normalize_google_search_result(item: dict, loc_type: str | None, loc_value: 
 # title is empty, so the field filter kept them -- a missing title is never evidence -- and
 # one reached Claude in the Austrian DevOps run and was KEPT, listed as "None".
 #
-# This does not delete anything. Sina's rule is that a raw search shows every listing as
+# This does not delete anything. The user's rule is that a raw search shows every listing as
 # fetched and cleanup happens at Filter, so the row is CORRECTED instead: its address is put
 # back to the one the HTML copy has, and its title and company are read out of the Markdown
 # itself. Filter's own duplicate check then sees two rows at one address and keeps one.

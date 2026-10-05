@@ -115,7 +115,7 @@ check('  ...including the compiled extension that carries libcurl',
 
 # ------------------------------------------------------------------- 0.one-at-a-time ----
 section('0.one-at-a-time  every Claude module asks about one listing per request')
-# Sina asked for this outright: "مگه قرار نشد یکی یکی بفرستیم تا درست کار کنه". Two of the
+# The user asked for this outright: [owner's note: the plan was to send them one by one until it works]. Two of the
 # three modules were changed then and the Job module was not, so a Junior search -- the one he
 # actually runs -- kept bundling three listings per request. Measured in screen.py's own
 # table, three agrees with one-at-a-time 96.7% of the time, and every disagreement is a
@@ -137,7 +137,7 @@ for _name, _size in (('the Job module', _job_screen._BATCH_GROUP_SIZE),
     check('%s sends one listing per request' % _name, _size == 1, _size)
 
 # And the comment that explains why, so the next person to reach for a cheaper number reads
-# the measurement first rather than rediscovering it on Sina's results.
+# the measurement first rather than rediscovering it on the user's results.
 _screen_src = open(os.path.join(APP, 'app', 'pipeline', 'claude_screen', 'screen.py'),
                    encoding='utf-8').read()
 check('  ...and screen.py still records what bundling cost',

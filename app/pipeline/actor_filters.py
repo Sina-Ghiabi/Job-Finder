@@ -3,10 +3,8 @@
 
 WHY THIS IS A TABLE AND NOT A FORM
 
-Sina's instruction: "در بخش Search برای هر Actor عبارت های Filter دقیق اون Actor رو قرار بده که
-ما فقط Select کنیم که جای هیچ اشتباهی نباشه" -- per actor, the actor's own filters, selected
-rather than typed, with no room for a mistake. Then, once the testing came in: "فقط مواردی رو
-بذار که مطمئنی کار میکنن و اون مواردی که کار نمیکنن رو لازم نیست بذاری".
+The user's instruction: [owner's note: in Search, give each actor its exact filter terms, selected rather than typed, so there is no room for a mistake] -- per actor, the actor's own filters, selected
+rather than typed, with no room for a mistake. Then, once the testing came in: [owner's note: offer only what is sure to work; leave out what does not].
 
 Both are structural requirements, not layout preferences, so they are met structurally: this
 table is the only place a filter is described, the Search window builds its controls FROM it,
@@ -33,7 +31,7 @@ identical is a parameter the actor dropped. What that test found:
 
 The dropped ones are the reason this file exists. f_WT=2 has been sent on every Remote search
 this app has ever run, and removing it returned the identical 300 jobs -- so the premise of
-the search, that Sina works from home in Turin, never reached LinkedIn at all. Putting it in a
+the search, that the user works from home in Turin, never reached LinkedIn at all. Putting it in a
 window as a tick box would have made that failure permanent and invisible.
 
 Three of LinkedIn's schema fields (under10Applicants, distance, geoId) and two of Glassdoor's
@@ -79,8 +77,8 @@ class Field:
         # and `limitPerSource`, and the billed runs sent them as a pair; setting one and
         # leaving the other at the global figure is how a 400-row cap quietly fetches 500.
         self.also_sets = tuple(also_sets)
-        # What a number's dropdown offers. A spin box was the control until Sina asked for a
-        # dropdown on every parameter ("جلوش یک Dropdown بذار"); a number has no natural list,
+        # What a number's dropdown offers. A spin box was the control until the user asked for a
+        # dropdown on every parameter ([owner's note: put a dropdown in front of it]); a number has no natural list,
         # so the list is chosen here, per field, and always contains 0 for "no limit".
         self.presets = tuple(presets or ())
         # How a tick reads as a dropdown: (off label, on label).
@@ -117,7 +115,7 @@ class Field:
         """What to put in the run input for this chosen value, or None to send nothing.
 
         The "off" position of every control sends NOTHING rather than a neutral value. That
-        is deliberate: Sina's standing rule is that the search never narrows by something he
+        is deliberate: The user's standing rule is that the search never narrows by something he
         did not choose, and an actor's own default is not his choice either.
         """
         if self.kind == FLAG:
@@ -156,8 +154,7 @@ FIELDS = {
     # it does nothing, and Seniority is classified in the table rather than asked of any actor.
     'linkedin': [
         # EVERY ROW HERE IS THE ACTOR'S OWN PARAMETER, and the value chosen is the value sent --
-        # Sina: "بعد هر انتخابی که کردم اونجا مستقیما در مقدار پارامتر مربوطه به اون Actor قرار
-        # داده بشه". Two of them used to be instructions to the app under an actor's name
+        # [owner's note: every choice made there goes directly into that actor's own parameter]. Two of them used to be instructions to the app under an actor's name
         # (`allWorkplaces`, `maxResults`); neither exists any more.
         #
         # `remote`, with the actor's own four values. The Remote / Not Remote choice above the
@@ -240,7 +237,7 @@ FIELDS = {
 }
 
 # Said in the window under each actor, so a short panel reads as a finding rather than as
-# something unfinished. Sina asked why a search costs what it does; this is the answer in the
+# something unfinished. The user asked why a search costs what it does; this is the answer in the
 # place where he would otherwise wonder.
 NOTES = {
     'linkedin': ("Every filter here was measured against the live actor. Every row comes "
@@ -269,7 +266,7 @@ def note_for(platform):
 
 
 def defaults():
-    """What the window opens showing before Sina has ever saved anything."""
+    """What the window opens showing before the user has ever saved anything."""
     return {platform: {field.key: field.default for field in fields}
             for platform, fields in FIELDS.items()}
 

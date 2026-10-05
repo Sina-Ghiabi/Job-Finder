@@ -17,7 +17,7 @@ from .geo import (
 # ---------------------------------------------------------------------------
 # Direct site search URLs -- bypassing Google's location text-matching entirely
 # ---------------------------------------------------------------------------
-# Sina pushed back hard on relying purely on Google full-text matching for location:
+# The user pushed back hard on relying purely on Google full-text matching for location:
 # a page on a real job board might never literally contain the word "Oslo" (a
 # genuinely relevant "Remote" listing usually doesn't name a city at all), and a real
 # test with Jooble showed the opposite failure too -- Google can also be fooled into
@@ -52,7 +52,7 @@ from .geo import (
 #    (wellfound.com's own support docs say not to; aijobs.ai's city-looking path was
 #    tested and confirmed to silently return country-wide results only).
 #    work.turing.com and work.mercor.com were originally placed here too ("no browsable
-#    listing at all") -- wrong, corrected once Sina actually opened both in his own
+#    listing at all") -- wrong, corrected once the user actually opened both in his own
 #    browser before logging in and found real search boxes and real results; see
 #    MANUAL_ASSIST_GLOBAL_SITES, since they're a different failure mode (real search,
 #    but role cards have no real `<a href>` for _deepen_google_results to use here).
@@ -77,7 +77,7 @@ from .geo import (
 # 3-step format as the other warnings) for any one that doesn't, so a wrong guess
 # surfaces itself instead of failing silently.
 # What a builder searches for when it is not handed a title -- the default title's role
-# form. A real search always hands every builder the title Sina typed.
+# form. A real search always hands every builder the title the user typed.
 _DIRECT_ROLE_TERM = role_form(DEFAULT_SEARCH_TITLE)
 
 # Every direct source -- the JSON APIs and the per-site search URLs above -- used to search
@@ -105,7 +105,7 @@ _DIRECT_ROLE_TERM = role_form(DEFAULT_SEARCH_TITLE)
 # overlap as little as possible -- "DevOps Engineer" and "Platform Engineer" are the same
 # job under two names and a posting rarely carries both, so each one earns its call.
 # Now the forms of ONE title rather than four hand-picked roles, since the field became the
-# title Sina types. These are only the default's; run_search builds them from the title in
+# title the user types. These are only the default's; run_search builds them from the title in
 # the box (see terms_for_pass).
 DIRECT_API_ROLE_TERMS = list(title_forms(DEFAULT_SEARCH_TITLE))
 
@@ -123,7 +123,7 @@ DIRECT_API_INTERNSHIP_TERMS = [
 ]
 
 # The subject form of the title, because a thesis is about a subject: "Masterarbeit Data
-# Engineering". These were nine hand-written data-science phrases until Sina put Thesis on
+# Engineering". These were nine hand-written data-science phrases until the user put Thesis on
 # the title too; they are kept out of the public repository.
 DIRECT_API_THESIS_TERMS = [
     'Masterarbeit %s' % field_form(DEFAULT_SEARCH_TITLE),
@@ -200,9 +200,9 @@ def _direct_url_jobly_fi(location, loc_type, role_term=_DIRECT_ROLE_TERM):
 
 # te-palvelut.fi's real successor. Its keyword search box looked JS-only at first --
 # guessed params (haku=, keyword=, ammatti=) were all silently ignored, returning the
-# same unfiltered ~11,700 results every time -- but Sina found the real one by hand:
+# same unfiltered ~11,700 results every time -- but the user found the real one by hand:
 # ?q=... . Confirmed via a real test: 16 genuine "Data Scientist" postings (Poolia IT,
-# Terveystalo, etc.), matching exactly what Sina saw in his own browser. Finland has no
+# Terveystalo, etc.), matching exactly what the user saw in his own browser. Finland has no
 # defined city in CITIES, so this is country-wide only.
 def _direct_url_tyomarkkinatori_fi(location, loc_type, role_term=_DIRECT_ROLE_TERM):
     return f'https://tyomarkkinatori.fi/henkiloasiakkaat/avoimet-tyopaikat?{_qs(q=role_term)}'
@@ -444,7 +444,7 @@ _DISCOVERED_PATTERNS_CACHE: dict = {}
 
 
 def _load_direct_search_overrides() -> dict:
-    """{domain: {'template': '...{KEYWORD}...', 'added_at': iso}} -- domains Sina fixed
+    """{domain: {'template': '...{KEYWORD}...', 'added_at': iso}} -- domains the user fixed
     live via the broken-URLs dialog: he pasted a real search-result URL, Claude
     resolved it into a reusable template (see _resolve_url_template_with_claude), and a
     real Apify test crawl confirmed it's reachable, before it ever got saved here.
@@ -551,7 +551,7 @@ def _build_direct_search_url(domain: str, location: str, loc_type: str, country:
     builder = DIRECT_SEARCH_URL_BUILDERS.get(domain)
     if builder:
         return builder(location, loc_type, role_term)
-    # Fallback: a Claude-resolved, Apify-verified template Sina saved live via the
+    # Fallback: a Claude-resolved, Apify-verified template the user saved live via the
     # broken-URLs dialog -- country-wide only (the template has no location slot, since
     # Claude was deliberately told not to guess one), but still real and automatic from
     # here on, instead of falling all the way back to Google-only coverage.
@@ -564,7 +564,7 @@ def _build_direct_search_url(domain: str, location: str, loc_type: str, country:
 # ---------------------------------------------------------------------------
 # Sites Apify's crawler infrastructure cannot read -- bot-blocked, consent-gated, or
 # JS-only search with no URL parameter. They were originally collected for a stage that
-# opened a real, visible Chrome window so Sina could clear the block himself; the fetch
+# opened a real, visible Chrome window so the user could clear the block himself; the fetch
 # ladder now does that part automatically (Chrome's TLS fingerprint, a crawler identity,
 # then a headless browser that runs the page's JavaScript and clicks its consent button),
 # so the stage runs unattended. See search/browser_sites.py.
@@ -623,7 +623,7 @@ MANUAL_ASSIST_SITES = {
     },
     'werk.nl': {
         # No confirmed city-path/param found for Amsterdam (unlike the two above) --
-        # not guessed blindly. Sina is present anyway and can type "Amsterdam" into
+        # not guessed blindly. The user is present anyway and can type "Amsterdam" into
         # werk.nl's own location field himself once he's past the DigiD login wall.
         'country': 'Netherlands',
         'url': lambda cities: 'https://www.werk.nl/nl/vacatures',
@@ -664,7 +664,7 @@ MANUAL_ASSIST_SITES = {
 
 # Global, not tied to any one country -- these run on every search where the browser-site
 # is enabled at all, regardless of which countries/cities are selected, since both are
-# remote-work platforms with no country scoping of their own. Sina found both of these
+# remote-work platforms with no country scoping of their own. The user found both of these
 # himself, in his own browser before logging in -- a real screenshot each time, after an
 # earlier research pass had wrongly concluded neither had a public listing at all.
 MANUAL_ASSIST_GLOBAL_SITES = {
@@ -679,10 +679,10 @@ MANUAL_ASSIST_GLOBAL_SITES = {
         'job_link_glob': None,
     },
     'work.mercor.com': {
-        # Also confirmed real via Sina's own browser (a "Data scientist" search showing
+        # Also confirmed real via the user's own browser (a "Data scientist" search showing
         # genuine project-based opportunities), but /explore's search box is entirely
         # client-side -- the URL stays exactly /explore regardless of query, confirmed
-        # when Sina sent back the URL after searching. He types the search himself once
+        # when the user sent back the URL after searching. He types the search himself once
         # the browser opens, same as the JS-only country-scoped sites above.
         'url': lambda cities: 'https://work.mercor.com/explore',
         'job_link_glob': None,
@@ -712,7 +712,7 @@ MANUAL_ASSIST_GLOBAL_SITES = {
     # AutomationControlled, a persistent real-Chrome-profile context instead of a fresh
     # one). Unlike weworkremotely.com's block (which was purely headless-detection and
     # went away with a visible browser), this one appears to key off something deeper in
-    # Playwright's CDP connection itself -- Sina, sitting right there watching, would
+    # Playwright's CDP connection itself -- The user, sitting right there watching, would
     # never even get a captcha to click; the page just never leaves "verifying." Left
     # out entirely rather than ship a browser-site entry that quietly never works.
 }

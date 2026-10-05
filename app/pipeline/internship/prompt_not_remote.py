@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The Internship module's Claude prompt for a Not Remote search -- written out in full.
 
-Sina: "اگر Not Remote رو زدیم هر چی به غیر از این رو بیاره". A copy of the Remote prompt
+[owner's note: with Not Remote, bring everything that is not remote]. A copy of the Remote prompt
 (internship/claude.py) word for word, except the passages about where the work happens: what he is
 looking for, rule 1 and the working-student rule 2, and the home-city exception, which is a Remote-search question
 and is not here. Rule 1 is the same ladder with the other verdicts -- a role that says it is
@@ -12,15 +12,15 @@ the other.
 """
 from __future__ import annotations
 
-INTERNSHIP_SYSTEM_PROMPT_NOT_REMOTE = """# Internship screening for Sina
+INTERNSHIP_SYSTEM_PROMPT_NOT_REMOTE = """# Internship screening for the user
 
 Every posting below offers an internship, a working-student role or a traineeship. That part
 is already decided -- do not re-litigate it. Your job is to say whether **this** one is worth
-Sina applying to. If it conflicts with anything below, **DROP**. Otherwise **KEEP**.
+The user applying to. If it conflicts with anything below, **DROP**. Otherwise **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, the university he is enrolled at, his experience and his
 skills — read them there, and nowhere else.
@@ -31,7 +31,7 @@ If a rule needs a fact his résumé does not give, do not guess it, and do not D
 
 A **paid internship in the work named on the Field line of the posting, that is not
 remote** — on-site or hybrid, done at least partly in person, for a company in any country.
-That is the point of this search: Sina has asked for internships that are not remote.
+That is the point of this search: The user has asked for internships that are not remote.
 
 Nothing he has done has to carry that title already. An internship is where someone starts
 in a field, so this is never a reason to drop.
@@ -65,7 +65,7 @@ in a field, so this is never a reason to drop.
    assistant", "Studentenjob", "praktikant naast je studie" — kept as its own rule so the
    numbering is the same in both searches. A named working-student role that is on-site,
    hybrid, or silent about where it is done is a KEEP.
-3. **It is not the work named on the Field line.** That line is the job title Sina is
+3. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same work under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not — however junior.
 4. **It is unpaid** — voluntary, expenses-only, for credit alone, or self-funded. An

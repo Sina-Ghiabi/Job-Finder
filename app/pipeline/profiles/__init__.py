@@ -3,10 +3,10 @@ prompt each Level uses.
 
 Junior is the Job module as it always was: app/pipeline/country_rules.py for its words,
 rules.is_too_senior for its level rule, claude_screen/prompt.py for its prompt. Those files
-are what Sina called complete, and nothing here changes them.
+are what the user called complete, and nothing here changes them.
 
-Entry, Mid and Senior are copies of Junior in their own packages, made the way Sina asked --
-"دقیقا همون قالب ... فقط یه سری چیز های کوچیک باید داخلشون تغییر کنه". Each has:
+Entry, Mid and Senior are copies of Junior in their own packages, made the way the user asked --
+[owner's note: exactly the same template, with only a few small things changed]. Each has:
 
     words.py    Junior's full 13-language vocabulary, with `senior` replaced by `wrong_level`
     level.py    Junior's is_too_senior, with the field values, words and years changed

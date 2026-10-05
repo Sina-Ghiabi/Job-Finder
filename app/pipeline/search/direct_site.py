@@ -148,7 +148,7 @@ def _absorb_direct_site_items(crawled, rows: list[dict], url_to_task: dict):
             # strictly precise -- its UI shows "Oslo" as an active filter, but still
             # mixes in jobs actually located in Stavanger, Trondheim, Gjovik (likely
             # deliberate "similar/nearby" recommendations on the site's part). Since
-            # Sina asked for genuinely correct results, not just "the site says it
+            # The user asked for genuinely correct results, not just "the site says it
             # filtered", this drops any job page whose own text doesn't actually
             # mention the requested city -- better a missed edge case (a real Oslo job
             # that never repeats "Oslo" in its own body text) than a wrong-city result
@@ -239,7 +239,7 @@ def _run_direct_site_searches(rows: list[dict], client: ApifyClient, countries: 
     sometimes -- rather than fail silently, any built URL that yields zero real job
     links (for a domain with a confirmed GOOGLE_KNOWN_SITE_JOB_URL_PATTERNS entry, so a
     real result was expected) gets the same yellow, step-by-step log warning as the
-    other two warning types, naming the exact URL that didn't work so Sina can check
+    other two warning types, naming the exact URL that didn't work so the user can check
     it and report back the correct one."""
     tasks = _direct_site_tasks(countries, cities, role_terms)
     if not tasks:
@@ -264,7 +264,7 @@ def _run_direct_site_searches(rows: list[dict], client: ApifyClient, countries: 
         # covers every direct-site URL -- same reasoning as Known Websites/Deep-Crawl's
         # own timers.
         progress_cb("DIRECT_SITE_START", 0, 1)
-        # Sina asked for a per-site status indicator in the Log: a yellow "checking"
+        # The user asked for a per-site status indicator in the Log: a yellow "checking"
         # line now, followed later by a green line (a real connection was made to this
         # exact URL -- regardless of whether it had 0 or 50 jobs on it) or a red line
         # (couldn't connect to it at all). The Log panel can't recolor an existing

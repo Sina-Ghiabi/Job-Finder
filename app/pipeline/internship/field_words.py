@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Does this internship's title name the job Sina is searching for? — the Internship module's
+"""Does this internship's title name the job the user is searching for? — the Internship module's
 own copy.
 
-A copy, on purpose, and the whole point of the copy is that it is a copy. Sina's rule for
-these three modules has been the same from the first day: *"نه دیکشنری مشترک نه هیچی"* — no
+A copy, on purpose, and the whole point of the copy is that it is a copy. The user's rule for
+these three modules has been the same from the first day: *owner's note: no shared dictionary, nothing shared at all* — no
 shared dictionary, nothing shared at all, three modules that happen to run over one list. A
 change tuned here for internships cannot silently change what the Job or Thesis module keeps.
 The only thing the three agree on is the title itself (app/pipeline/search_title.py).
@@ -20,8 +20,8 @@ Claude and been paid for.
 
 THE TITLE SINA TYPES IS THE FIELD
 
-This file used to hold about 150 field words in thirteen languages. Sina replaced them with
-one name: "من یک عنوان رو برات مینویسم و باید اون عنوان جای همه ی اینها بشینه". An internship
+This file used to hold about 150 field words in thirteen languages. The user replaced them with
+one name: [owner's note: one typed title must take the place of all of these]. An internship
 is in the field when its title names that job -- every word of it, in any order, each at the
 start of a word. For "Data Engineering" (and its twin "Data Engineer"):
 
@@ -56,6 +56,10 @@ from ..search_title import ROW_KEY as TITLE_ROW_KEY, clean_title, title_forms
 # so it keeps working whatever the Job module renames.
 ORIGINAL_TITLE_KEY = '_original_title'
 
+# Where the other names for the job are kept on a row, stamped by find() beside the title and
+# the Level. This module names the key itself, like the others, so it shares nothing.
+ALSO_ROW_KEY = '_title_also'
+
 # What separates the words of a title. A hyphen only between two letters; `+`, `#` and `.`
 # are left alone because they are part of names -- C++, C#, .NET.
 _WORD_SPLIT = re.compile(r'[\s/&,;:|()\[\]]+|(?<=[^\W_])-(?=[^\W_])')
@@ -71,18 +75,25 @@ def _word_pattern(word: str):
     return re.compile(lead + re.escape(word) + trail, re.IGNORECASE)
 
 
-@lru_cache(maxsize=32)
-def _form_patterns(search_title: str) -> tuple:
-    """For each form of the title, the patterns for all of its words."""
+@lru_cache(maxsize=64)
+def _form_patterns(search_title: str, also: tuple = ()) -> tuple:
+    """For each form of the title -- and of every other name for the same work -- the patterns for
+    all of its words. `also` is what title_equivalents found for the title ("Machine Learning
+    Engineer" for "Data Science"); without it this is the typed title and its twin, as it was."""
     forms = []
-    for form in title_forms(search_title):
-        words = [word for word in _WORD_SPLIT.split(form) if re.search(r'[^\W_]', word)]
-        forms.append(tuple(_word_pattern(word) for word in words))
+    seen = set()
+    for name in (search_title,) + tuple(also):
+        for form in title_forms(name):
+            if form.lower() in seen:
+                continue
+            seen.add(form.lower())
+            words = [word for word in _WORD_SPLIT.split(form) if re.search(r'[^\W_]', word)]
+            forms.append(tuple(_word_pattern(word) for word in words))
     return tuple(forms)
 
 
-def title_is_in_field(title, search_title=None) -> bool:
-    """Does this title name the job being searched for?
+def title_is_in_field(title, search_title=None, also=None) -> bool:
+    """Does this title name the job being searched for -- or another name for it?
 
     A missing title is True, not False: a row with nothing to read is not evidence of
     anything, and this app never deletes on an absence.
@@ -91,24 +102,25 @@ def title_is_in_field(title, search_title=None) -> bool:
     if not text:
         return True
     return any(all(pattern.search(text) for pattern in form)
-               for form in _form_patterns(clean_title(search_title)))
+               for form in _form_patterns(clean_title(search_title), tuple(also or ())))
 
 
-def row_is_in_field(row, search_title=None) -> bool:
+def row_is_in_field(row, search_title=None, also=None) -> bool:
     """The same question for a whole row: its title as posted, or as it was before
     translation. With no title at all it is kept."""
     wanted = search_title if search_title is not None else row.get(TITLE_ROW_KEY)
+    also = also if also is not None else row.get(ALSO_ROW_KEY)
     titles = [title for title in (row.get('title'), row.get(ORIGINAL_TITLE_KEY))
               if str(title or '').strip()]
     if not titles:
         return True
-    return any(title_is_in_field(title, wanted) for title in titles)
+    return any(title_is_in_field(title, wanted, also) for title in titles)
 
 
-def remove_off_field(rows: list, search_title=None) -> tuple:
+def remove_off_field(rows: list, search_title=None, also=None) -> tuple:
     """Drop the internships whose titles name some other job. Returns (kept, removed)."""
     kept: list = []
     removed: list = []
     for row in rows:
-        (kept if row_is_in_field(row, search_title) else removed).append(row)
+        (kept if row_is_in_field(row, search_title, also) else removed).append(row)
     return kept, removed

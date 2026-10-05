@@ -36,7 +36,7 @@ from .google_phase import (_run_google_phase)
 
 # How many selected platforms (Indeed/LinkedIn/Glassdoor) run_search runs in parallel at
 # once -- each platform is one long-running unit that works through its own selected
-# countries/cities sequentially and gets its own header+timer line in the Log. Sina
+# countries/cities sequentially and gets its own header+timer line in the Log. The user
 # asked for every selected platform to run in parallel with its own visible progress
 # (not one shared queue), batched 2 at a time (a 3rd/4th/5th platform starts as soon as
 # a slot frees up). Kept at 2, not higher, because of a real, previously-hit failure:
@@ -47,8 +47,8 @@ from .google_phase import (_run_google_phase)
 SEARCH_MAX_CONCURRENT_PLATFORMS = 2
 
 
-# What `limit_per_call` becomes when the wizard's cap is switched off. Sina's instruction --
-# "هیچ Limit ای نباید در پیدا کردن آگهی باشد" -- and the German run is why he gave it:
+# What `limit_per_call` becomes when the wizard's cap is switched off. The user's instruction --
+# [owner's note: there must be no limit on finding listings] -- and the German run is why he gave it:
 # LinkedIn and Glassdoor each returned exactly 100 listings, the saved cap to the item, so
 # both had more to give and neither said so.
 #
@@ -73,7 +73,7 @@ _ACTOR_RESULT_CEILING = {'indeed': 1000, 'glassdoor': 1000}
 
 
 def _actor_limit(platform: str, requested: int) -> int:
-    """What to ask this actor for: what Sina chose, or the actor's own maximum."""
+    """What to ask this actor for: what the user chose, or the actor's own maximum."""
     ceiling = _ACTOR_RESULT_CEILING.get(platform)
     return min(requested, ceiling) if ceiling else requested
 
@@ -84,7 +84,7 @@ def _actor_limit(platform: str, requested: int) -> int:
 #
 # The field used to be written out here by hand -- data science first, then DevOps and
 # MLOps, eighteen terms in the broad query and eighteen more for entry level. Moving between
-# the two took a day. Sina asked for the field to be one name he types, and for everything
+# the two took a day. The user asked for the field to be one name he types, and for everything
 # else to be built from it; see search_title.py for the name and its forms.
 #
 # WHAT IS KEPT FROM BEFORE is the measurement that shapes every query below: across 17,544
@@ -164,7 +164,7 @@ def _poll_apify_credit_impl(client, progress_cb, _credit_poll_stop):
 # intervals and then $0.05. The app read the run once, at the moment it ended, so the Log
 # printed "$0.00" for every LinkedIn call while the account was being charged $0.005 a row.
 # That is the O-2 fault (the Log must say what happened) and it is also how the price of this
-# actor was first misreported to Sina: the same field, read at the same wrong moment.
+# actor was first misreported to the user: the same field, read at the same wrong moment.
 _USAGE_SETTLE_SECONDS = 45
 _USAGE_POLL_SECONDS = 3
 
@@ -262,9 +262,8 @@ def _run_actor_and_fetch(client, limit_per_call, should_cancel,
 # asked for; with it off, 25%. The two result sets overlapped by only 59%, so this is a
 # genuinely different search rather than a reordering.
 #
-# Sent as a constant and deliberately NOT offered in the Search window: Sina's instruction
-# when the measurement came in -- "اگر واقعا کار میکنه فعالش کن و اصلا نذارش داخل Search
-# Field". A boolean query is what the rest of this module builds, phrase by phrase, so
+# Sent as a constant and deliberately NOT offered in the Search window: The user's instruction
+# when the measurement came in -- [owner's note: if it really works, enable it, and keep it out of the Search field]. A boolean query is what the rest of this module builds, phrase by phrase, so
 # having it honoured is not a preference.
 _LINKEDIN_KEEP_THE_QUERY_LITERAL = False
 
@@ -276,7 +275,7 @@ def _linkedin_request(keywords, loc_type, location, row_country, limit_per_call,
     THIS USED TO BE TWO SHAPES AND NEITHER FILTERED ANYTHING. The old actor took either a
     search URL carrying f_WT=2 or plain keywords, and f_WT was measured IGNORED: the same URL
     without it returned the identical 300 jobs. So the premise of every Remote search -- that
-    Sina works from home in Turin -- never reached LinkedIn, and every office job in the
+    The user works from home in Turin -- never reached LinkedIn, and every office job in the
     country was bought at $0.002 a row and then guessed at from prose. (The replacement
     charges $0.005 a row -- more per row, but only Remote rows come back.)
 
@@ -435,7 +434,7 @@ def _actor_request(platform, keywords, loc_type, location, row_country, limit_pe
                    date_settings, not_remote=False, settings=None, skip_remote=False):
     """(actor id, run input, normaliser) for one platform and one location.
 
-    `not_remote` is the work mode Sina chose. Only Glassdoor's request really acts on it --
+    `not_remote` is the work mode the user chose. Only Glassdoor's request really acts on it --
     it has the one working remote filter of the three -- but every builder takes it so the
     table can call them all the same way.
 
@@ -453,8 +452,7 @@ def _actor_request(platform, keywords, loc_type, location, row_country, limit_pe
         # THE WINDOW'S VALUE IS THE VALUE SENT. The builders derive a remote filter from the work
         # mode, which is right for a request built with no window and wrong the moment there is
         # one: a dropdown that says Hybrid must send hybrid, and one that says Any must send
-        # nothing. Sina: "بعد هر انتخابی که کردم اونجا مستقیما در مقدار پارامتر مربوطه به اون
-        # Actor قرار داده بشه". So what the builder derived is discarded and the dropdown's own
+        # nothing. [owner's note: every choice made there goes directly into that actor's own parameter]. So what the builder derived is discarded and the dropdown's own
         # value goes in, through apply_to_request, exactly as chosen.
         for derived in _WORKPLACE_PARAMETER.get(platform, ()):
             run_input.pop(derived, None)
@@ -600,12 +598,11 @@ def _build_search_plan(actor_order, countries, cities):
             # same search restricted to Berlin returned 120 jobs of which 48 were not in
             # the 1,000 the country-wide run had already produced. 40% new, from one city.
             #
-            # A city Sina did not choose is never added to the plan. LinkedIn used to get
+            # A city the user did not choose is never added to the plan. LinkedIn used to get
             # each selected country's strongest city asked separately as well, because it
             # caps one query at 1,000 results and a Berlin-only search once returned 48 jobs
-            # the Germany-wide one had not -- a real gain, measured. Sina's rule outranks it:
-            # "من میخوام فقط جا هایی که انتخاب کردم رو ببینم ولا غیر / به هیچ عنوان نباید
-            # شهر های دیگه ای که خودت به نظرت خوب اومده رو اضافه کنی". A search asks for the
+            # the Germany-wide one had not -- a real gain, measured. The user's rule outranks it:
+            # [owner's note: only the places that were chosen are wanted, and no other city may be added on the app's own judgement]. A search asks for the
             # places he picked, and for nothing else; if he wants Berlin, he picks Berlin,
             # and then Berlin is searched exactly once.
         for city in cities:
@@ -742,7 +739,7 @@ def _run_platform_passes(plan, pass_plan, rows, progress, run_platform_locations
 
     Split out of run_search, which held this loop, the Google loop and everything around
     them in one 465-line function. This one answers a single question -- who is asked what,
-    in which order, and what happens when one of them fails or Sina presses cancel -- and it
+    in which order, and what happens when one of them fails or the user presses cancel -- and it
     is the question that spends the money.
 
     `rows` is extended in place, and holds whatever was collected even when the run is
@@ -760,9 +757,8 @@ def _run_platform_passes(plan, pass_plan, rows, progress, run_platform_locations
         for platform in platforms_in_plan
     }
 
-    # ONE PASS PER KIND, in order, each finished before the next begins. Sina's
-    # instruction exactly: "آگهی های شغلی پیدا بشه و پرونده اش بسته بشه، بعد
-    # Internship، بعد Thesis" -- and they all land in the same `rows`, which the
+    # ONE PASS PER KIND, in order, each finished before the next begins. The user's
+    # instruction exactly: [owner's note: finish the jobs first, then Internship, then Thesis] -- and they all land in the same `rows`, which the
     # existing filters then separate as they already do.
     #
     # Sequential rather than parallel on purpose. Two actor runs at a time is this
@@ -933,7 +929,7 @@ def _open_listing_pages(rows, progress, progress_cb, should_cancel):
             emptied = [page for page in spent if page.get(EMPTIED_KEY)]
             # Only the ones nothing could be read from. A page whose postings the
             # search already had is not a site with a problem, and naming it here
-            # sends Sina to fix something that works -- see _ALREADY_HAD_KEY.
+            # sends the user to fix something that works -- see _ALREADY_HAD_KEY.
             barren = [page for page in spent
                       if not page.get(EMPTIED_KEY) and not page.get(ALREADY_HAD_KEY)]
             progress_cb('GLOG:expand|info|%d page(s) dropped now that the postings inside '
@@ -1027,7 +1023,7 @@ def _clean_up_collected(rows, date_settings, progress, progress_cb, should_cance
 def _start_credit_poller(client, progress_cb):
     """Keep the "Apify Token - $X.XX credit" line current while the search runs.
 
-    Sina asked for it because a long search keeps spending the whole time it runs, and the
+    The user asked for it because a long search keeps spending the whole time it runs, and the
     balance from the first second stops being true within minutes. Its own daemon thread, so
     it never blocks the search, and it hands back the stop flag because whoever starts it
     owns stopping it -- run_search does that in a `finally`, on every path out.
@@ -1138,7 +1134,7 @@ def run_search(token, limit_per_call, date_settings, countries=None, actor_order
 
     # Keeps the "Apify Token - $X.XX credit" line refreshed every
     # _APIFY_CREDIT_POLL_SECONDS for the rest of this search, instead of only ever
-    # showing the balance from the very start of the run -- Sina asked for this since a
+    # showing the balance from the very start of the run -- The user asked for this since a
     # The credit line in the Log, refreshed for as long as the search runs; stopped in the
     # `finally` at the end, however run_search ends (success, cancel, or an error).
     _credit_poll_stop, _credit_poll_thread = _start_credit_poller(client, progress_cb)
@@ -1168,7 +1164,7 @@ def run_search(token, limit_per_call, date_settings, countries=None, actor_order
     # The job pass now has a precise shape too, and it is the entry-level one. It used to be
     # skipped, back when the job keywords were role titles and an exact phrase could only
     # narrow them. Since the move to DevOps and MLOps that is no longer true: the broad query
-    # returns the whole field, seniors included, and the junior roles Sina can actually be
+    # returns the whole field, seniors included, and the junior roles the user can actually be
     # hired into never survive LinkedIn's thousand. `keywords_for` returns None for the
     # shapes that have nothing to ask, so a pass that gains nothing still costs nothing.
     pass_plan = [(entry, language, shape)
@@ -1186,7 +1182,7 @@ def run_search(token, limit_per_call, date_settings, countries=None, actor_order
     # One request about the title, cached on disk per title, and no listing is sent -- see
     # title_equivalents. It does not add a single actor run: the names join the existing query
     # with OR, so the plan above is exactly the same size it was. What it changes is what each
-    # of those runs asks for, which is why Sina wanted it -- a search for "Data Science" never
+    # of those runs asks for, which is why the user wanted it -- a search for "Data Science" never
     # asked for "Machine Learning Engineer" and never saw those jobs at all.
     #
     # No key, no credit, a refused request: the list is empty and every query is the one it
@@ -1213,7 +1209,7 @@ def run_search(token, limit_per_call, date_settings, countries=None, actor_order
                     0, 1)
 
     # Not Remote changes what LinkedIn is asked for -- see _linkedin_request. Resolved once,
-    # here, so every platform in every pass asks the same question Sina selected.
+    # here, so every platform in every pass asks the same question the user selected.
     not_remote = is_not_remote(clean_work_mode(search_work_mode))
 
     def run_platform_locations_for(kind, language, shape):
@@ -1314,7 +1310,7 @@ def _finish_run_search_df(rows, progress_cb, done, total):
     stops -- see the comment at that call site."""
     # Before the DataFrame is built, so every module reading the pool -- Job, Internship and
     # Thesis alike -- sees a Markdown mirror on its real address and with its real title.
-    # This corrects rows; it removes none. Sina's rule is that a raw search shows everything
+    # This corrects rows; it removes none. The user's rule is that a raw search shows everything
     # it fetched, and cleanup waits for Filter. See unmirror_markdown_row.
     for row in rows:
         unmirror_markdown_row(row)
@@ -1326,7 +1322,7 @@ def _finish_run_search_df(rows, progress_cb, done, total):
     # expensively) fetched from Apify. If anything in here raises, we must still return
     # the raw df instead of losing every fetched listing -- the fetch already cost Apify
     # credits, and a bug in categorizing/sorting is not a reason to throw all of it away.
-    # Duplicate/fake removal deliberately does NOT happen here any more -- Sina asked for
+    # Duplicate/fake removal deliberately does NOT happen here any more -- The user asked for
     # a raw search to show every listing exactly as fetched, with cleanup happening only
     # when Filter is clicked (see reapply_filters' _remove_duplicates_list/
     # _remove_fake_listings_list, its first step).
@@ -1374,7 +1370,7 @@ def _finish_run_search_df(rows, progress_cb, done, total):
             df.loc[df['country'].isin(NO_SPONSORSHIP_PROCESS_COUNTRIES), 'sponsorship_visa'] = "Employer's Discretion"
 
         # type (b) cross-referencing (company name against an official sponsor
-        # register, e.g. the Netherlands/IND) deliberately does NOT run here -- Sina
+        # register, e.g. the Netherlands/IND) deliberately does NOT run here -- The user
         # asked for it to run only from the Filter button (reapply_filters), after the
         # content-filter loop, so it only ever scans survivors instead of every raw
         # listing on every single search. See _apply_sponsor_list_matches_to_jobs.

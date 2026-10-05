@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-"""The résumé Sina uploads in Search: accepted only as PDF or Word, read once, kept locally.
+"""The résumé the user uploads in Search: accepted only as PDF or Word, read once, kept locally.
 
-Sina's rule, in his words: "یا PDF یا Word" and "ورودی هم هیچ فرمت ای غیر از این رو قبول
-نکنه". So a file is accepted only when it IS a PDF or a Word document -- judged by what is
+The user's rule, in his words: [owner's note: either PDF or Word] and [owner's note: no input format other than these is accepted]. So a file is accepted only when it IS a PDF or a Word document -- judged by what is
 inside it, not by its name. A text file renamed "cv.pdf" is refused, and so is a PDF renamed
 "cv.docx".
 
@@ -34,7 +33,7 @@ from app import doc_text, storage
 
 # Resolved when asked, not when this module is imported: the data folder is storage's to
 # decide, and the test harness moves it to a temporary folder -- a path fixed at import time
-# would have tests reading, or replacing, the résumé Sina really uploaded.
+# would have tests reading, or replacing, the résumé the user really uploaded.
 def resume_dir() -> Path:
     return storage.DATA_DIR / 'resume'
 
@@ -53,7 +52,7 @@ def _name_path() -> Path:
 ACCEPTED_EXTENSIONS = doc_text.ACCEPTED_EXTENSIONS
 MAX_BYTES = doc_text.MAX_BYTES
 
-# What the file picker offers. Sina's rule is enforced again on the chosen file, because a
+# What the file picker offers. The user's rule is enforced again on the chosen file, because a
 # picker filter is a suggestion -- typing a name into the box gets past it.
 FILE_DIALOG_FILTER = 'Résumé (PDF or Word) (*.pdf *.docx)'
 
@@ -69,7 +68,7 @@ ResumeError = doc_text.DocumentError
 def read_resume_file(source) -> tuple:
     """Check a chosen file and read its text, without saving anything.
 
-    Returns (kind, text). Raises ResumeError with a message for Sina when the file is not a
+    Returns (kind, text). Raises ResumeError with a message for the user when the file is not a
     readable PDF or Word résumé.
     """
     path = Path(source)
@@ -134,7 +133,7 @@ def load_resume_text() -> str:
 
 
 def resume_name() -> str:
-    """The name of the file Sina chose, for showing in Search. '' when there is none."""
+    """The name of the file the user chose, for showing in Search. '' when there is none."""
     try:
         return _name_path().read_text(encoding='utf-8').strip() if load_resume_text() else ''
     except OSError:

@@ -33,7 +33,7 @@ for text, want, why in [
     # the requirement let through 128 real listings that said nothing whatsoever about
     # working arrangements; Claude then deleted them anyway, inventing "on-site role in
     # Amsterdam" as the reason. They died either way -- the only difference was that they
-    # were translated and screened first, at real cost. Sina's call is that a Dutch advert
+    # were translated and screened first, at real cost. The user's call is that a Dutch advert
     # silent about work mode is an office job. The four text-less sources keep their
     # exemption; see the thin_description case below.
     ('Great opportunity with competitive salary and benefits.', False, 'silence drops it'),
@@ -42,8 +42,7 @@ for text, want, why in [
           p.passes_work_location_rule(job(description=text, location='')) is want,
           repr(text[:50]))
 
-# REMOTE MEANS REMOTE, EVERYWHERE. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin
-# یا Milan بود / اگر خودم بخواد Any رو Search میکنم". Milan and Turin are cities like any other.
+# REMOTE MEANS REMOTE, EVERYWHERE. [owner's note: Remote means Remote even in Turin or Milan; to see everything, search Any]. Milan and Turin are cities like any other.
 check('Milan is judged like any other city: strictly on-site is dropped',
       p.passes_work_location_rule(job(description='Strictly on-site, hybrid, no remote at all.',
                                location='Milan, Italy')) is False)
@@ -52,7 +51,7 @@ check('Torino (local spelling) too',
                                location='Torino, Italia')) is False)
 check('location field alone can confirm remote',
       p.passes_work_location_rule(job(description='Great role with benefits.', location='Remote')) is True)
-# The "Location:" label rule is gone -- Sina's call. A company stating where IT is based is
+# The "Location:" label rule is gone -- The user's call. A company stating where IT is based is
 # not stating where the WORKER must be, and almost every remote posting names its own city
 # somewhere.
 check('a Location: label naming a city no longer drops a remote listing',
@@ -90,8 +89,8 @@ check_no_raise('empty dict does not crash', lambda: p.passes_work_location_rule(
 section('1.2  requires_language_besides_english')
 # THE PAIRING IS A KEEP SINCE 4 OCTOBER, AND THE FIRST TWO OF THESE USED TO BE True.
 #
-# Sina set out the four shapes a posting can have and asked for the third one back:
-# "اگر به صورت ترکیبی میگفت انگلیسی و یه زبان دیگه باید این رو هم قبول بکنه". A posting that
+# The user set out the four shapes a posting can have and asked for the third one back:
+# [owner's note: a posting asking for English together with another language must be accepted too]. A posting that
 # wants English alongside Dutch has said the work can be done in a language he has, and
 # whether the second one is a wall is a judgement about his own CV that he makes himself.
 #
@@ -219,7 +218,7 @@ check('a "Desirable:" heading after the requirement does not excuse it',
 # The window that decides "beside it" is 160 characters each side, and it is wide on purpose:
 # this test can only ever rescue a listing, so the cost of its width is a posting that names
 # English somewhere unrelated reaching Claude, and the cost of its narrowness is deleting one
-# Sina asked to see. Both ends of it are pinned so neither can drift unnoticed.
+# The user asked to see. Both ends of it are pinned so neither can drift unnoticed.
 _FAR = 'Sehr gute Deutschkenntnisse erforderlich. %s Englisch wird im Team gesprochen.'
 check('English 40 characters away still counts as beside it',
       p.requires_language_besides_english(job(description=_FAR % ('x' * 40))) is False)
@@ -229,7 +228,7 @@ check('English 400 characters away does not',
 # The "it never mentioned English" rule was deleted, and every check that used to stand
 # here went with it. It deleted a listing for being SILENT rather than for saying anything:
 # a posting written in Dutch that never happens to use the word "English" has not told
-# anyone that English is unusable there. Sina removed it for the same reason he removed the
+# anyone that English is unusable there. The user removed it for the same reason he removed the
 # location-label rule and the must-prove-it-is-remote requirement.
 #
 # requires_language_besides_english, tested above, is the rule that still does this job and
@@ -535,7 +534,7 @@ check('_mentions_city miss', p._mentions_city('Oslo', 'Job in Bergen') is False)
 section('1.x  the Remote rule, against real listings it used to throw away')
 
 # Measured on 2,848 real listings from a real search: 1,549 mentioned remote work in some
-# language and the rule dropped 1,204 of them. Judged against Sina's actual constraint on
+# language and the rule dropped 1,204 of them. Judged against the user's actual constraint on
 # 80 of those, it kept 4 of 21 usable jobs. These are the exact shapes it was losing.
 
 def _row(title, description, location=None, thin=False):
@@ -623,7 +622,7 @@ for _word in ('homeoffice', 'home office', 'mobiles arbeiten', 'telearbeit',
 section('1.y  a Location label is not a restriction any more')
 
 # This section used to test has_conflicting_location_label, a rule that deleted any listing
-# whose text named a location other than Italy/Milan/Turin. Sina had it removed and the
+# whose text named a location other than Italy/Milan/Turin. The user had it removed and the
 # function with it: a company saying where IT is based says nothing about where the WORKER
 # must be, and nearly every remote posting names its own city somewhere.
 check('the rule and its helper are gone', not hasattr(p, 'has_conflicting_location_label'))
@@ -736,7 +735,7 @@ check('a thin-description row with a real hybrid statement is still dropped',
       not p.passes_work_location_rule(dict(_thin, description='This is a hybrid role in Berlin.')))
 
 # The asymmetry itself is the design decision, so state it as a test: the rescue list is
-# deliberately NOT boundary-matched, because a stray match there only keeps a listing Sina
+# deliberately NOT boundary-matched, because a stray match there only keeps a listing the user
 # can ignore, while a stray match in the drop list destroys one he will never see.
 check('the drop list is boundary-matched',
       p._ON_SITE_OR_HYBRID_PATTERN.pattern.startswith(r'\b'))
@@ -811,7 +810,7 @@ check('the rescue list is left as a plain substring list',
 
 section('1.d  dedup: the same job, and the jobs that only look the same')
 
-# Sina's design: clean the two titles down to their words, and if those say it is the same
+# The user's design: clean the two titles down to their words, and if those say it is the same
 # job, let the two DESCRIPTIONS decide. Every case below came out of running it against the
 # real 2,199-listing Netherlands search, not from imagination.
 
@@ -844,7 +843,7 @@ check('a specialism is not mistaken for decoration',
       p.dedup_title_key('Data Scientist - Causal Inference and Experimentation', '')
       == 'data scientist causal inference and experimentation',
       p.dedup_title_key('Data Scientist - Causal Inference and Experimentation', ''))
-# Brackets go wholesale, as Sina specified -- no judgement call about which ones hold
+# Brackets go wholesale, as the user specified -- no judgement call about which ones hold
 # decoration and which hold meaning. That is a deliberate trade: it means "Redactie
 # Assistent (Werkstudent 6-10 uur)" and plain "Redactie Assistent" reach the description
 # comparison as the same title, and the DESCRIPTIONS then have to be the ones that keep a
@@ -958,7 +957,7 @@ check('two listings with no description yet are not merged on the title alone',
 check('dedup on an empty list returns an empty list', _dedup([]) == ([], 0))
 
 # --- which copy survives ----------------------------------------------------------------------
-# Not cosmetic: the surviving copy is the one Claude reads and the one Sina clicks.
+# Not cosmetic: the surviving copy is the one Claude reads and the one the user clicks.
 _kept, _removed = _dedup([
     {'id': 'excerpt', 'title': 'Data Engineer', 'company': 'Acme',
      'url': 'https://europa.eu/eures/portal/jv-se/jv-details/xyz',
@@ -984,7 +983,7 @@ check('the thresholds are the measured ones',
 
 section('1.c  the country object reads the posting in its OWN language')
 
-# Sina's design: work out what language the posting is written in, check it against THAT
+# The user's design: work out what language the posting is written in, check it against THAT
 # language's vocabulary, and flag whether it needs translating -- all before the translator
 # runs. A Belgian listing used to be checked against Dutch, French, German and English all
 # at once, so a French phrase could fire on a Dutch advert.
@@ -1073,7 +1072,7 @@ check('an English posting is not searched with Dutch words',
 
 section('1.e  a listing must be findable however its accents were typed')
 
-# Sina's requirement: every term has to match in three spellings -- the English word, the
+# The user's requirement: every term has to match in three spellings -- the English word, the
 # local word written in ASCII, and the local word written in its own letters. 463 of the
 # object's terms carry a character outside ASCII, and job ads write all three: scrapers
 # strip diacritics, HTML entities get mangled, and people type without them.
@@ -1130,7 +1129,7 @@ check('nothing generated is empty',
 
 section('1.f  a foreign posting that never mentions English is dropped before translation')
 
-# Sina's rule, and its placement is the point: it runs BEFORE the translator, so a listing
+# The user's rule, and its placement is the point: it runs BEFORE the translator, so a listing
 # it removes costs nothing to remove. On the real Netherlands data it takes out 644 of the
 # 1,162 reaching it and cuts what goes to DeepL from 1,299,146 characters to 160,152.
 
@@ -1187,7 +1186,7 @@ check('and the same row without the thin flag is not exempt',
       p.silent_about_english(dict(_THIN, thin_description=False,
                                   detected_language='da', needs_translation=True)))
 
-# A listing already in English is never touched -- it is written in the language Sina reads.
+# A listing already in English is never touched -- it is written in the language the user reads.
 check('an English posting is never dropped by this rule',
       not p.silent_about_english({
           'title': 'Data Engineer', 'country': 'Netherlands', 'detected_language': 'en',
@@ -1293,8 +1292,8 @@ check('  ...nor in the Job module',
 TH.words.LANGUAGES['en']['thesis'].remove('zzz-canary')
 
 # The title check, the newest thing these three modules each carry a copy of. It was once a
-# field word list written once and imported by both student modules; Sina overruled that --
-# "نه همه باید جدا باشند / حتی اگر این بخش های آنها نیز مشترک است" -- so there are three
+# field word list written once and imported by both student modules; the user overruled that --
+# [owner's note: everything must stay separate, even where their parts are shared] -- so there are three
 # files, and when the word lists became the title he types, each file kept its own copy of
 # the matching code. This proves it.
 import re as _re                                                  # noqa: E402
@@ -1310,7 +1309,7 @@ check('each module has its own title-check FILE',
 # re.compile caches by pattern string (E-1 in the fault register).
 _saved = _IN_FIELD._form_patterns
 try:
-    _IN_FIELD._form_patterns = lambda _title: ((_re.compile('zzz-canary', _re.I),),)
+    _IN_FIELD._form_patterns = lambda _title, _also=():  ((_re.compile('zzz-canary', _re.I),),)
     check("a change to Internship's title check does not reach Thesis",
           not _TH_FIELD.title_is_in_field('zzz-canary placement', 'Data Engineering'))
     check('  ...nor the Job module',
@@ -1672,7 +1671,7 @@ check('no API key means no Claude call, and the keyword verdict stands',
 
 section('1.26  one posting in two languages is one posting')
 # everox published this once and both copies reached a real Netherlands run, and both were
-# shown to Sina as separate internships. Nothing else catches it: the URLs differ, the
+# shown to the user as separate internships. Nothing else catches it: the URLs differ, the
 # titles differ once each is in its own language, and the bodies share almost no tokens.
 pair = [job(title='Student Worker AI & Automation Workflows', company='everox',
             url='https://everox.homerun.co/student-worker-ai-automation-workflows/en_GB/?source=Indeed',
@@ -1709,7 +1708,7 @@ check('the surviving copy is the one that names the employer',
       [r['company'] for r in survivor])
 
 section('1.27  the working-student rule, and honest location reporting')
-# A Werkstudent role is a permanent part-time job alongside study in that same city. Sina
+# A Werkstudent role is a permanent part-time job alongside study in that same city. The user
 # lives in Italy, so he cannot hold one in Rotterdam or Graz however remote-friendly the
 # work sounds -- and the whole Netherlands survivor list was made of these.
 flat = ' '.join(IC.INTERNSHIP_SYSTEM_PROMPT.split())
@@ -1758,7 +1757,7 @@ check('the rule numbering in the Internship schema matches the prompt',
 
 
 section('1.28  a posting in another language that never names English')
-# Sina's rule, already carried by the Job module and missing from these two until a real run
+# The user's rule, already carried by the Job module and missing from these two until a real run
 # ended with a Randstad traineeship written entirely in Dutch on the list.
 EN_BODY = ('We are looking for a student to join our data team and work with us on our '
            'models. You will have the chance to build things that matter for our customers '
@@ -1794,7 +1793,7 @@ for mod, title in ((IN, 'Stage Data Scientist'), (TH, 'Afstudeeropdracht Data'))
               job(title=title, description='Data Scientist at Jenoptik AG',
                   country='Germany')) is False)
 # The threshold was measured, and the direction that matters is that no English posting is
-# ever called foreign -- that mistake deletes something Sina can read.
+# ever called foreign -- that mistake deletes something the user can read.
 check('the English-marker floor is the measured one',
       IN.finder._ENGLISH_MARKER_MINIMUM == 8.0, IN.finder._ENGLISH_MARKER_MINIMUM)
 # Each module defines the rule in its own file. Checked in the source rather than by
@@ -1816,7 +1815,7 @@ check('  ...and the reason says why',
 
 
 section('1.29  master theses only')
-# Sina's rule. The Infineon "Bachelor Thesis - Artificial Intelligence in Microcontroller"
+# The user's rule. The Infineon "Bachelor Thesis - Artificial Intelligence in Microcontroller"
 # reached a real final list at 72%, and its requirements read "Education: Pursuing a
 # Bachelor's degree (at least in the 5th semester)" -- someone he no longer is.
 AT_BODY = ('You will work with our team on models and data. Education: Pursuing a '
@@ -1925,7 +1924,7 @@ check('  ...keeping the vacancy', kept[0]['title'] == 'Data Engineer')
 # An index page goes whether or not anything could be taken out of it.
 #
 # It used to be kept when expansion came back empty, on the reasoning that discarding it
-# would take whatever it listed with it. Sina's question retired that: what good is a kept
+# would take whatever it listed with it. The user's question retired that: what good is a kept
 # page that gave up nothing? Measured on the second German corpus, none at all -- of the 88
 # that could not be emptied, 76 were dropped by the ordinary filters anyway and every one of
 # the 12 that reached Claude was an index page, 61,845 characters of "Data Science Jobs in
@@ -2280,7 +2279,7 @@ check('a row with no URL is left alone',
 
 # N-4 · A page that answers with the board's own list of other vacancies.
 #
-# Sina read one of the two survivors and said so plainly: "اینکه فقط لیسته". Opening the
+# The user read one of the two survivors and said so plainly: [owner's note: that it is only a list]. Opening the
 # address settles it -- every old aijobs.net /job/… URL now redirects to foorilla.com/hiring/,
 # a general list. The vacancy is gone; the page just never says the word.
 from app.pipeline.pages import is_board_index_text  # noqa: E402
@@ -2308,7 +2307,7 @@ check('such a page counts as a vacancy that is gone',
       p.is_gone({'description': _INDEX_TEXT, 'url': 'https://aijobs.net/job/x-260582/'}))
 check('  ...while a real posting is not gone',
       not p.is_gone({'description': _REAL_POSTING, 'url': 'https://x/1'}))
-# End to end: the Filter removes it rather than showing Sina a list.
+# End to end: the Filter removes it rather than showing the user a list.
 _index_row = {'title': 'Data Engineer - Oslo, Norway', 'company': '', 'country': 'Norway',
               'url': 'https://aijobs.net/job/data-engineer-oslo-norway-260582/',
               'description': _INDEX_TEXT}
@@ -2361,7 +2360,7 @@ for _title, _lead in (('Lead Data Engineer', True), ('Staff Data Engineer', True
     for _level in ('entry', 'mid', 'senior'):
         check('%s: %r is %s' % (_level, _title, 'the wrong level' if _lead else 'kept'),
               _profile_for(_level).is_wrong_level({'title': _title, 'description': ''}) is _lead)
-# Junior is untouched, as Sina asked -- its prompt's rule 4 catches these at Claude's stage.
+# Junior is untouched, as the user asked -- its prompt's rule 4 catches these at Claude's stage.
 check('Junior is left exactly as it was',
       _profile_for('junior').is_wrong_level({'title': 'Lead Data Engineer',
                                              'description': ''}) is False)
@@ -2444,7 +2443,7 @@ check('an age word in a different paragraph does not rescue a senior posting',
 # one nothing looked for: the index-page rules need a page OF vacancies to fire on, and these
 # are single pages on a single topic whose addresses look exactly like a posting's.
 #
-# Sina found them in the nine listings Claude had marked "apply" on the Germany run.
+# The user found them in the nine listings Claude had marked "apply" on the Germany run.
 from app.pipeline.pages import is_editorial_page as _editorial  # noqa: E402
 
 
@@ -2492,7 +2491,7 @@ check('  ...while "/jobs/" really is a job page',
 
 
 # ----------------------------------------------------------------------- 1.hybrid ----
-# Sina found two listings in a Remote search that plainly say the role is hybrid:
+# The user found two listings in a Remote search that plainly say the role is hybrid:
 #
 #   glassdoor.it/...1010241469625   "BERLIN, DUESSELDORF, HAMBURG, KOELN, HYBRID, MUENCHEN
 #                                    ... Hybrides Arbeiten: Ein individueller Mix aus remote
@@ -2533,10 +2532,10 @@ for _probe in (
         # A small number of days AT HOME says what the other days are, and these two moved
         # here from the list of traps below. The reasoning that put them there was that "home
         # office" means working FROM home -- true of the words, but "up to 2 days of home
-        # office per week" is three days in an office, and Sina searching Remote does not want
+        # office per week" is three days in an office, and the user searching Remote does not want
         # it. Every pattern before this read stated OFFICE days; adverts say it the other way
         # round just as often, and 96 Bank listings were passing on that phrasing alone --
-        # including the Glovo advert Sina reported.
+        # including the Glovo advert the user reported.
         'Choose a flexible working model with up to 2 days of home office per week',
         'Bis zu 3 Tage Homeoffice pro Woche moeglich',
         'Hybride werken met minimaal 2 dagen per week thuiswerken',
@@ -2547,7 +2546,7 @@ for _probe in (
         'and the opportunity to work from anywhere for up to three weeks a year!',
         'We are an office-first company and value in-person collaboration',
         # A stated share of the week spent AWAY from the office says what the rest of it is,
-        # and the patterns above only read the share spent AT one. Sina reported HDI's "Data
+        # and the patterns above only read the share spent AT one. The user reported HDI's "Data
         # Scientist: Advanced Analytics & AI Engineer" arriving as Full Remote on exactly this,
         # with Hanover and Cologne in the advert:
         'Mobile working: our mobile working model (up to 60%% mobile) offers you freedom',
@@ -2555,8 +2554,8 @@ for _probe in (
         'Die Moeglichkeit des anteiligen mobilen Arbeitens (bis zu 50 %%)',
         'Hybrid working model with up to 40%% remote per week',
         'You may work 80%% home office and 20%% on site',
-        # Every stated share below 100 is an office commitment, and that is Sina's call after
-        # I argued for sparing the high ones: "آقا Remote باشه دیگه / یعنی چی 70 درصد". The 5%%
+        # Every stated share below 100 is an office commitment, and that is the user's call after
+        # I argued for sparing the high ones: [owner's note: it should be Remote - what does 70 percent mean?]. The 5%%
         # of a "95%% remote" job is spent at an address -- Hanover, in the advert he reported.
         'A hybrid role with 70%% Remote working',
         'Forward Deployed Engineer, 80%% Remote',
@@ -2645,13 +2644,13 @@ check('a thin-description row is not caught by it',
 # text. Measured on the 5,442 real German listings: of the 1,778 that state a German
 # requirement in German it caught 13.
 #
-# Sina found it from the other end. Two REPLY listings reached him asking for
+# The user found it from the other end. Two REPLY listings reached him asking for
 # "Kommunikationsstärke in Deutsch und Englisch", and he asked why the language filter had
 # not removed them.
 #
 # ON 4 OCTOBER HE REVERSED THAT, AND THAT EXACT PHRASE IS NOW A KEEP.
 #
-# "اگر به صورت ترکیبی میگفت انگلیسی و یه زبان دیگه باید این رو هم قبول بکنه" -- a posting
+# [owner's note: a posting asking for English together with another language must be accepted too] -- a posting
 # that wants English alongside German has offered him a language he reads, and he would
 # rather see it and judge the German himself than have it deleted on his behalf. Nine of the
 # sixteen probes below named English and have moved to the keep side; the seven that name
@@ -2676,7 +2675,7 @@ for _probe in (
     check('a wall: %s' % _probe[:52], _wants_another_language(_probe) is True)
 
 # THE PAIRING, IN EVERY LANGUAGE IT WAS CAUGHT IN. All nine asserted True until 4 October.
-# Each one is a real posting's phrasing, and each one now reaches Sina.
+# Each one is a real posting's phrasing, and each one now reaches the user.
 for _probe in (
         'Fließende Deutsch- und Englischkenntnisse',
         'Gute Deutsch- und Englischkenntnisse',
@@ -2771,13 +2770,13 @@ check('the country name alone is not a language demand',
 
 
 # ---------------------------------------------------------------------------- 1.geo ----
-# The two city tables have to stay in step. geo.CITIES is what the wizard builds Sina's
+# The two city tables have to stay in step. geo.CITIES is what the wizard builds the user's
 # checkboxes from; geo.CITY_COUNTRY is what the Not Remote country rule reads to learn which
 # country a chosen city belongs to. Today they hold the same seven cities, so a city the app
 # offers but the rule does not know cannot be chosen -- and that is only true for as long as
 # whoever adds the eighth city remembers to add it twice.
 #
-# This existed as a caveat in the campaign notes until Sina asked the obvious question: he can
+# This existed as a caveat in the campaign notes until the user asked the obvious question: he can
 # only tick boxes the app offers, so how would an unknown city ever be selected? It cannot.
 # A written warning was the wrong answer to that; this is the right one.
 from app.pipeline.geo import CITIES, CITY_COUNTRY, COUNTRY_CITIES  # noqa: E402
@@ -2798,8 +2797,7 @@ check('  ...each filed under the country the rule would return for it',
 section('1.x  no city is exempt from the Work Location rule')
 # ---------------------------------------------------------------------------------------
 # The Milan / Turin exemption (and the whole-word test it needed after it waved 386 listings
-# past the Remote rule on "manufacturing") is gone. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال
-# Remote حتی اگر Turin یا Milan بود". What is left to assert is the consequence.
+# past the Remote rule on "manufacturing") is gone. [owner's note: Remote means Remote, even in Turin or Milan]. What is left to assert is the consequence.
 import app.pipeline.rules as _rules_mod  # noqa: E402
 check('the exemption and its helper no longer exist',
       not hasattr(_rules_mod, 'mentions_milan_or_turin') and not hasattr(_rules_mod, 'MILAN_TURIN_NAMES'))
@@ -2825,7 +2823,7 @@ check('  ...while a Turin office job is still kept, arrangement unasked',
 # ======================================================= 1.wp  LinkedIn's workplace tag ======
 section('1.wp  the workplace tag, and the four adverts that were kept as Remote')
 # THREE ADVERTS IN A ROW THAT SINA OPENED WERE TAGGED HYBRID ON LINKEDIN AND HAD BEEN KEPT.
-# "به جرات میتونم بگم 99 درصد کارهایی که آوردی Hybrid هست / این یه شکست بسیار بزرگه".
+# [owner's note: about 99 percent of what was returned was Hybrid - a very big failure].
 # Each is reproduced here from the advert he pasted, with the exact words that let it through,
 # because a rule fixed against a paraphrase is a rule fixed against nothing.
 from app.pipeline.sources_norm import clean_workplace, normalize_linkedin_pro  # noqa: E402
@@ -3107,5 +3105,40 @@ for _mod, _kw in ((_tc, _tf), (_ic, _if)):
                                     'location': 'Remote'}))
 check('a Filter/Search saved before Any existed (not_remote) is still understood',
       p.clean_work_mode('Not Remote') == 'not_remote' and p.clean_work_mode('any') == 'any')
+
+# =============================================================== 1.eq  other names for the job
+section('1.eq  Thesis and Internship know the other names for the job')
+# [owner's note: add the equivalents to Thesis and Internship too]: a thesis for "Data Science" titled "...Artificial
+# Intelligence..." was removed because only the typed title was read. The equivalents come from
+# title_equivalents (asked once, cached) and are handed in; the modules still share nothing.
+from app.pipeline.thesis import field_words as _tfw  # noqa: E402
+from app.pipeline.internship import field_words as _ifw  # noqa: E402
+from app.pipeline.search import queries as _q  # noqa: E402
+_AI = {'title': 'Tirocinio TESI Artificial Intelligence_Bologna', 'description': ''}
+_ALSO = ['Artificial Intelligence', 'Machine Learning Engineer']
+for _name, _mod in (('thesis', _tfw), ('internship', _ifw)):
+    check('%s: without other names the AI advert is off-field, as before' % _name,
+          _mod.row_is_in_field(_AI, 'Data Science') is False)
+    check('  ...with them it names the job under another name' , _mod.row_is_in_field(_AI, 'Data Science', _ALSO) is True)
+    check('  ...a stamped row carries them with it',
+          _mod.row_is_in_field(dict(_AI, **{_mod.ALSO_ROW_KEY: _ALSO}), 'Data Science') is True)
+    check('  ...and a genuinely different job is still off-field',
+          _mod.row_is_in_field({'title': 'Tesi in Materiali Compositi', 'description': ''},
+                               'Data Science', _ALSO) is False)
+for _kind in ('thesis', 'internship'):
+    _plain = _q.keywords_for(_kind, 'Italy', 'en', 'broad', 'Data Science')
+    _wide = _q.keywords_for(_kind, 'Italy', 'en', 'broad', 'Data Science', also=_ALSO)
+    check('%s: the broad query carries every other name, the typed title first' % _kind,
+          '"Machine Learning Engineer"' in _wide and '"Artificial Intelligence"' in _wide
+          and _wide.index('"Data Science"') < _wide.index('"Artificial Intelligence"'))
+    check('  ...and without them it is the query it always was',
+          '"Artificial Intelligence"' not in _plain
+          and _plain == _q.keywords_for(_kind, 'Italy', 'en', 'broad', 'Data Science', also=None))
+    _precise = _q.keywords_for(_kind, 'Italy', 'en', 'precise', 'Data Science', also=_ALSO)
+    check('  ...the exact phrases weld the kind word to each other name too',
+          'Artificial Intelligence' in _precise and len(_precise.split(' OR ')) <= _q._MAX_QUERY_PHRASES)
+    check('  ...and the local-language pass carries them',
+          '"Machine Learning Engineer"' in _q.keywords_for(_kind, 'Italy', 'local', 'broad',
+                                                           'Data Science', also=_ALSO))
 
 sys.exit(summary('Suite 1 -- rules & helpers'))

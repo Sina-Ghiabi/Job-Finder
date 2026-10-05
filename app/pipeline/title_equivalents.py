@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-"""The other names employers give the job Sina typed -- asked of Claude once, then cached.
+"""The other names employers give the job the user typed -- asked of Claude once, then cached.
 
 WHY THIS EXISTS
 
 The field rule asks whether a listing's title names the job being searched for, and it asks it
-literally: every word of "Data Science" has to appear in the title. Measured on Sina's own Bank
+literally: every word of "Data Science" has to appear in the title. Measured on the user's own Bank
 of 8,768 listings it removed 7,737 of them -- 88% -- before any other rule ran and before
 Claude ever saw them. A sample of 27 of those removals, each read by Claude on its own, found
 15 were real data-science jobs: "Junior AI Engineer", "Machine Learning Engineer", "Software
@@ -14,9 +14,8 @@ never reaches the judge.
 
 WHY NOT A HAND-WRITTEN LIST
 
-Because there was one, and Sina removed it. `job_field_words.py` used to hold about 150 field
-words in thirteen languages; he replaced the lot with a single typed title -- "من یک عنوان رو
-برات مینویسم و باید اون عنوان جای همه ی اینها بشینه". The measurement recorded there is why a
+Because there was one, and the user removed it. `job_field_words.py` used to hold about 150 field
+words in thirteen languages; he replaced the lot with a single typed title -- [owner's note: one typed title must take the place of all of these]. The measurement recorded there is why a
 list is not the answer either: those 150 words kept 7,649 of 8,801 listings, so the filter was
 not filtering, it was just forwarding the bill to Claude.
 
@@ -32,10 +31,7 @@ disk per title, so the second run of the same search costs nothing at all.
     "Data Science"  ->  Data Scientist, Machine Learning Engineer, ML Engineer,
                         AI Engineer, Applied Scientist, Decision Scientist, ...
 
-Then every one of those is expanded exactly as Sina asked for -- "اول همون نتایج خام رو پیدا
-کنه / بعد مثلا اگر Data Science بود بعدش Data Scientist رو هم بگرده / بعد مثلا اگر ML Engineer
-بود ML Engineering رو هم بگرده / مثلا اگر AI Engineer بود Junior AI Engineer و Junior AI
-Engineering رو هم بگرده" -- in three widening rings:
+Then every one of those is expanded exactly as the user asked for -- [owner's note: first the raw results; then the twin form of the title; then the beginner-level forms (for AI Engineer also Junior AI Engineer and Junior AI Engineering)] -- in three widening rings:
 
     1. the equivalents as Claude gave them          ML Engineer
     2. each one's twin form                         ML Engineering
@@ -55,22 +51,18 @@ must never delete a listing, and it cannot -- widening is all this can do.
 
 HOW THE FAR-OFF ONES ARE REMOVED: A SCORE, NOT A LIST
 
-There was a hand-written NEVER_THESE here for a few sentences of this file's life, and Sina
-killed it with one question: "آخه من هزار تا Title میخوام جستجو کنم / الان Never these به چه
-درد من میخوره ؟" He is right. A blacklist is written for one field and says nothing the day he
+There was a hand-written NEVER_THESE here for a few sentences of this file's life, and the user
+killed it with one question: [owner's note: with a thousand titles to search, a hand-written never-these list is of no use] He is right. A blacklist is written for one field and says nothing the day he
 searches something else, and nobody is going to maintain a thousand of them.
 
 So Claude scores every candidate for how much it is THE SAME WORK as the title typed, and
-anything at or below `MINIMUM_SIMILARITY` is dropped. His rule, in his words: "تو باید کار
-هایی رو بیاری که بالای 35 درصد شباهت دارند / غیر از این بود حذف کن".
+anything at or below `MINIMUM_SIMILARITY` is dropped. His rule, in his words: [owner's note: keep only listings above 35 percent similarity and drop the rest].
 
 Nothing in this module knows anything about data science, or about any other field. That is
-the point -- "و این نباید مختص به این Filed باشه / شاید اصلا من Supply Chain Management
-جستجو کردم". The question asks about the title it is given, whatever that title is.
+the point -- [owner's note: this must not be specific to one field; a Supply Chain Management search is possible]. The question asks about the title it is given, whatever that title is.
 
 A title that belongs more to a NEIGHBOURING job scores low here on purpose, and that is also
-his instruction: "اگر بیشتر از Data Science به Data Engineer نزدیکه، بذار موقعی که من Data
-Engineer سرچ کردم بره بگرده و بیاره". It is not lost -- it comes back with a high score when
+his instruction: [owner's note: if something is closer to Data Engineer than to Data Science, include it when Data Engineer is searched]. It is not lost -- it comes back with a high score when
 he searches that neighbouring title instead, which is where it belongs. An honest overlap
 scores high under both, and that is correct too.
 
@@ -89,9 +81,7 @@ from pathlib import Path
 
 from .search_title import clean_title, role_form, title_forms
 
-# Sina's number, and he gave it twice: "تو باید کار هایی رو بیاری که بالای 35 درصد شباهت
-# دارند / غیر از این بود حذف کن", then again after I argued against it -- "ولی در کل این قانون
-# رو بذار که زیر 35 درصد بود حذف کن". BELOW 35 is dropped, so 35 itself stays.
+# The user's number, and he gave it twice: [owner's note: keep only listings above 35 percent similarity and drop the rest], then again after I argued against it -- [owner's note: in general, drop anything below 35 percent]. BELOW 35 is dropped, so 35 itself stays.
 #
 # WHAT I TOLD HIM BEFORE HE CONFIRMED IT, because the next person to read this needs to know:
 # the scores do not track reality closely. Measured on his own Bank, "Analytics Engineer"
@@ -101,10 +91,9 @@ from .search_title import clean_title, role_form, title_forms
 # Administrator" 20) and lets "Data Analyst" through at 60.
 #
 # That is no longer a problem, and this is the design that makes it not one: the threshold is
-# not the only control any more. Everything above it is searched and KEPT, and Sina chooses
+# not the only control any more. Everything above it is searched and KEPT, and the user chooses
 # what to look at with the column filters in the Jobs table -- reversibly, per view, on the
-# real listings in front of him. His own words for why that is better: "دیگه اینطوری هرچی
-# Related هست رو میاری من خودم میگم چی نشونم بدی چی نشونم ندی".
+# real listings in front of him. His own words for why that is better: [owner's note: bring everything related, and the choice of what to show is made afterwards].
 #
 # So this line removes the clearly-unrelated, and nothing else pretends to be a judgement.
 MINIMUM_SIMILARITY = 35
@@ -218,7 +207,7 @@ def _tidy(candidates, searched: str) -> list:
 
     Nothing is dropped for being too far here: the score is kept and the caller decides. That
     separation is deliberate, because the Log has to be able to say "this was dropped, and it
-    scored 15" rather than leaving Sina to wonder what was asked and what came back.
+    scored 15" rather than leaving the user to wonder what was asked and what came back.
     """
     out: list = []
     seen = {form.lower() for form in title_forms(searched)}
@@ -254,7 +243,7 @@ def _tidy(candidates, searched: str) -> list:
 def close_enough(candidates, rejected=None) -> list:
     """The titles worth searching for: scored above MINIMUM_SIMILARITY and not rejected.
 
-    `rejected` is what Sina has already turned down for this title -- see rejections_for.
+    `rejected` is what the user has already turned down for this title -- see rejections_for.
     """
     turned_down = {str(name).strip().lower() for name in (rejected or [])}
     return [row['title'] for row in (candidates or [])
@@ -279,7 +268,7 @@ def ask_claude(client, title: str) -> tuple:
     """(equivalents, error). One request about the title; no listing is sent."""
     from .claude_screen.prompt import CLAUDE_MODEL
 
-    body = 'The title Sina typed: %s' % clean_title(title)
+    body = 'The title the user typed: %s' % clean_title(title)
     last = ''
     for attempt in range(3):
         try:
@@ -305,13 +294,13 @@ def ask_claude(client, title: str) -> tuple:
 
 
 def rejections_for(title) -> list:
-    """The titles Sina has turned down for this search title."""
+    """The titles the user has turned down for this search title."""
     entry = _load_cache().get(_cache_key(clean_title(title))) or {}
     return list(entry.get('rejected') or [])
 
 
 def reject(title, equivalent) -> list:
-    """Remember that Sina does not want this equivalent for this title. Returns the new list.
+    """Remember that the user does not want this equivalent for this title. Returns the new list.
 
     Stored against the title rather than globally, which is the whole difference between this
     and the blacklist it replaced: a thousand searched titles each keep their own decisions,
@@ -365,7 +354,7 @@ def candidates_for(title, client=None, progress_cb=None) -> list:
 
 
 def equivalents_for(title, client=None, progress_cb=None) -> list:
-    """The titles this search should also look for -- scored, thresholded, Sina's rejections
+    """The titles this search should also look for -- scored, thresholded, the user's rejections
     removed -- and the Log told what was kept and what was dropped, with the scores.
 
     Saying what was DROPPED matters as much as what was kept. A title missing from a search is
@@ -400,7 +389,7 @@ def scores_for(title, equivalents=None) -> dict:
 
     Base names only, matching what the Filter window offers and what each row is credited to.
     The twin forms need no entry of their own: a row titled "Junior Data Engineering" is
-    credited to "Data Engineer", because that is the name Sina ticked and the name he sees.
+    credited to "Data Engineer", because that is the name the user ticked and the name he sees.
     """
     by_title = {row['title'].lower(): row['same_work']
                 for row in candidates_for(title, None) or []}
@@ -446,7 +435,7 @@ def filter_titles(title, equivalents=None) -> list:
 def search_phrases(title, equivalents=None, level_words=None) -> list:
     """Rings 1, 2 and 3, in that order: what the SEARCH asks a job board for.
 
-    The order is Sina's: the raw titles first, then each one's twin, then the Level's words on
+    The order is the user's: the raw titles first, then each one's twin, then the Level's words on
     every form. A job board matches the exact phrase, so "Junior ML Engineer" really does
     return listings that "ML Engineer" does not -- 245 of them on one real run, which is why
     the entry-level query exists at all.

@@ -109,7 +109,7 @@ class FilterWorker(QThread):
         super().__init__(parent)
         self.jobs = jobs
         self.anthropic_api_key = anthropic_api_key
-        # What Sina chose in Search. Filter judges by what is chosen NOW -- a listing saved by
+        # What the user chose in Search. Filter judges by what is chosen NOW -- a listing saved by
         # last week's search is judged by today's title, Level and Remote choice.
         self.search_title = search_title
         self.search_level = search_level
@@ -144,14 +144,14 @@ class FilterWorker(QThread):
     def run(self):
         """The one module the chosen Level belongs to, over the saved listings.
 
-        Sina's design: one Level at a time -- Thesis, Internship, or a job at Entry, Junior,
+        The user's design: one Level at a time -- Thesis, Internship, or a job at Entry, Junior,
         Mid or Senior -- so Job and Internship are never one run. The three modules still
         share nothing; only one of them is asked.
 
         Thesis and Internship: their module recognises, filters and screens (part one of
         Claude), then the résumé match (part two) scores what is left. Every listing part two
         flags goes to the same review dialog as a Job listing, so nothing is deleted without
-        Sina seeing it. Their survivors come back as `kept`, which is what the review dialog
+        The user seeing it. Their survivors come back as `kept`, which is what the review dialog
         and the save below work on.
 
         The four job Levels: reapply_filters does all of it, both parts included.
@@ -165,11 +165,23 @@ class FilterWorker(QThread):
                 find = (pipeline.find_thesis_postings if level == 'thesis'
                         else pipeline.find_internship_postings)
                 emit('FILTER_START', 0, 1)
+                # The other names for this job, asked once and cached on disk per title. A failed
+                # request gives none, and then the field rule is exactly the typed title.
+                other_names: list = []
+                try:
+                    import anthropic
+                    other_names = pipeline.title_equivalents.equivalents_for(
+                        self.search_title,
+                        anthropic.Anthropic(api_key=self.anthropic_api_key)
+                        if self.anthropic_api_key else None, emit)
+                except Exception:                                    # noqa: BLE001
+                    other_names = []
                 kept, _reasons = find([dict(job) for job in self.jobs], progress_cb=emit,
                                      anthropic_api_key=self.anthropic_api_key,
                                      should_cancel=cancelled,
                                      search_title=self.search_title,
-                                     search_work_mode=self.search_work_mode)
+                                     search_work_mode=self.search_work_mode,
+                                     other_names=other_names)
                 claude_flagged: list = []
                 pipeline.step_resume_match(kept, claude_flagged, self.anthropic_api_key,
                                            progress_cb=emit, should_cancel=cancelled)

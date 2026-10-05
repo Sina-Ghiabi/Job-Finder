@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Is this thesis about the job Sina is searching for? — the Thesis module's own copy.
+"""Is this thesis about the job the user is searching for? — the Thesis module's own copy.
 
-A copy, on purpose. Sina's rule for these three modules has been the same from the first
-day: *"نه دیکشنری مشترک نه هیچی"* — no shared dictionary, nothing shared at all. A change
+A copy, on purpose. The user's rule for these three modules has been the same from the first
+day: *owner's note: no shared dictionary, nothing shared at all* — no shared dictionary, nothing shared at all. A change
 tuned for the way internship titles are written must not be able to change what this module
 keeps, and the only way to guarantee that is for this file to be its own. The only thing the
 three agree on is the title itself (app/pipeline/search_title.py).
@@ -15,7 +15,7 @@ listings were recognised as theses and 36 of them were about something else enti
 
 THE TITLE SINA TYPES IS THE FIELD
 
-This file used to hold about 150 field words in thirteen languages. Sina replaced them with
+This file used to hold about 150 field words in thirteen languages. The user replaced them with
 one name, and for Thesis too: "Masterarbeit Data Engineering". A thesis is in the field when
 it names that job -- every word of it, in any order, each at the start of a word.
 
@@ -29,7 +29,7 @@ and an internship advert name a job in their title. A thesis advert names a TOPI
     Abschlussarbeit Entwicklung eines ML-Modells zur Anomalieerkennung
 
 On the real German corpus, 334 theses, the title alone kept NONE of them for "Data Science"
-and one for "Data Engineering" -- the check would have deleted every thesis Sina could want.
+and one for "Data Engineering" -- the check would have deleted every thesis the user could want.
 Reading the description as well, where the advert says who it is looking for ("Studium der
 Informatik, Data Science oder vergleichbar"):
 
@@ -56,6 +56,10 @@ from ..search_title import ROW_KEY as TITLE_ROW_KEY, clean_title, title_forms
 ORIGINAL_TITLE_KEY = '_original_title'
 ORIGINAL_DESCRIPTION_KEY = '_original_description'
 
+# Where the other names for the job are kept on a row, stamped by find() beside the title and
+# the Level. This module names the key itself, like the others, so it shares nothing.
+ALSO_ROW_KEY = '_title_also'
+
 # What separates the words of a title. A hyphen only between two letters; `+`, `#` and `.`
 # are left alone because they are part of names -- C++, C#, .NET.
 _WORD_SPLIT = re.compile(r'[\s/&,;:|()\[\]]+|(?<=[^\W_])-(?=[^\W_])')
@@ -71,49 +75,58 @@ def _word_pattern(word: str):
     return re.compile(lead + re.escape(word) + trail, re.IGNORECASE)
 
 
-@lru_cache(maxsize=32)
-def _form_patterns(search_title: str) -> tuple:
-    """For each form of the title, the patterns for all of its words."""
+@lru_cache(maxsize=64)
+def _form_patterns(search_title: str, also: tuple = ()) -> tuple:
+    """For each form of the title -- and of every other name for the same work -- the patterns for
+    all of its words. `also` is what title_equivalents found for the title ("Machine Learning
+    Engineer" for "Data Science"); without it this is the typed title and its twin, as it was."""
     forms = []
-    for form in title_forms(search_title):
-        words = [word for word in _WORD_SPLIT.split(form) if re.search(r'[^\W_]', word)]
-        forms.append(tuple(_word_pattern(word) for word in words))
+    seen = set()
+    for name in (search_title,) + tuple(also):
+        for form in title_forms(name):
+            if form.lower() in seen:
+                continue
+            seen.add(form.lower())
+            words = [word for word in _WORD_SPLIT.split(form) if re.search(r'[^\W_]', word)]
+            forms.append(tuple(_word_pattern(word) for word in words))
     return tuple(forms)
 
 
-def text_names_job(text, search_title=None) -> bool:
-    """Does this piece of text name the job being searched for? Empty text does not."""
+def text_names_job(text, search_title=None, also=None) -> bool:
+    """Does this piece of text name the job being searched for -- or another name for it?
+    Empty text does not."""
     text = ' '.join(str(text or '').split())
     if not text:
         return False
     return any(all(pattern.search(text) for pattern in form)
-               for form in _form_patterns(clean_title(search_title)))
+               for form in _form_patterns(clean_title(search_title), tuple(also or ())))
 
 
-def title_is_in_field(title, search_title=None) -> bool:
+def title_is_in_field(title, search_title=None, also=None) -> bool:
     """Does this title alone name the job? A missing title is True: a row with nothing to
     read is not evidence of anything, and this app never deletes on an absence."""
     if not str(title or '').strip():
         return True
-    return text_names_job(title, search_title)
+    return text_names_job(title, search_title, also)
 
 
-def row_is_in_field(row, search_title=None) -> bool:
+def row_is_in_field(row, search_title=None, also=None) -> bool:
     """Does the thesis advert name the job -- in its title or in its description, as posted
     or as it was before translation? With nothing to read at all it is kept."""
     wanted = search_title if search_title is not None else row.get(TITLE_ROW_KEY)
+    also = also if also is not None else row.get(ALSO_ROW_KEY)
     texts = [text for text in (row.get('title'), row.get(ORIGINAL_TITLE_KEY),
                                row.get('description'), row.get(ORIGINAL_DESCRIPTION_KEY))
              if str(text or '').strip()]
     if not texts:
         return True
-    return any(text_names_job(text, wanted) for text in texts)
+    return any(text_names_job(text, wanted, also) for text in texts)
 
 
-def remove_off_field(rows: list, search_title=None) -> tuple:
+def remove_off_field(rows: list, search_title=None, also=None) -> tuple:
     """Drop the theses that never name the job. Returns (kept, removed)."""
     kept: list = []
     removed: list = []
     for row in rows:
-        (kept if row_is_in_field(row, search_title) else removed).append(row)
+        (kept if row_is_in_field(row, search_title, also) else removed).append(row)
     return kept, removed

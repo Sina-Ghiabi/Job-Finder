@@ -3,8 +3,7 @@
 
 WHY THIS EXISTS: 193 SECONDS OF IT
 
-Sina reported the app hanging on large results -- "زمانی که میخواد مثلا 20000 ردیف رو بخونه و
-در جدول قرار بده برنامه هنگ میکنه" -- and asked whether the buttons could stay. They can, and
+The user reported the app hanging on large results -- [owner's note: the program hangs when it reads about 20,000 rows into the table] -- and asked whether the buttons could stay. They can, and
 this is how.
 
 The table used to build two real QPushButtons per row, each inside a QWidget wrapper with its
@@ -27,7 +26,7 @@ depending on how many listings there are at all.
 WHAT DOES NOT CHANGE
 
 The buttons look the same, in the same colours as the stylesheet gave them, and a click does
-the same thing. That was Sina's one condition: "فقط میخوام Apply و Remove بمونه".
+the same thing. That was the user's one condition: [owner's note: only Apply and Remove should stay].
 
 The hover highlight is kept too, because a control that does not react to the mouse reads as
 disabled -- and these are the two cells in the table where a click has consequences.

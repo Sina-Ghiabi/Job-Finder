@@ -6,7 +6,7 @@ domain, add a bot wall or shut down entirely, and every test stays green while t
 quietly returns less. That is the failure mode this app actually has, and no amount of
 testing addresses it.
 
-So this is the other half: a check Sina can run whenever he likes, before committing money
+So this is the other half: a check the user can run whenever he likes, before committing money
 to a search, that asks reality instead of asking the code. It costs nothing -- no Apify
 actor, no Jooble request (that key has a 500-LIFETIME cap and a health check must never be
 what drains it) -- and covers:
@@ -222,14 +222,14 @@ def _url_targets(countries: list[str], cities: list[str]) -> list[tuple[str, str
 
 # What one city-sized search has actually cost, measured on the two real runs of the O
 # campaign: Oslo 1,018 listings for $2.42, Amsterdam 2,616 for $3.07. Quoted as a range
-# rather than an average because the number that matters to Sina is whether the next search
+# rather than an average because the number that matters to the user is whether the next search
 # fits in what is left, and the honest answer to that is the top of the range.
 _APIFY_SEARCH_COST_LOW = 2.40
 _APIFY_SEARCH_COST_HIGH = 3.10
 
 # How many listings a Filter typically reaches Claude with, from the campaign's real runs:
 # Oslo 16, Amsterdam 15 at Entry/Remote, 18 at Junior/Remote, 48-49 at Junior/Not Remote.
-# Used only to turn the measured per-listing rate into a figure Sina can compare with the
+# Used only to turn the measured per-listing rate into a figure the user can compare with the
 # Apify line -- the rate itself is the measurement.
 _TYPICAL_LISTINGS_TO_CLAUDE = 50
 
@@ -276,7 +276,7 @@ def _report_budget(apify_token, progress_cb):
     try:
         from .claude_screen import spend as _spend
         totals = _spend.summary()
-        # Sina's ask, in his words: not what one listing costs, but what a normal run of this
+        # The user's ask, in his words: not what one listing costs, but what a normal run of this
         # kind costs. So the estimate leads, and the spending behind it follows.
         if totals['per_listing_usd']:
             estimate = totals['per_listing_usd'] * _TYPICAL_LISTINGS_TO_CLAUDE
@@ -301,7 +301,7 @@ def _report_budget(apify_token, progress_cb):
     except Exception as e:
         progress_cb('HEALTH_ITEM:Claude spending|OK|could not be read (%s)' % str(e)[:60], 0, 1)
 
-    # And the line that answers the question as Sina asked it: not what one listing costs --
+    # And the line that answers the question as the user asked it: not what one listing costs --
     # what a normal search of this kind costs, end to end.
     progress_cb('HEALTH_ITEM:What a normal search costs|OK|'
                 'about $%.2f–$%.2f in total for one city — $%.2f–$%.2f of Apify for the '

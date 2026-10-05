@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The note saying why a listing was removed, kept on the end of the listing itself.
 
-Sina's request, and the reason for it: a removal used to leave no trace on the listing. The
+The user's request, and the reason for it: a removal used to leave no trace on the listing. The
 quote Claude had to produce before it could drop anything was checked and then thrown away --
 `drop_evidence` appeared in exactly one line of the whole app, the line that validated it --
 so afterwards nobody could read why a job had gone. Auditing the real Germany run meant
@@ -17,7 +17,7 @@ markers:
     Quoted from this posting: "sehr gute Deutschkenntnisse in Wort und Schrift"
     $$
 
-`$$` rather than the `&` Sina also suggested, for two reasons that are not cosmetic: `&`
+`$$` rather than the `&` The user also suggested, for two reasons that are not cosmetic: `&`
 is html-unescaped in the normalisation step, which would eat the marker, and it is common in
 real postings ("R&D", "Risk & Compliance"). `$$` doubled is rare even in a posting that
 quotes a salary.
@@ -77,7 +77,7 @@ def clear_drop_note(job: dict) -> None:
     """Take the note off, because this listing is not removed any more.
 
     Called on every listing Claude keeps, not only on ones that once had a note: a verdict
-    can change between runs -- a re-fetched posting, an edited rule, Sina keeping a flagged
+    can change between runs -- a re-fetched posting, an edited rule, the user keeping a flagged
     row by hand -- and a stale note claiming a kept job was removed is worse than none.
     """
     if not job.get('description'):

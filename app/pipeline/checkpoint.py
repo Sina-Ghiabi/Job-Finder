@@ -15,7 +15,7 @@ filter, the expansion. A crash then costs the stage that was running rather than
 Separate from `jobs.json` deliberately. A half-finished search is not a result -- it has not
 been deduplicated, dated or filtered -- and merging it into the real list would make a
 crashed run indistinguishable from a good one. It goes to its own file, the next start says
-it found one, and Sina decides.
+it found one, and the user decides.
 
 A thin wrapper over `app.storage` rather than calling it directly from the runner: the
 pipeline does not otherwise import the storage layer, and one import in one small module is

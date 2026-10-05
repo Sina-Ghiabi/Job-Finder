@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The filters Sina picks in the Filter window, applied to the pool.
+"""The filters the user picks in the Filter window, applied to the pool.
 
 These are different in kind from everything else in `filters.py`, and keeping them apart is
 the point. Those rules read a posting and judge it -- is this remote, is it the right level,
@@ -12,7 +12,7 @@ WHY THIS MODULE EXISTS AT ALL
 The Filter window offered ten choices and only three of them reached the pipeline. Level,
 work mode and title were passed through; countries, cities, date range, résumé-match floor,
 category and sponsorship were collected, hashed into the run's signature, and then silently
-dropped. Sina picked Junior · Remote · Netherlands · Part-Time · Internship and got back
+dropped. The user picked Junior · Remote · Netherlands · Part-Time · Internship and got back
 German full-time listings, because four of those five were never applied and the fifth --
 the country -- was only ever consulted by the Not Remote place rule, which does nothing in a
 Remote search.
@@ -29,11 +29,10 @@ and sponsorship filters below follow it exactly.
 
 Two do not, and both exceptions are deliberate and written down where they live:
 
-  * **the country** (`filter_by_place`) -- Sina overruled it in as many words: "اگر نوشتم
-    Netherlands یعنی فقط Netherlands میخوام". Name a chosen country or be removed.
+  * **the country** (`filter_by_place`) -- The user overruled it in as many words: [owner's note: if Netherlands is chosen, only Netherlands is wanted]. Name a chosen country or be removed.
   * **the kind of role** (`filter_by_category`) -- `categorize` has no "unknown"; a quiet
     listing is labelled Full-Time, and the filter agrees with the Type column rather than
-    contradicting what Sina is looking at.
+    contradicting what the user is looking at.
 """
 from __future__ import annotations
 
@@ -44,7 +43,7 @@ from .text import text_of
 def _wanted_places(countries, cities) -> set:
     """The countries this run asked for, including the ones its chosen cities are in.
 
-    A city selection stores no country -- Sina's Amsterdam run was cities=['Amsterdam'],
+    A city selection stores no country -- The user's Amsterdam run was cities=['Amsterdam'],
     countries=[] -- so the city's own country counts as asked for. Without this, picking a
     city and nothing else would remove every listing the search just paid for.
     """
@@ -57,7 +56,7 @@ def _wanted_places(countries, cities) -> set:
 
 
 def filter_by_place(jobs: list, countries=None, cities=None) -> tuple:
-    """Keep the listings in a country Sina asked for. Returns (kept, removed).
+    """Keep the listings in a country the user asked for. Returns (kept, removed).
 
     Unlike the Not Remote place rule in `filters.py`, this runs in **both** work modes,
     because it answers a different question. That rule asks "could he physically do this
@@ -67,7 +66,7 @@ def filter_by_place(jobs: list, countries=None, cities=None) -> tuple:
 
     THIS IS THE ONE STRICT FILTER IN THE APP, AND SINA ASKED FOR IT IN THOSE WORDS
 
-    "اگر نوشتم Netherlands یعنی فقط Netherlands میخوام". The first version of this had three
+    [owner's note: if Netherlands is chosen, only Netherlands is wanted]. The first version of this had three
     escape hatches -- an empty country, a country field naming several places, and a board's
     "Worldwide"/"Europe" -- all of them kept on the usual "silence survives" reasoning. He
     overruled that, and counting the Bank showed the hatches were worth 309 rows out of the
@@ -114,7 +113,7 @@ def filter_by_category(jobs: list, categories=None) -> tuple:
     **This is the one filter here that does not keep a silent listing**, and the exception
     is deliberate. `categorize` has no "unknown": a posting that says nothing about its kind
     comes back 'Full-Time', because that is the honest default and it is what the Jobs page
-    already prints in the Type column. So the filter agrees with the column Sina is looking
+    already prints in the Type column. So the filter agrees with the column the user is looking
     at -- ticking Part-Time removes the rows whose Type reads Full-Time, including the quiet
     ones. Keeping them instead would mean the window and the table disagreed about the same
     row, which is worse than either answer on its own.

@@ -6,7 +6,7 @@ edited. Every wording change this session -- and there were six -- meant finding
 string inside six hundred lines of request plumbing.
 
 The prompt is also kept byte-identical to Job-Filter-Claude-Apify.md in the project
-root, which is the copy Sina reads and edits. If either changes, the other must.
+root, which is the copy the user reads and edits. If either changes, the other must.
 """
 from __future__ import annotations
 
@@ -21,21 +21,21 @@ from ..search_title import ROW_KEY as TITLE_ROW_KEY, clean_title
 CLAUDE_MODEL = 'claude-haiku-4-5-20251001'
 
 
-# The full contents of this prompt are authored by Sina himself (see
+# The full contents of this prompt are authored by the user himself (see
 # Job-Filter-Claude-Apify.md in the project root -- keep that file and this constant in
 # sync if either is edited). It replaces an earlier, much shorter 5-rule paraphrase that
 # Claude was found to judge inconsistently; this version gives Claude the exact same
 # keyword dictionaries the app's own filters use, plus 4 additional rules the keyword
 # filters don't cover at all (fake job/paid training, citizenship/residency, domain fit,
-# degree completion), plus Sina's real profile so it can also score a match percentage.
-CLAUDE_SCREEN_SYSTEM_PROMPT = """# Job screening for Sina
+# degree completion), plus the user's real profile so it can also score a match percentage.
+CLAUDE_SCREEN_SYSTEM_PROMPT = """# Job screening for the user
 
 Read the whole posting and decide. If it conflicts with anything below, **DROP**. Otherwise
 **KEEP**.
 
 ## Who it is for
 
-Sina. **Everything about him comes from his résumé**, given in full after these
+The user. **Everything about him comes from his résumé**, given in full after these
 instructions under "His résumé". Where he lives, which languages he speaks and how well, his
 citizenship and residence status, where he studies, his experience and his skills — read
 them there, and nowhere else.
@@ -117,7 +117,7 @@ one are all kept, each labelled as what it is.
    years it asks for, and whether it calls itself Junior, Mid, Senior, Lead or
    Principal — is REPORTED, not filtered. Put it in `seniority` and keep the listing.
    A role wanting eight years is kept and labelled Senior; one wanting none is kept and
-   labelled Junior. Sina picks the levels he wants in the table afterwards, so taking
+   labelled Junior. The user picks the levels he wants in the table afterwards, so taking
    that decision here would take it away from him.
 
 5. **It is not a real vacancy** — a search-results or index page listing many jobs, a paid
@@ -128,7 +128,7 @@ one are all kept, each labelled as what it is.
    for it; if no single employer is hiring anyone here, it is not a vacancy.
 6. **It requires a citizenship, residency or clearance his résumé shows he does not have.**
    One his résumé shows he has is fine.
-7. **It is not the work named on the Field line.** That line is the job title Sina is
+7. **It is not the work named on the Field line.** That line is the job title the user is
    searching for. The same job under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not.
 8. **It requires enrolment at a university in a country other than the one his résumé says
@@ -188,7 +188,7 @@ def _claude_screen_prompt(job: dict) -> str:
     platform-reported employment type/seniority level, and description all together),
     the same way the keyword filters above already do."""
     return (
-        # The job title Sina typed, which rule 7 judges the field against. On this line rather
+        # The job title the user typed, which rule 7 judges the field against. On this line rather
         # than written into the rules, so the rules stay the same text for every title -- and
         # because this block is what the cache key hashes, a verdict reached for one title can
         # never be reused for another.
@@ -285,8 +285,8 @@ _SCREEN_OUTPUT_SCHEMA: dict = {
         # reason: a question has to be settled in words before a verdict is committed to.
         #
         # This is rule 4's replacement. Rule 4 used to DROP for seniority -- 19 of 90 flags
-        # on the real Netherlands run -- and Sina's instruction was to classify instead:
-        # "نباید Filter کنه باید اون هارو دسته بندی کنه". So the level is reported here, the
+        # on the real Netherlands run -- and the user's instruction was to classify instead:
+        # [owner's note: it should not filter, it should categorise]. So the level is reported here, the
         # listing is kept whatever it says, and he picks the levels he wants in the Jobs
         # table.
         #
@@ -322,7 +322,7 @@ _SCREEN_OUTPUT_SCHEMA: dict = {
                            'employer_evidence is empty.',
         },
     },
-    # No `match` any more. Scoring a listing against Sina is the second part's job now, read
+    # No `match` any more. Scoring a listing against the user is the second part's job now, read
     # against his uploaded résumé (claude_screen/worth.py), and this part only decides
     # KEEP or DROP. The field was last in the order, after the verdict, so taking it out
     # cannot move a verdict -- see the note above on why order matters.
@@ -335,7 +335,7 @@ _SCREEN_OUTPUT_SCHEMA: dict = {
 # A hash of the system prompt's own text -- NOT a hand-maintained version number, so
 # any future edit to a rule in CLAUDE_SCREEN_SYSTEM_PROMPT automatically changes this
 # and correctly invalidates every cached screening decision below (see
-# _claude_screen_cache_key), with no risk of Sina forgetting to bump a manual counter.
+# _claude_screen_cache_key), with no risk of the user forgetting to bump a manual counter.
 #
 # The answer schema is hashed in alongside it for the same reason and it is not cosmetic:
 # the schema changes the decisions, not just their shape. Measured over 60 real listings, a
@@ -369,14 +369,14 @@ def prompt_version_for(job: dict) -> str:
 
 def resume_section(text) -> str:
     """The résumé as the second block of the system prompt -- "His résumé", which the rules
-    above point to for every fact about Sina.
+    above point to for every fact about the user.
 
     Its own block, after the rules, so the rules stay the same text for every résumé and the
     two can be cached together: every listing in a Filter run is judged against the same
     résumé, so it is paid for in full once and read from the cache after that.
     """
     return ('# His résumé\n\n'
-            'Sina uploaded this himself. It is the only source of facts about him.\n\n'
+            'the user uploaded this himself. It is the only source of facts about him.\n\n'
             '<resume>\n%s\n</resume>\n' % str(text or '').strip())
 
 
@@ -416,10 +416,10 @@ def _claude_screen_cache_key(job: dict) -> str:
     listing needs to be sent to Claude again: unchanged content AND an unchanged
     prompt/ruleset hash identically, so the real (billed) API call is skipped and the
     previously-stored decision is reused as-is. Any change to either (a re-fetched
-    listing with different text, or Sina editing a rule in
+    listing with different text, or the user editing a rule in
     CLAUDE_SCREEN_SYSTEM_PROMPT) changes the hash and correctly forces a fresh screen.
 
-    The résumé is hashed in too: every fact about Sina comes from it, so a verdict reached
+    The résumé is hashed in too: every fact about the user comes from it, so a verdict reached
     against one résumé is never reused for another."""
     from app.resume import fingerprint
     raw = (prompt_version_for(job) + '\n' + fingerprint(current_resume_text()) + '\n'

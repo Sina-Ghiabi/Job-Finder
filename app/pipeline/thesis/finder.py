@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The Thesis module's own rules. Imports nothing from the Job or Internship modules.
 
-One of three parallel modules, per Sina's design. When Filter runs, all three read the same
+One of three parallel modules, per the user's design. When Filter runs, all three read the same
 listings at the same time and none of them can affect another -- each is handed its own copy
 of the rows, so even the mutation the salaried module does during translation is invisible
 here.
@@ -11,8 +11,7 @@ SINA'S RULES FOR A THESIS, IN ORDER
   1. It has to be a thesis, and that is read from the TITLE. An advert offering one says so
      there; one that merely mentions the word is a salaried job talking about something
      else.
-  2. A PhD is out. "برای Thesis اگر نوشته بود برای ph.D اون به درد من نمیخوره و باید حذف
-     بشه" -- a doctorate is a four-year research post, not something he writes during his
+  2. A PhD is out. [owner's note: a thesis written for a PhD is of no use and must be dropped] -- a doctorate is a four-year research post, not something he writes during his
      M.Sc.
   3. Milan or Turin: anything goes -- on-site, hybrid, remote. Anywhere else: remote only.
   4. Unpaid is out.
@@ -30,9 +29,9 @@ from __future__ import annotations
 
 import re
 
-# This module's OWN copy of the title check. Sina's rule: the three modules share nothing,
+# This module's OWN copy of the title check. The user's rule: the three modules share nothing,
 # not even a question they happen to ask identically. See field_words.py.
-from .field_words import row_is_in_field
+from .field_words import ALSO_ROW_KEY, row_is_in_field
 from . import words
 from ..search_title import (LEVEL_ROW_KEY, ROW_KEY as TITLE_ROW_KEY, WORK_MODE_ROW_KEY,
                             clean_title, clean_work_mode, is_any_workplace, is_not_remote)
@@ -106,7 +105,7 @@ def is_phd(row) -> bool:
 def is_bachelor_only(row) -> bool:
     """True when this thesis is for a bachelor student and not also for a master's one.
 
-    Sina's rule: "ازت میخوام Master Thesis هارو فقط بیاری". He is an M.Sc. student with
+    The user's rule: [owner's note: bring only Master Thesis listings]. He is an M.Sc. student with
     his B.Sc. already finished, so a thesis written for someone
     currently enrolled in a bachelor's programme is not one he can take. The Infineon
     "Bachelor Thesis - Artificial Intelligence in Microcontroller" reached a real final list
@@ -126,7 +125,7 @@ def is_bachelor_only(row) -> bool:
 
 
 def passes_location_rule(row) -> bool:
-    """Where a thesis may be. Sina's rule, and not the salaried one.
+    """Where a thesis may be. The user's rule, and not the salaried one.
 
     Milan or Turin -> anything. Anywhere else -> it has to be remote, OR it has to say
     nothing at all. Silence survives here; see the module docstring for the 38%.
@@ -153,7 +152,7 @@ def passes_location_rule(row) -> bool:
 
 
 def survives(row) -> tuple:
-    """(survives, reason) for one listing, in Sina's order. Cheapest and surest first."""
+    """(survives, reason) for one listing, in the user's order. Cheapest and surest first."""
     if not is_thesis(row):
         return False, 'not a thesis'
     if _INDEX_PAGE_PATTERN.search(str(row.get('title') or '')):
@@ -165,7 +164,7 @@ def survives(row) -> tuple:
         return False, 'never names %s' % clean_title(row.get(TITLE_ROW_KEY))
     if is_phd(row):
         return False, 'a PhD, not a thesis'
-    # Sina wants master's theses only. Checked right after the PhD rule, since the two are
+    # The user wants master's theses only. Checked right after the PhD rule, since the two are
     # the same question asked from either side: this thesis has to be at his level.
     if is_bachelor_only(row):
         return False, 'a bachelor thesis, not a master one'
@@ -190,7 +189,7 @@ def survives(row) -> tuple:
 # Is this readable at all?
 # ---------------------------------------------------------------------------------------
 
-# Sina's rule, and his reasoning: a Dutch employer who writes two thousand characters of
+# The user's rule, and his reasoning: a Dutch employer who writes two thousand characters of
 # Dutch and never once mentions English almost certainly wants Dutch. The Job module has
 # carried it for a long time; these two did not, and a real run ended with a Randstad
 # traineeship written entirely in Dutch on the list.
@@ -203,7 +202,7 @@ def survives(row) -> tuple:
 #
 # 8% sits in the empty middle. At that cut not one of the 128 English postings is mistaken
 # for foreign -- which is the direction that matters, since that mistake DELETES something
-# Sina can read -- and 4 of 118 foreign ones read as English, which merely keeps them.
+# The user can read -- and 4 of 118 foreign ones read as English, which merely keeps them.
 _ENGLISH_MARKERS = ('the', 'and', 'you', 'with', 'for', 'our', 'are', 'your', 'will',
                     'this', 'that', 'have', 'from', 'work', 'team', 'experience')
 _ENGLISH_MARKER_PATTERN = re.compile(r'\b(?:%s)\b' % '|'.join(_ENGLISH_MARKERS))
@@ -396,7 +395,7 @@ def remove_duplicates(rows: list) -> tuple:
 
 
 def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=None,
-         search_title=None, search_work_mode=None) -> tuple:
+         search_title=None, search_work_mode=None, other_names=None) -> tuple:
     """The whole Thesis module. Returns (kept, removed_by_reason).
 
     `search_title` is the job title in the Search box, and `search_work_mode` its Remote or
@@ -404,13 +403,13 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
     and Claude, whose prompt and cache key read them off the row.
 
     Recognise, then de-duplicate, then judge by keyword, then -- if a key is configured --
-    let Claude read what survived. That last stage is where the theses Sina could not
+    let Claude read what survived. That last stage is where the theses the user could not
     actually do get removed: the keyword rules deliberately keep a listing that says nothing
     about where the work happens, and only reading the work itself tells a photonics lab in
     Villach from a machine-learning model. See claude.py.
 
     De-duplicating before judging is not an optimisation. Judging first would spend every
-    rule -- and a Claude call -- on four copies of one advert, and hand Sina the same thesis
+    rule -- and a Claude call -- on four copies of one advert, and hand the user the same thesis
     four times.
     """
     if progress_cb:
@@ -419,7 +418,9 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
     # Copies, carrying the title in the box NOW and this Level -- never written onto the rows
     # given. The résumé match reads both off the row.
     title = clean_title(search_title)
-    stamp = {TITLE_ROW_KEY: title, LEVEL_ROW_KEY: 'thesis',
+    # The other names employers give this job (title_equivalents), handed in by the caller so
+    # this module asks nobody and shares nothing: the field rule matches any of them.
+    stamp = {TITLE_ROW_KEY: title, LEVEL_ROW_KEY: 'thesis', ALSO_ROW_KEY: list(other_names or []),
              WORK_MODE_ROW_KEY: clean_work_mode(search_work_mode)}
     found = [dict(row, **stamp) for row in rows if is_thesis(row)]
     found, duplicates = remove_duplicates(found)
@@ -444,7 +445,7 @@ def find(rows: list, progress_cb=None, anthropic_api_key=None, should_cancel=Non
         for why, count in sorted(reasons.items(), key=lambda kv: -kv[1]):
             progress_cb('FILTER_STEP_ITEM:thesis|%s (%d removed)' % (why, count), 0, 1)
 
-    # Every fact about Sina now comes from his résumé, so without one Claude would judge
+    # Every fact about the user now comes from his résumé, so without one Claude would judge
     # against nobody. Skipped, and said so, rather than run blind.
     from . import claude as _claude
     if anthropic_api_key and kept and not _claude.resume_text():
@@ -472,7 +473,7 @@ def _claude_pass(rows: list, api_key: str, progress_cb=None, should_cancel=None)
 
     A listing Claude did not answer about is KEPT. That is the important half: a failed
     request, an unfinished answer or a cancelled batch must never be able to delete a real
-    thesis, and there are only ever a handful of these -- Sina reading one extra costs him a
+    thesis, and there are only ever a handful of these -- The user reading one extra costs him a
     minute, losing one costs him the thesis.
     """
     import anthropic
@@ -498,7 +499,7 @@ def _claude_pass(rows: list, api_key: str, progress_cb=None, should_cancel=None)
             continue
         drop, reason, _match, basis = answer
         # No score from this part any more, and no floor on one: how well a thesis matches
-        # Sina is read against his résumé in the second part, which also applies the floor
+        # The user is read against his résumé in the second part, which also applies the floor
         # (claude_screen/worth.py).
         row[_claude.BASIS_KEY] = basis
         row[_claude.CACHE_KEY] = _claude.cache_key(row)
