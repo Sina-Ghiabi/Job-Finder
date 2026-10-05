@@ -504,6 +504,9 @@ def _process_plan_item(run_actor_and_fetch, progress, date_settings, limit_per_c
         progress.advance()
         return []
     if platform in _PRECISE_REPLACES_BROAD and kind != 'job':
+        if shape == 'kind':
+            progress.advance()
+            return []
         if shape == 'broad':
             progress.advance()
             return []
@@ -772,7 +775,8 @@ def _run_platform_passes(plan, pass_plan, rows, progress, run_platform_locations
         progress_cb('GLOG:pass|info|Search %d of %d — %s, in %s, asked %s.'
                     % (pass_number, len(pass_plan), str(search_pass['label']).lower(),
                        'English' if language == 'en' else "each country's own language",
-                       'broadly' if shape == 'broad' else 'as exact phrases'),
+                       {'broad': 'broadly', 'kind': 'by the thesis words alone'}.get(
+                           shape, 'as exact phrases')),
                     progress.done, progress.total)
       executor = ThreadPoolExecutor(max_workers=SEARCH_MAX_CONCURRENT_PLATFORMS)
       try:
@@ -1170,7 +1174,8 @@ def run_search(token, limit_per_call, date_settings, countries=None, actor_order
     pass_plan = [(entry, language, shape)
                  for entry in passes
                  for language in languages
-                 for shape in ('broad', 'precise')]
+                 for shape in (('broad', 'precise', 'kind') if entry['key'] == 'thesis'
+                               else ('broad', 'precise'))]
 
     plan, run_google, total = _build_search_plan(actor_order, countries, cities)
     # The plan is walked once per pass, so the counter has to know that up front or every

@@ -627,6 +627,21 @@ def keywords_for(kind: str, country: str | None, language: str,
     level = str(level or '').lower()
     if level not in _LANGUAGE_LEVEL_WORDS:
         level = 'junior'
+    if shape == 'kind':
+        # THE THESIS WORDS ALONE. Measured on 5 October 2026 (Italy, Data Science): asking for a
+        # thesis word AND the title returned 4 unrelated rows, while the thesis word alone
+        # ("Tesi") returned 113 rows, 36 of them theses. A thesis advert names a topic, rarely
+        # the job, so the title is left for the Thesis module's field rule to judge afterwards,
+        # with the other names for the job. Only the thesis pass has this shape: an internship
+        # asked for without its field would be every internship in the country.
+        if kind != 'thesis':
+            return None
+        if language == 'en':
+            return _THESIS_GROUP
+        words: list = []
+        for code in local_languages_for(country or ''):
+            words.extend(_KIND_WORDS['thesis'].get(code, ()))
+        return '(%s)' % ' OR '.join(dict.fromkeys(words)) if words else None
     if shape == 'precise':
         if kind == 'job':
             # The job pass's precise shape is the Level's own: a broad query fills

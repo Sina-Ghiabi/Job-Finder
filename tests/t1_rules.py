@@ -3141,4 +3141,24 @@ for _kind in ('thesis', 'internship'):
           '"Machine Learning Engineer"' in _q.keywords_for(_kind, 'Italy', 'local', 'broad',
                                                            'Data Science', also=_ALSO))
 
+# =============================================================== 1.kind  the thesis words alone
+section('1.kind  a third Thesis query: the thesis words alone, judged afterwards')
+_en = _q.keywords_for('thesis', 'Italy', 'en', 'kind', 'Data Science')
+_it = _q.keywords_for('thesis', 'Italy', 'local', 'kind', 'Data Science')
+check('the English kind query has the thesis words and no title',
+      'Master Thesis' in _en and 'Data Science' not in _en and 'Data Scientist' not in _en, _en[:80])
+check('the Italian one has Tesi and no title', 'Tesi' in _it and 'Data Science' not in _it, _it)
+check('only Thesis has this shape: internship and job ask for nothing',
+      _q.keywords_for('internship', 'Italy', 'en', 'kind', 'Data Science') is None
+      and _q.keywords_for('job', 'Italy', 'en', 'kind', 'Data Science') is None)
+check('a country whose language has no thesis words sends no local kind query',
+      _q.keywords_for('thesis', 'United States', 'local', 'kind', 'Data Science') is None)
+check('the other two shapes are untouched and still carry the title',
+      'Data Science' in _q.keywords_for('thesis', 'Italy', 'en', 'broad', 'Data Science')
+      and 'Data Science' in _q.keywords_for('thesis', 'Italy', 'en', 'precise', 'Data Science'))
+from app.pipeline.search import runner as _rn2  # noqa: E402
+_src = open(_rn2.__file__, encoding='utf-8').read()
+check("the runner adds the 'kind' shape to the thesis pass only",
+      "('broad', 'precise', 'kind') if entry['key'] == 'thesis'" in _src)
+
 sys.exit(summary('Suite 1 -- rules & helpers'))

@@ -1694,6 +1694,20 @@ because the alternative is the 0-row result `T-19` measured.
   the résumé in the Search window; it is uploaded in the **Filter** window (**Choose résumé…**), and the
   Anthropic key is optional — without it only the keyword rules run.
 
+#### `T-27` · The Thesis pass has a third query: the thesis words alone
+
+> [owner's note: do both - search the thesis words alone, and let the Filter judge the field with the other names]
+
+`keywords_for(..., shape='kind')` for Thesis only returns the thesis group with no title (English, and the
+country's own words); the runner adds it to the thesis pass beside the broad and the exact-phrase queries. The
+Thesis module's field rule (with the other names, `T-26`) then decides what is about the job. **Measured on the
+real actors, 5 October 2026, Italy, Past month, 20 rows each:** 102 raw rows, 28 of them theses by title (LinkedIn
+Italian 14 of 14); the Filter kept 2 for "Data Science" and its other names, and removed 17 as not naming the
+field — so the thin result is now the real size of the market in that window, not an artefact of the query.
+`T-25` below recorded the problem. Internship is deliberately NOT given this shape: asked without its field it is
+every internship in the country, which on LinkedIn is paid per row. Cost note: Any and Thesis searches now make
+one more call per platform and language.
+
 #### `T-25` · Open finding: a Thesis search for "Data Science" returns almost nothing
 
 > *owner's note: a Thesis search returned Internship and Full-Time results, and very few of them*
