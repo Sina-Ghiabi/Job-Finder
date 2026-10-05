@@ -1,0 +1,38 @@
+PySide6>=6.6
+apify-client>=1.6
+pandas>=2.0
+requests>=2.32
+openpyxl>=3.1
+pyinstaller>=6.0
+# Language detection. Replaced langdetect, which was measured wrong on 21 of 400 real
+# listings when given only a short description against lingua's 4, and 4x slower -- and a
+# wrong verdict here does not mislabel a listing, it deletes it (see app/pipeline/language.py).
+lingua-language-detector>=2.0
+deep-translator>=1.11
+anthropic>=0.40
+playwright>=1.48
+beautifulsoup4>=4.12
+
+# Main-content extraction for job pages. BeautifulSoup gets the text; trafilatura gets the
+# POSTING out of it. Measured on real pages, tag-stripping leaves cookie banners and filter
+# menus in the description (6 noise markers across 4 pages against trafilatura's 1), and
+# that noise is not cosmetic -- run-together facet text is what made the on-site rule fire
+# on listings that never mentioned a hybrid arrangement.
+trafilatura>=2.0
+# Sends a request over a TLS handshake indistinguishable from Chrome's. Several job
+# boards return 403 to Python's handshake alone, before reading a single header, and this
+# is the whole of what unblocks them -- see app/pipeline/fetcher.py.
+curl_cffi>=0.7
+
+# Dedup compares every title against every other one, then the full descriptions of every
+# pair that gets through -- 2,199 listings is 4.8M title pairs. rapidfuzz does that in about
+# 7 seconds; difflib was measured 231x slower, which is the difference between a step nobody
+# notices and half an hour (see _remove_duplicates_list in app/pipeline/filters.py).
+rapidfuzz>=3.9
+
+# Reading the résumé Sina uploads in Search, which Claude screens and scores every listing
+# against. PDF and Word only, by his rule -- nothing else is accepted. The text is extracted
+# here rather than the file being sent to Claude as a document, so both formats take one
+# path and the résumé can sit in the cached system prompt (see app/resume.py).
+pypdf>=5.0
+python-docx>=1.1

@@ -1,0 +1,12 @@
+# Git kept warning "LF will be replaced by CRLF" on every single file of every commit,
+# twenty lines at a time, and PowerShell read that stderr as a failure and reported exit 255
+# on commits that had worked. The repository is written with LF by every tool that touches it
+# -- the Write tool, the mirror generator, PyInstaller's spec -- so LF is what it stores.
+* text=auto eol=lf
+
+# Binary, so git never tries to normalise them.
+*.ico binary
+*.png binary
+*.pdf binary
+*.xlsx binary
+*.exe binary

@@ -1,0 +1,44 @@
+[TIME] Token Check:
+[TIME]     → Apify Token | Failed
+[TIME]     → Claude Token | Not Configured
+[TIME] Indeed  M:SS — Completed
+[TIME]     → Germany | Succeed | 0.0123$
+[TIME]     → Berlin | Failed | None$
+[TIME] Google  M:SS — Completed
+[TIME]     Pre-API Check  M:SS — Completed for 1 of 3 checks failed (some checks failed)
+[TIME]         → API | Google Search actor | OK | Failed
+[TIME]         → API | arbetsformedlingen.se | Sweden | OK
+[TIME]         → API | de.jooble.org | Germany | Failed (the configured key looks malformed (too short))
+[TIME]     Known Websites  M:SS — Succeed  $0.05
+[TIME]         → www.stepstone.de | Succeed | 12 job(s) found
+[TIME]     Startup Websites Search  M:SS — Succeed  $0.05
+[TIME]         → www.ycombinator.com | Succeed | 3 job(s) found
+[TIME]     Deep-Crawl  M:SS — Succeed  $0.08
+[TIME]         → finn.no | Succeed | 5 new page(s) found
+[TIME]     Direct Site Search  M:SS — Succeed  $0.02
+[TIME]         → Direct site search done: 3 row(s) added from 2 page(s).
+[TIME]         → finn.no for Norway: 2 individual job posting(s) found.
+[TIME]         → finn.no for Norway: could not connect at all
+[TIME]     Direct API Search  M:SS — Completed
+[TIME]         → Direct API search done: 7 row(s) added.
+[TIME]         → se.jooble.org for Sweden: 4 individual job posting(s) found.
+[TIME]         → Checking de.jooble.org for Germany (direct API call)
+[TIME]         → de.jooble.org API call failed for Germany (timeout)
+[TIME]     Browser-Only Sites  M:SS — Completed
+[TIME]         → Opening 2 site(s) that need a real browser…
+[TIME]         → xing.com (Germany): 1 job posting(s) found via chrome_tls.
+[TIME]         → duunitori.fi (Finland): could not be opened -- HTTP 403.
+[TIME]         → Skipped 9 result(s) from LinkedIn/Indeed/Glassdoor.
+[TIME]         → 12 listing(s) unchanged since their last real Claude screen.
+[TIME]         → Sponsorship Visa list for Germany loaded (12900 companies).
+[TIME] Filter  M:SS — Completed
+[TIME]     Finding Company Names for Removing Duplicates  M:SS — Finished (4 filled)
+[TIME]     Sentence Check — Reading Requirements  M:SS — Finished (31 removed)
+[TIME]         → Remote rule | Checked
+[TIME]     Claude Review  M:SS — Finished (2 flagged, 5 screened, 12 cached)
+[TIME]         → University enrollment rule | Checked
+[TIME]     Sorting Results  M:SS — Finished
+[TIME] [0/1] Search stopped early (boom). Showing the 12 listing(s) found so far.
+[TIME] [0/1] Everything finished.
+[TIME] [0/1] Something looked odd.
+[TIME] [0/1] a plain unprefixed line

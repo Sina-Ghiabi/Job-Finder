@@ -1,0 +1,332 @@
+{
+  "www.arbeitnow.com": {
+    "globs": [
+      "https://www.arbeitnow.com/jobs/*/*/*",
+      "https://www.arbeitnow.com/jobs/companies/*/*"
+    ],
+    "added_at": "2026-09-03T01:01:45.456577+00:00",
+    "verifier_version": 4
+  },
+  "englishjobs.de": {
+    "globs": [
+      "https://englishjobs.de/job/**",
+      "https://englishjobs.de/job/*"
+    ],
+    "added_at": "2026-09-03T07:55:06.127275+00:00",
+    "verifier_version": 4
+  },
+  "www.datacareer.de": {
+    "globs": [
+      "https://www.datacareer.de/job/**"
+    ],
+    "added_at": "2026-09-03T07:57:25.230704+00:00",
+    "verifier_version": 4
+  },
+  "en.devjobs.de": {
+    "globs": [
+      "https://en.devjobs.de/job/**",
+      "https://en.devjobs.de/job/*"
+    ],
+    "added_at": "2026-09-03T07:57:45.557164+00:00",
+    "verifier_version": 4
+  },
+  "www.bmwgroup.jobs": {
+    "globs": [
+      "https://www.bmwgroup.jobs/en/jobfinder/**",
+      "https://www.bmwgroup.jobs/en/jobfinder/*"
+    ],
+    "added_at": "2026-09-03T07:58:08.076114+00:00",
+    "verifier_version": 4
+  },
+  "www.navartisglobal.com": {
+    "globs": [
+      "https://www.navartisglobal.com/job/**",
+      "https://www.navartisglobal.com/job/*"
+    ],
+    "added_at": "2026-09-03T08:01:16.996208+00:00",
+    "verifier_version": 4
+  },
+  "careers.deliveryhero.com": {
+    "globs": [
+      "https://careers.deliveryhero.com/job/**",
+      "https://careers.deliveryhero.com/job/*"
+    ],
+    "added_at": "2026-09-03T08:02:07.847544+00:00",
+    "verifier_version": 4
+  },
+  "jobs.zalando.com": {
+    "globs": [
+      "https://jobs.zalando.com/en/**",
+      "https://jobs.zalando.com/en/*/*",
+      "https://jobs.zalando.com/en/jobs/**",
+      "https://jobs.zalando.com/en/jobs/*"
+    ],
+    "added_at": "2026-09-03T08:06:01.094559+00:00",
+    "verifier_version": 4
+  },
+  "www.themuse.com": {
+    "globs": [
+      "https://www.themuse.com/jobs/**",
+      "https://www.themuse.com/jobs/*/*",
+      "https://www.themuse.com/jobs/genmab/**",
+      "https://www.themuse.com/jobs/genmab/*"
+    ],
+    "added_at": "2026-09-03T08:06:38.886865+00:00",
+    "verifier_version": 4
+  },
+  "www.jobfluent.com": {
+    "globs": [
+      "https://www.jobfluent.com/jobs/**",
+      "https://www.jobfluent.com/jobs/*"
+    ],
+    "added_at": "2026-09-03T08:10:49.186373+00:00",
+    "verifier_version": 4
+  },
+  "careers.vattenfall.com": {
+    "globs": [
+      "https://careers.vattenfall.com/job/**",
+      "https://careers.vattenfall.com/job/*"
+    ],
+    "added_at": "2026-09-03T08:10:55.777218+00:00",
+    "verifier_version": 4
+  },
+  "nextraise.ai": {
+    "globs": [
+      "https://nextraise.ai/jobs/**",
+      "https://nextraise.ai/jobs/*"
+    ],
+    "added_at": "2026-09-03T08:12:37.634123+00:00",
+    "verifier_version": 4
+  },
+  "www.hays.de": {
+    "globs": [
+      "https://www.hays.de/jobsuche/**",
+      "https://www.hays.de/jobsuche/*/*"
+    ],
+    "added_at": "2026-09-11T21:40:11.758732+00:00",
+    "verifier_version": 4
+  },
+  "germantechjobs.de": {
+    "globs": [
+      "https://germantechjobs.de/en/*/*",
+      "https://germantechjobs.de/en/jobs/*"
+    ],
+    "added_at": "2026-09-11T21:40:50.280556+00:00",
+    "verifier_version": 4
+  },
+  "www.resumly.ai": {
+    "globs": [
+      "https://www.resumly.ai/jobs/**",
+      "https://www.resumly.ai/jobs/*"
+    ],
+    "added_at": "2026-09-11T21:41:49.787479+00:00",
+    "verifier_version": 4
+  },
+  "dailyremote.com": {
+    "globs": [
+      "https://dailyremote.com/remote-job/**",
+      "https://dailyremote.com/remote-job/*"
+    ],
+    "added_at": "2026-09-11T21:44:20.333817+00:00",
+    "verifier_version": 4
+  },
+  "wolfjansen.com": {
+    "globs": [
+      "https://wolfjansen.com/jobs/**"
+    ],
+    "added_at": "2026-09-12T14:21:27.740640+00:00",
+    "verifier_version": 4
+  },
+  "www.transparent-hiring.com": {
+    "globs": [
+      "https://www.transparent-hiring.com/jobs/**"
+    ],
+    "added_at": "2026-09-13T01:19:14.265809+00:00",
+    "verifier_version": 4
+  },
+  "www.remoterocketship.com": {
+    "globs": [
+      "https://www.remoterocketship.com/company/sowelo-eu/**"
+    ],
+    "added_at": "2026-09-13T01:21:25.108239+00:00",
+    "verifier_version": 4
+  },
+  "jobs.accaglobal.com": {
+    "globs": [
+      "https://jobs.accaglobal.com/job/**"
+    ],
+    "added_at": "2026-09-13T18:57:26.950097+00:00",
+    "verifier_version": 4
+  },
+  "www.volkswagen-karriere.de": {
+    "globs": [
+      "https://www.volkswagen-karriere.de/de/*/*/*/*",
+      "https://www.volkswagen-karriere.de/de/einstiegsmoeglichkeiten/*/*/*"
+    ],
+    "added_at": "2026-09-13T18:57:43.358026+00:00",
+    "verifier_version": 4
+  },
+  "careers.ing.com": {
+    "globs": [
+      "https://careers.ing.com/en/*/*/*/*/*",
+      "https://careers.ing.com/en/job/**",
+      "https://careers.ing.com/en/job/*/*/*/*"
+    ],
+    "added_at": "2026-09-13T18:57:58.066421+00:00",
+    "verifier_version": 4
+  },
+  "careers.munichre.com": {
+    "globs": [
+      "https://careers.munichre.com/en/*/*/*/*/*",
+      "https://careers.munichre.com/en/job/**",
+      "https://careers.munichre.com/en/job/*/*/*/*"
+    ],
+    "added_at": "2026-09-13T18:58:55.920260+00:00",
+    "verifier_version": 4
+  },
+  "www.gooverseas.com": {
+    "globs": [
+      "https://www.gooverseas.com/internships-abroad/*/*/*"
+    ],
+    "added_at": "2026-09-13T19:04:41.926901+00:00",
+    "verifier_version": 4
+  },
+  "en.devjobs.at": {
+    "globs": [
+      "https://en.devjobs.at/job/**",
+      "https://en.devjobs.at/job/*"
+    ],
+    "added_at": "2026-09-14T12:06:27.849023+00:00",
+    "verifier_version": 4
+  },
+  "be.tuvaustria.com": {
+    "globs": [
+      "https://be.tuvaustria.com/jobs/**"
+    ],
+    "added_at": "2026-09-14T12:07:54.170296+00:00",
+    "verifier_version": 4
+  },
+  "meetfrank.com": {
+    "globs": [
+      "https://meetfrank.com/jobs/**",
+      "https://meetfrank.com/jobs/*/*"
+    ],
+    "added_at": "2026-09-14T12:08:11.397349+00:00",
+    "verifier_version": 4
+  },
+  "weworkremotely.com": {
+    "globs": [
+      "https://weworkremotely.com/remote-jobs/**",
+      "https://weworkremotely.com/remote-jobs/*"
+    ],
+    "added_at": "2026-09-14T12:08:34.157693+00:00",
+    "verifier_version": 4
+  },
+  "jobs.derstandard.at": {
+    "globs": [
+      "https://jobs.derstandard.at/detail/**",
+      "https://jobs.derstandard.at/detail/*"
+    ],
+    "added_at": "2026-09-14T12:08:45.798018+00:00",
+    "verifier_version": 4
+  },
+  "jobs.workable.com": {
+    "globs": [
+      "https://jobs.workable.com/view/**",
+      "https://jobs.workable.com/view/*/*"
+    ],
+    "added_at": "2026-09-14T12:09:16.612434+00:00",
+    "verifier_version": 4
+  },
+  "jobs.radancy.com": {
+    "globs": [
+      "https://jobs.radancy.com/en/job/**",
+      "https://jobs.radancy.com/en/job/*/*/*/*"
+    ],
+    "added_at": "2026-09-14T12:09:27.649951+00:00",
+    "verifier_version": 4
+  },
+  "www.iono.tech": {
+    "globs": [
+      "https://www.iono.tech/de/**",
+      "https://www.iono.tech/de/*/*",
+      "https://www.iono.tech/de/jobs-1/**",
+      "https://www.iono.tech/de/jobs-1/*"
+    ],
+    "added_at": "2026-09-14T12:09:39.996729+00:00",
+    "verifier_version": 4
+  },
+  "www.lifeatcanva.com": {
+    "globs": [
+      "https://www.lifeatcanva.com/en/jobs/**"
+    ],
+    "added_at": "2026-09-14T12:09:43.465549+00:00",
+    "verifier_version": 4
+  },
+  "www.hays.at": {
+    "globs": [
+      "https://www.hays.at/jobsuche/**",
+      "https://www.hays.at/jobsuche/*/*"
+    ],
+    "added_at": "2026-09-14T12:10:13.496439+00:00",
+    "verifier_version": 4
+  },
+  "careers.tieto.com": {
+    "globs": [
+      "https://careers.tieto.com/job/**",
+      "https://careers.tieto.com/job/*"
+    ],
+    "added_at": "2026-09-14T12:10:16.794456+00:00",
+    "verifier_version": 4
+  },
+  "www.finden.at": {
+    "globs": [
+      "https://www.finden.at/jobs/*/*",
+      "https://www.finden.at/jobs/detail/**",
+      "https://www.finden.at/jobs/detail/*"
+    ],
+    "added_at": "2026-09-14T21:41:36.342532+00:00",
+    "verifier_version": 4
+  },
+  "jobs.hensoldt.net": {
+    "globs": [
+      "https://jobs.hensoldt.net/job/**"
+    ],
+    "added_at": "2026-09-14T21:41:40.136911+00:00",
+    "verifier_version": 4
+  },
+  "jobs.frequentis.com": {
+    "globs": [
+      "https://jobs.frequentis.com/careers/*/*/*",
+      "https://jobs.frequentis.com/careers/JobDetail/**",
+      "https://jobs.frequentis.com/careers/JobDetail/*/*"
+    ],
+    "added_at": "2026-09-14T21:50:32.419912+00:00",
+    "verifier_version": 4
+  },
+  "www.blum-careers.com": {
+    "globs": [
+      "https://www.blum-careers.com/en-at/*/*/*",
+      "https://www.blum-careers.com/en-at/working-at-blum/**",
+      "https://www.blum-careers.com/en-at/working-at-blum/*/*"
+    ],
+    "added_at": "2026-09-14T21:56:40.175622+00:00",
+    "verifier_version": 4
+  },
+  "www.redglobal.com": {
+    "globs": [
+      "https://www.redglobal.com/work-for-red/*/*/*",
+      "https://www.redglobal.com/work-for-red/job/**",
+      "https://www.redglobal.com/work-for-red/job/*/*"
+    ],
+    "added_at": "2026-09-14T21:57:58.584557+00:00",
+    "verifier_version": 4
+  },
+  "www.jobsinforex.com": {
+    "globs": [
+      "https://www.jobsinforex.com/job/**"
+    ],
+    "added_at": "2026-09-14T21:58:00.718223+00:00",
+    "verifier_version": 4
+  }
+}

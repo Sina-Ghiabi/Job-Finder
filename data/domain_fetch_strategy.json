@@ -1,0 +1,277 @@
+{
+  "startup.jobs": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:29:24.386809+00:00"
+  },
+  "www.reddit.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:40:02.879554+00:00"
+  },
+  "germantechjobs.de": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-12T14:31:16.983427+00:00"
+  },
+  "www.spaceindividuals.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:41:11.162374+00:00"
+  },
+  "www.youtube.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T18:58:59.075125+00:00"
+  },
+  "socialimpact.youtube.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:41:18.068919+00:00"
+  },
+  "www.ziprecruiter.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-13T01:23:56.763725+00:00"
+  },
+  "work.turing.com": {
+    "strategy": "browser",
+    "fetcher_version": 2,
+    "at": "2026-09-13T01:32:51.629257+00:00"
+  },
+  "weworkremotely.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:55:12.576990+00:00"
+  },
+  "aijobs.ai": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:56:58.702795+00:00"
+  },
+  "www.datacareer.de": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-13T14:47:32.231316+00:00"
+  },
+  "en.devjobs.de": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-11T21:55:36.574332+00:00"
+  },
+  "www.stepstone.de": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T14:48:18.282128+00:00"
+  },
+  "www.arbeitnow.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:26:42.252049+00:00"
+  },
+  "englishjobs.de": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:20:17.689977+00:00"
+  },
+  "www.glassdoor.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-11T22:54:59.859409+00:00"
+  },
+  "www.wearedevelopers.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:17:52.753641+00:00"
+  },
+  "berlinstartupjobs.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:27:54.902697+00:00"
+  },
+  "www.arbeitsagentur.de": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:19:44.191081+00:00"
+  },
+  "www.workatastartup.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:42:38.346185+00:00"
+  },
+  "www.naukri.com": {
+    "strategy": "browser",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:42:55.747336+00:00"
+  },
+  "meetfrank.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:07:58.563955+00:00"
+  },
+  "wolfjansen.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-12T14:21:12.997741+00:00"
+  },
+  "jobtensor.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T14:33:56.475493+00:00"
+  },
+  "wellfound.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:35:15.741816+00:00"
+  },
+  "jobgether.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T01:19:56.249665+00:00"
+  },
+  "englishjobsgermany.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T14:51:46.337097+00:00"
+  },
+  "www.kununu.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-13T14:46:41.737997+00:00"
+  },
+  "www.workingstudentjobs.de": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-13T18:53:28.729187+00:00"
+  },
+  "www.airbus.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T18:56:53.382480+00:00"
+  },
+  "jobs.accaglobal.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:27:20.027154+00:00"
+  },
+  "pmi-gc.de": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:00:15.099822+00:00"
+  },
+  "www.gooverseas.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:04:27.858983+00:00"
+  },
+  "careers-elektrobit-deu.icims.com": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:15:01.037512+00:00"
+  },
+  "tnl2.jometer.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T00:56:04.595421+00:00"
+  },
+  "www.belmoto.de": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T00:56:06.059503+00:00"
+  },
+  "www.iamexpat.de": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:25:03.055446+00:00"
+  },
+  "www.bmwgroup.jobs": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-13T19:27:07.379994+00:00"
+  },
+  "en.devjobs.at": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:06:24.405186+00:00"
+  },
+  "www.pnet.co.za": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:15:24.790799+00:00"
+  },
+  "jobs.workable.com": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:09:13.901193+00:00"
+  },
+  "www.lifeatcanva.com": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:09:40.605782+00:00"
+  },
+  "experienced-toyota-europe.icims.com": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:35:13.419768+00:00"
+  },
+  "www.stepstone.at": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:16:22.781088+00:00"
+  },
+  "mm-group.eightfold.ai": {
+    "strategy": "browser",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:35:33.187743+00:00"
+  },
+  "austria.jobsinnetwork.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:40:44.029468+00:00"
+  },
+  "www.media-data.at": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:40:43.041313+00:00"
+  },
+  "www.karriere.at": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:19:57.931582+00:00"
+  },
+  "fa-etvl-saasfaprod1.fa.ocs.oraclecloud.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T12:46:24.283991+00:00"
+  },
+  "himalayas.app": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:45:45.517206+00:00"
+  },
+  "innerspace.jobs.personio.com": {
+    "strategy": "plain",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:48:59.614922+00:00"
+  },
+  "jobs.frequentis.com": {
+    "strategy": "apify",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:49:38.864462+00:00"
+  },
+  "www.upwork.com": {
+    "strategy": "",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:53:41.153332+00:00"
+  },
+  "www.jobsinforex.com": {
+    "strategy": "crawler",
+    "fetcher_version": 2,
+    "at": "2026-09-14T21:57:59.454965+00:00"
+  },
+  "englishjobsearch.at": {
+    "strategy": "chrome_tls",
+    "fetcher_version": 2,
+    "at": "2026-09-14T22:14:45.711223+00:00"
+  }
+}

@@ -1,0 +1,43 @@
+data/settings.json
+data/applications.json
+data/documents/
+# The Bank -- every listing a search brought back, before filtering. Sina's own search
+# results, and large; like jobs.json it belongs to the machine, not to the repository.
+data/bank.json
+data/jobs.json
+# Sina's résumé and the text read out of it -- personal data, never committed.
+data/resume/
+# Claude's answers about the job titles he searches for, cached per title so each one is only
+# ever asked about once. His own search history in all but name, and rebuilt on demand by
+# whoever runs the app -- so it belongs to the machine, like the Bank beside it.
+data/title_equivalents.json
+# What this machine has spent with Claude, counted from the tokens themselves. A running total
+# of Sina's own bill; nothing in the repository should carry it.
+data/claude_spend.json
+# Which rows of the current Bank are duplicates of each other. Derived from the Bank and worth
+# 90 seconds to rebuild, so it belongs to the machine like the Bank itself.
+data/dedup_cache.json
+# Where a search got to, so an interrupted one can carry on. Written by the run, meaningless
+# to anyone else's machine.
+data/search_checkpoint.json
+__pycache__/
+*.pyc
+build/
+dist/
+.venv/
+venv/
+.mypy_cache/
+
+# PyInstaller spec files are ignored in general -- they are usually generated -- but
+# JobFinder.spec is written by hand and is the only instruction for building the exe. A blanket
+# `*.spec` kept it out of the repository entirely, so a fresh clone could not build the app
+# at all. It is tracked now; any other .spec is still generated and still ignored.
+*.spec
+!JobFinder.spec
+
+# Build artefacts. GitHub refuses any single file over 100MB, and both of these are larger
+# than that -- a push carrying them is rejected outright, not merely bloated. They are
+# reproducible from the source next to them (see JobFinder.spec).
+JobFinder.exe
+build_probe/
+dist_probe/
