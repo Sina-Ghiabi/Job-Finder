@@ -15,10 +15,8 @@ COUNTRIES = [
 # checking a city underneath it searches just that city. The two are independent
 # checkboxes, not a parent/child propagation -- checking both is valid (redundant, not
 # wrong) and just means both a country-wide and a city-specific search run.
-# Milan and Turin are here for a reason no other city on this list has: the owner LIVES in
-# northern Italy. passes_work_location_rule keeps every Milan/Turin listing regardless of work
-# arrangement -- an ordinary on-site Milan job is as usable to him as a fully remote job
-# anywhere else, and it is the only kind of on-site work he can actually take.
+# Milan and Turin are cities like any other here: Remote means Remote everywhere, and no city
+# is exempt from the Work Location rule.
 #
 # They were missing, and nothing else made up for it: COUNTRY_JOB_SITES had no entry for
 # Italy either, so a search of Italy ran one direct site task (arc.dev) and no site: query
@@ -152,8 +150,7 @@ _CITY_LOCAL_SPELLINGS = {
     # An Italian advert almost never writes "Milan" or "Turin" -- it writes Milano and
     # Torino. Without these, _mentions_city would reject every genuine Italian listing for
     # not naming the city it is actually in, which is the exact opposite of its purpose.
-    # They match MILAN_TURIN_NAMES in rules.py, which the Remote rule already uses.
-    'Milan': ['Milan', 'Milano'],
+        'Milan': ['Milan', 'Milano'],
     'Turin': ['Turin', 'Torino'],
 }
 

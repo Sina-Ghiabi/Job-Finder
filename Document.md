@@ -1347,7 +1347,7 @@ and a decision about whether the window may offer controls that do nothing.
 
 | control | what it still changes |
 |---|---|
-| **Work** — Remote / Not Remote | LinkedIn's `remote` field (sent only for Remote, never for Italy), Glassdoor's `remoteWorkType`, the Work Location rule, and which way LinkedIn's tag is read (`T-16`) |
+| **Work** — Remote / Not Remote | LinkedIn's `remote` field (sent only for Remote; no place is exempt since `T-23`), Glassdoor's `remoteWorkType`, the Work Location rule, and which way LinkedIn's tag is read (`T-16`) |
 | **Type** — Thesis / Internship | which *search* runs: each is its own pass with its own words, and (since `T-19`) **no remote-only filter at the actor** |
 | ~~**Level** — Entry / Junior / Mid / Senior~~ | **removed from Search by `T-19`.** It only ever changed a second, precise query: 1–3 rows per platform and none for Mid |
 
@@ -1589,8 +1589,7 @@ the search sends that may name a Type, does.**
 > **Indeed** `location` = `"remote"` / Any (the actor documents `location` as "City, state, zip
 > code, or remote"; measured 10 rows each: Germany 10 of 10 Home Office/Remote, US 10 of 10 Remote,
 > Netherlands 0 — Indeed.nl lists almost none, an honest empty answer). Any sends nothing remote, so
-> the actors bring Remote and everything else. The Italy exception still applies (Indeed gets the
-> city back). Thesis and Internship grey out Remote and choose Any. Saved as `search_workplace`
+> the actors bring Remote and everything else. **The Italy exception was removed by `T-23`.** Thesis and Internship grey out Remote and choose Any. Saved as `search_workplace`
 > (Search) and `search_work_mode` (= `remote` / `any`, also what the Filter radios save); settings
 > saved earlier with `not_remote` open as Any.
 >
@@ -1649,14 +1648,36 @@ keep honest: `remote=onsite` is accepted and sent as chosen, but LinkedIn applie
 is a filter that leaks, so a row's own tag is still what to trust, and that is what the Work Location
 rule reads.
 
-**Two exceptions remain, and both are Sina's own rules, stated here rather than left to be found.**
-`_actor_request` still removes the workplace parameter for **Italy**, country or city (it holds Turin
-and Milan, where he can reach an office, and an honoured remote-only filter would hide exactly the
-on-site jobs he wants), and for the **thesis and internship passes of an Any search** (`skip_remote`),
+**One exception remains (the Italy one that stood here was removed by `T-23`).**
+`_actor_request` removes the workplace parameter for the **thesis and internship passes of an Any search** (`skip_remote`),
 which would otherwise be remote-filtered and return nothing. In an Any search with *Remote* chosen the
 job pass sends `remote=remote` and the other two do not, so that one dropdown is not sent verbatim to
 every call it nominally covers. It is the one place "directly" is not literally true, and it is there
 because the alternative is the 0-row result `T-19` measured.
+
+#### `T-23` · Remote means Remote — no Milan, Turin or Italy exception
+
+> *"اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin یا Milan بود / اگر خودم بخواد Any رو
+> Search میکنم دیگه"*
+
+The home-city exception is gone, everywhere it lived. Remote is judged as Remote in Turin and Milan
+like in any city; the way to see on-site work there is to search **Any**.
+
+- **Keyword rules:** `mentions_milan_or_turin` and `MILAN_TURIN_NAMES` are deleted; the Work Location
+  rule, and the Thesis and Internship location rules, no longer keep a listing for naming either city.
+- **Request builders:** LinkedIn and Glassdoor send their remote filter in Italy as anywhere, Indeed
+  sends `location=remote`; `_actor_request` keeps one exception only, the thesis / internship passes
+  (`T-19`).
+- **Claude (all six Remote prompts + the eight mirrors, regenerated):** the sentence "a role in that
+  city … also works, on-site or not", rule 1's wording "other than the city he lives in" (now "present
+  somewhere — the role is not remote"), the "Anything in the city he lives in … is a KEEP regardless of
+  rule 1" line, the internship working-student exception, and the `in or near the city he lives in`
+  answer in `location_basis` are removed. The region paragraph of rule 1b ("Europe contains where he
+  lives") stays: it is about whether a remote role admits him, not about on-site work.
+- **Tests:** the assertions that Milan/Turin/Italy stay exempt now assert the opposite (t1, t4, t7,
+  t10). **What this costs:** a Remote search no longer shows an on-site Milan advert, and a Remote
+  prompt's cached verdicts are re-asked once (new prompt version). Still Italy-specific, unrelated to
+  this rule: the "Italy first" sort order in the table.
 
 #### `T-22` · The column filters crashed the program, and now leave a crash log
 
@@ -1772,9 +1793,7 @@ Seniority رو کلا در Actor بررسی کنیم"*).
   Remote / Not Remote row *sets* that dropdown (Remote → Remote, Not Remote → Any) and the field
   takes ONE value, so "everything but remote" cannot be asked. With no window at all the builder
   still sends `remote` for a Remote search, which is what every test written before the window had
-  a say reads. Never in Italy, country or city — Italy holds Turin and Milan, where he can reach an
-  office, and a filter that is *honoured* would hide exactly the on-site jobs he wants there. (The
-  old actor's `f_WT` did that to city searches too, invisibly, because it did nothing.) It is a
+  a say reads. (Italy was exempt here until `T-23`; it is not any more.) It is a
   *recall* setting and not a decision — nothing is deleted at the actor, every row carries its own
   tag, and the Filter decides, which is Sina's rule: the actor brings what he is looking for and
   his own Filter does the rest.
@@ -1791,7 +1810,7 @@ Seniority رو کلا در Actor بررسی کنیم"*).
   (**225 of 225 real rows parsed, zero empty**: 137 Full-time, 48 Part-time, 29 Contract, 8
   Internship, 2 Temporary, 1 Volunteer). `seniority_level` is `None` and stays so — this actor does
   not return one and an invented value would be worse than none; `seniority_of` reads the title.
-- **`passes_work_location_rule` reads the tag first**, after the Milan/Turin exemption and before
+- **`passes_work_location_rule` reads the tag first**, (the Milan/Turin exemption that preceded it was removed by `T-23`) and before
   every word in the advert. Hybrid or On-site → dropped. Remote → the word "remote" is no longer
   required and a stray *"located in"* cannot overrule it, but a phrase that denies remote work
   outright, or a stated number of office days, still can: an advert tagged Remote that says "three
@@ -4702,10 +4721,8 @@ same URL without `f_WT` returned the identical 300 jobs, about 6% of them Remote
 takes plain fields, its `remote` field is a real filter, and every row comes back with LinkedIn's
 own Hybrid / On-site / Remote tag, which the Work Location rule reads before any wording.
 
-**Italy is still searched without the remote filter**, country and city alike, because Milan and
-Turin are exempt from the remote-only rule (see below) — and now that the filter is honoured,
-sending it would hide exactly the on-site Milan/Turin listings he wants before they reached the
-app. The client-side Remote rule still runs on every listing regardless; the tag is evidence it
+**~~Italy is still searched without the remote filter~~ — removed by `T-23`:** Remote is asked for in
+Italy, Turin and Milan exactly as everywhere. The client-side Remote rule still runs on every listing regardless; the tag is evidence it
 reads, not a replacement for it.
 
 **Resilience**: if anything interrupts the search partway through — Apify credits
@@ -4997,8 +5014,8 @@ Filters run in this exact order; a listing dropped by an earlier one never reach
 later ones:
 
 ### 1. Remote rule (`passes_remote_rule`)
-- If `location` mentions **Milan/Milano** or **Turin/Torino** → **kept**, no matter what
-  work mode is mentioned.
+- ~~If `location` mentions Milan/Milano or Turin/Torino → kept, no matter what work mode is
+  mentioned.~~ **Removed by `T-23`:** no city is exempt.
 - Otherwise: dropped if the text contains any of `on-site, onsite, on site, in-office,
   in office, in-person, office-based, office based, hybrid`.
 - Dropped if it contains any of: `no remote, not remote, remote not available, remote

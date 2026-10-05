@@ -38,9 +38,6 @@ from ..search_title import (LEVEL_ROW_KEY, ROW_KEY as TITLE_ROW_KEY, WORK_MODE_R
                             clean_title, clean_work_mode, is_any_workplace, is_not_remote)
 
 
-# The owner lives here, and for these two cities the arrangement does not matter at all.
-MILAN_TURIN_NAMES = ('turin', 'torino', 'milan', 'milano')
-_MILAN_TURIN_PATTERN = re.compile(r'\b(?:%s)' % '|'.join(MILAN_TURIN_NAMES))
 
 # Where the untranslated text is kept. The salaried module writes these keys during
 # translation; reading them is reading the listing, not sharing a rule. This module names
@@ -146,8 +143,6 @@ def passes_location_rule(row) -> bool:
         if _hit('not_remote', row, text) or _hit('on_site', row, text):
             return True
         return not _hit('remote', row, text)
-    if _MILAN_TURIN_PATTERN.search(text):
-        return True
     if _hit('not_remote', row, text):
         return False
     if _hit('remote', row, text):

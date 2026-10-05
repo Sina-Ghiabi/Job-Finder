@@ -10,7 +10,6 @@ its own copy of the listings so none can see another's edits. Merging any two of
 together to save duplication is the failure this arrangement exists to prevent.
 """
 from .finder import (  # noqa: F401
-    MILAN_TURIN_NAMES,
     find,
     is_internship,
     passes_location_rule,
@@ -21,7 +20,6 @@ from . import claude  # noqa: F401
 from . import words  # noqa: F401
 
 __all__ = [
-    'MILAN_TURIN_NAMES',
     'find',
     'is_internship',
     'passes_location_rule',

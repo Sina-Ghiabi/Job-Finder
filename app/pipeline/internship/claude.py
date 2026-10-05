@@ -63,15 +63,13 @@ If a rule needs a fact his résumé does not give, do not guess it, and do not D
 
 A **paid internship in the work named on the Field line of the posting, that he can do from
 his desk at home, in the city his résumé says he lives in** — for a company in any country.
-An internship in that city, or within an everyday commute of it, also works, on-site or not,
-because he is already there.
 
 Nothing he has done has to carry that title already. An internship is where someone starts
 in a field, so this is never a reason to drop.
 
 ## DROP if any of these is true
 
-1. **He would have to be somewhere other than the city he lives in.** Office days per week, an
+1. **He would have to be present somewhere.** Office days per week, an
    attendance policy, "based in", relocation, hybrid as the working model — or a remote role
    restricted to a country he is not in ("remote within the US", "must be based in India",
    "within commuting distance of Amsterdam").
@@ -131,8 +129,7 @@ in a field, so this is never a reason to drop.
 
    So a named working-student role is a DROP **unless the posting states plainly that this
    role is performed remotely**. A home-office benefit is not that statement. Silence is not
-   that statement. The city he lives in, and any within an everyday commute of it, remain
-   the exception, as always.
+   that statement.
 3. **It is not the work named on the Field line.** That line is the job title Sina is
    searching for. The same work under any other name an employer gives it counts. A
    different job that only mentions it, or works alongside it, does not — however junior.
@@ -169,9 +166,6 @@ in a field, so this is never a reason to drop.
    he does not have.** One his résumé shows he has is fine.
 9. **It is a graduate scheme that requires having already graduated**, or it wants more than
    3 years of experience, or it is a senior role wearing an internship label.
-
-Anything in the city he lives in, or within an everyday commute of it, is a KEEP regardless
-of rule 1.
 
 ## Never DROP for
 
@@ -266,7 +260,6 @@ _OUTPUT_SCHEMA: dict = {
                      'names a place the holder must be',
                      'home office listed only as a benefit',
                      'working-student role, inherently local',
-                     'in or near the city he lives in',
                      'silent - work needs a site',
                      'silent - work is data or code'],
             'description': 'How you settled rules 1 and 2. Pick the one that decided it.',

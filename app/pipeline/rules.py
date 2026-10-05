@@ -304,9 +304,6 @@ def rule_text(row) -> str:
     return ' '.join(str(p) for p in parts if p).lower()
 
 
-MILAN_TURIN_NAMES = ['turin', 'torino', 'milan', 'milano']
-
-
 ON_SITE_OR_HYBRID_KEYWORDS = [
     'on-site', 'onsite', 'on site',
     'in-office', 'in office',
@@ -865,43 +862,6 @@ def country_language_rule_hit(row, vocabulary=None):
     return ''
 
 
-# Whole words only. The city names are short and they live inside ordinary ones, which is
-# what made the substring version the most expensive single line in the Filter.
-_MILAN_TURIN_PATTERN = re.compile(
-    r'\b(?:%s)\b' % '|'.join(MILAN_TURIN_NAMES), re.IGNORECASE)
-
-
-def mentions_milan_or_turin(row) -> bool:
-    """Milan or Turin anywhere in the listing -- title, description, location, or the
-    untranslated original.
-
-    Sina's rule, and it is absolute: for these two cities the work arrangement does not
-    matter at all. On-site, hybrid, remote -- the listing is kept either way. It used to
-    read only the `location` field, which missed every listing that named the city in its
-    title or body instead.
-
-    WHOLE WORDS, and that is not a tidy-up. This read `city in rule_text(row)` -- a plain
-    substring test -- and `turin` lives inside words this corpus is full of:
-
-        manufac*turin*g     s*turin*g      struc*turin*g      nur*turin*g
-
-    The Dutch ones are the worst of it, because `sturing` is ordinary business Dutch:
-    "kpi-sturing", "aansturing", "salessturing", "datagedreven sturing". And `milan` matched
-    an engineer's first name in a Catawiki posting -- "our engineer Milan shows how...".
-
-    Measured on the 4,325-row Netherlands Bank: this said yes to **395 listings, of which 9
-    were really about Milan or Turin**. 386 false positives, 356 of them Dutch.
-
-    What that cost is the whole point, because this is the FIRST question the Work Location
-    rule asks and a yes means keep unconditionally -- so every one of those 386 skipped the
-    Remote rule entirely. One of them survived to Claude, which dropped it with "hybrid work
-    required in eindhoven, not turin": Claude read it correctly, the keyword rule had waved
-    it through, and the only reason the right answer was reached is that Sina paid for the
-    second opinion.
-    """
-    return bool(_MILAN_TURIN_PATTERN.search(rule_text(row)))
-
-
 def silent_about_english(row, vocabulary=None) -> bool:
     """True when a non-English posting never once names English, in any spelling.
 
@@ -992,8 +952,6 @@ def passes_work_location_rule(row, vocabulary=None):
         return True
     if is_not_remote(row):
         return passes_not_remote_rule(row, vocabulary)
-    if mentions_milan_or_turin(row):
-        return True
     # LINKEDIN'S OWN TAG, read before any wording. A row from apimaestro/linkedin-jobs-scraper
     # -api carries `workplace_type` -- the Hybrid / On-site / Remote chip Sina sees on the page
     # and no other source can give us -- and it is the most reliable thing this rule is ever
@@ -1506,7 +1464,7 @@ def categorize(row):
 #   1. The TITLE, whole words only. An employer who writes "Senior Data Scientist" has said
 #      what the role is, and no amount of body text outranks that. Whole words because this
 #      module has just been bitten by the substring version of exactly this mistake --
-#      `mentions_milan_or_turin` matched "turin" inside "manufacturing" and waved 386
+#      a city-name test once matched "turin" inside "manufacturing" and waved 386
 #      listings past the Remote rule.
 #   2. LINKEDIN'S OWN FIELD, `seniority_level`, which only LinkedIn sends. Measured on the
 #      4,325-row Netherlands Bank: of the rows that reach Claude it is absent on most, and

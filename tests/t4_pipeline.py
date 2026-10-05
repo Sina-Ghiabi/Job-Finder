@@ -3754,7 +3754,9 @@ for (_level, _mode), _text in _prompts.items():
            and not any(w in _flat for w in ('Turin', 'Torino', 'Politecnico', 'Iranian',
                                             'A2', 'DevOps')))
     if _mode == 'remote':
-        _ok = _ok and 'city he lives in' in _flat
+        # No home-city exception: Remote means Remote, in Turin and Milan as anywhere.
+        _ok = (_ok and '1. **He would have to be present somewhere — the role is not remote.**' in _flat
+               and 'everyday commute' not in _flat and 'city he lives in' not in _flat)
     else:
         _ok = (_ok and '1. **The role is remote.**' in _flat and 'city he lives in' not in _flat
                and '1a. The posting says **this role** is done remotely' in _flat)

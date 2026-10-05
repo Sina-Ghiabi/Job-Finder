@@ -373,9 +373,9 @@ check('Indeed Any keeps the searched city', _ri(_A, 'Berlin', 'Germany').get('lo
       _ri(_A, 'Berlin', 'Germany'))
 check('Indeed Any in a country search sends no location at all',
       'location' not in _ri(_A, 'Germany', 'Germany'))
-check('Italy is the exception: a city keeps its own name, a country sends none',
-      _ri(_R, 'Turin', 'Italy').get('location') == 'Turin'
-      and 'location' not in _ri(_R, 'Italy', 'Italy'),
+check('Italy is no exception: Remote sends location=remote for a city and for the country',
+      _ri(_R, 'Turin', 'Italy').get('location') == 'remote'
+      and _ri(_R, 'Italy', 'Italy').get('location') == 'remote',
       (_ri(_R, 'Turin', 'Italy'), _ri(_R, 'Italy', 'Italy')))
 check('Indeed offers exactly Any and Remote',
       [v for v, _l in [f for f in af.fields_for('indeed') if f.key == 'location'][0].options]

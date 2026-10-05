@@ -700,14 +700,13 @@ _actor, _input, _norm = _runner._actor_request(
 check('  ...while a Remote search asks for remote work, as a real field',
       _input.get('remote') == 'remote', _input)
 
-# ITALY IS EXEMPT, COUNTRY AND CITY ALIKE. The filter is honoured now, so applying it in Italy
-# would hide exactly the on-site jobs in Turin and Milan that he wants -- the old actor's
-# f_WT did that for city searches too, invisibly, because it did nothing.
+# NO PLACE IS EXEMPT. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin یا Milan بود".
+# A Remote search asks for remote work in Italy, Turin and Milan exactly as it does anywhere.
 for _kind, _place in (('country', 'Italy'), ('city', 'Turin'), ('city', 'Milan')):
     _a, _it, _n = _runner._actor_request(
         'linkedin', 'data engineer', _kind, _place, 'Italy', 500, _DATES, False, {'x': 1})
-    check('Italy is never asked for remote work only (%s %s)' % (_kind, _place),
-          'remote' not in _it, _it)
+    check('Italy is asked for remote work only, like everywhere (%s %s)' % (_kind, _place),
+          _it.get('remote') == 'remote', _it)
 # EVERY CHOICE GOES IN AS THE ACTOR'S OWN VALUE -- Sina: "بعد هر انتخابی که کردم اونجا مستقیما در
 # مقدار پارامتر مربوطه به اون Actor قرار داده بشه". Each of the actor's four Workplace Type values,
 # in a Remote search and in a Not Remote one, because the window decides and the work mode no
@@ -838,8 +837,8 @@ check('  ...and a Not Remote search does not',
 _a, _gd_it, _n = _runner._actor_request(
     'glassdoor', 'data engineer', 'country', 'Italy', 'Italy', 500,
     {'indeed': '7', 'linkedin': 'pastWeek', 'glassdoor': 7}, False)
-check('  ...and Italy is not asked for remote only -- he can commute there',
-      'remoteWorkType' not in _gd_it, _gd_it)
+check('  ...and Italy is asked for remote only too: no place is exempt',
+      _gd_it.get('remoteWorkType') is True, _gd_it)
 
 # Indeed has no arrangement filter at all: five fields, and the app sends all five. Measured
 # from its published input schema, so this is the whole vocabulary and not a sample.

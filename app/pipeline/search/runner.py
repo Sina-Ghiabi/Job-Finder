@@ -317,7 +317,7 @@ def _linkedin_request(keywords, loc_type, location, row_country, limit_per_call,
     window = LINKEDIN_DATE_TO_WINDOW.get(date_settings.get('linkedin') or '', '')
     if window:
         run_input["date_posted"] = window
-    if not (not_remote or location == 'Italy' or row_country == 'Italy'):
+    if not not_remote:
         run_input["remote"] = "remote"
     return run_input
 
@@ -416,7 +416,7 @@ def _glassdoor_request(keywords, loc_type, location, row_country, limit_per_call
         "limit": _actor_limit('glassdoor', limit_per_call),
         "daysOld": date_settings['glassdoor'],
     }
-    if not (not_remote or (loc_type == 'country' and location == 'Italy')):
+    if not not_remote:
         run_input["remoteWorkType"] = True
     return run_input
 
@@ -459,15 +459,13 @@ def _actor_request(platform, keywords, loc_type, location, row_country, limit_pe
         for derived in _WORKPLACE_PARAMETER.get(platform, ()):
             run_input.pop(derived, None)
         actor_filters.apply_to_request(run_input, settings, platform)
-    # THE TWO EXCEPTIONS, both Sina's own rules and both stated rather than hidden:
-    #   * Italy, country or city. It holds Turin and Milan, where he can reach an office, and a
-    #     remote-only filter that is honoured would hide exactly the on-site jobs he wants.
-    #   * the thesis and internship passes. They are almost never remote and have their own
-    #     modules with a Remote rule that lets silence through; asked for remote-only first,
-    #     LinkedIn and Glassdoor returned nothing for either (Document T-19). `skip_remote` is how
-    #     the caller says so.
+    # THE ONE EXCEPTION, stated rather than hidden: the thesis and internship passes. They are
+    # almost never remote and have their own modules with a Remote rule that lets silence
+    # through; asked for remote-only first, LinkedIn and Glassdoor returned nothing for either
+    # (Document T-19). `skip_remote` is how the caller says so. There is no exception for any
+    # place: Remote means Remote in Italy, Turin and Milan as everywhere else.
     # Everywhere else the dropdown's value is the value sent.
-    if skip_remote or location == 'Italy' or row_country == 'Italy':
+    if skip_remote:
         for derived in _WORKPLACE_PARAMETER.get(platform, ()):
             run_input.pop(derived, None)
         if platform == 'indeed' and run_input.get('location') == 'remote':

@@ -61,8 +61,7 @@ If a rule needs a fact his résumé does not give, do not guess it, and do not D
 
 A **master's thesis in the work named on the Field line of the posting, that he can write
 from his desk at home, in the city his résumé says he lives in** — with a company or an
-institute in any country. A thesis in that city, or within an everyday commute of it, also
-works, on-site or not, because he is already there.
+institute in any country.
 
 ## DROP if any of these is true
 
@@ -153,9 +152,6 @@ works, on-site or not, because he is already there.
    have.** One his résumé shows he has is fine. Do not confuse this with rule 3: studying in
    a country is not the same as being its citizen.
 
-Anything in the city he lives in, or within an everyday commute of it, is a KEEP regardless
-of rule 1.
-
 ## Never DROP for
 
 - **A degree requirement.** Being a master's student *is* the requirement for a thesis.
@@ -236,7 +232,6 @@ _OUTPUT_SCHEMA: dict = {
                      'says on-site or hybrid',
                      'names a place the student must be',
                      'home office listed only as a benefit',
-                     'in or near the city he lives in',
                      'silent - work needs a lab or a site',
                      'silent - work is data or code'],
             'description': 'How you settled rule 1. Pick the one that decided it.',

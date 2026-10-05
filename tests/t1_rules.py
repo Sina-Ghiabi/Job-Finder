@@ -42,12 +42,14 @@ for text, want, why in [
           p.passes_work_location_rule(job(description=text, location='')) is want,
           repr(text[:50]))
 
-check('Milan location overrides everything',
+# REMOTE MEANS REMOTE, EVERYWHERE. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin
+# یا Milan بود / اگر خودم بخواد Any رو Search میکنم". Milan and Turin are cities like any other.
+check('Milan is judged like any other city: strictly on-site is dropped',
       p.passes_work_location_rule(job(description='Strictly on-site, hybrid, no remote at all.',
-                               location='Milan, Italy')) is True)
-check('Torino (local spelling) overrides too',
+                               location='Milan, Italy')) is False)
+check('Torino (local spelling) too',
       p.passes_work_location_rule(job(description='On-site only in our office.',
-                               location='Torino, Italia')) is True)
+                               location='Torino, Italia')) is False)
 check('location field alone can confirm remote',
       p.passes_work_location_rule(job(description='Great role with benefits.', location='Remote')) is True)
 # The "Location:" label rule is gone -- Sina's call. A company stating where IT is based is
@@ -596,10 +598,12 @@ check('a listing saying nothing about work mode is dropped',
                                     'We build models in Python and SQL for our clients.')))
 
 # -- the rules that must not have changed ---------------------------------------------
-check('a Turin listing is still kept whatever it says',
-      p.passes_work_location_rule(_row('Data Scientist', 'On-site in our office.', location='Turin')))
-check('a Milan listing is still kept', 
-      p.passes_work_location_rule(_row('Data Scientist', 'Hybrid, in office.', location='Milano')))
+check('a Turin listing is no longer exempt: on-site is dropped',
+      not p.passes_work_location_rule(_row('Data Scientist', 'On-site in our office.', location='Turin')))
+check('a Milan listing is no longer exempt: hybrid is dropped', 
+      not p.passes_work_location_rule(_row('Data Scientist', 'Hybrid, in office.', location='Milano')))
+check('...and a Milan listing that says it is remote is kept, like any other',
+      p.passes_work_location_rule(_row('Data Scientist', 'Fully remote role.', location='Milano')))
 check('a row from a source that returns no description survives',
       p.passes_work_location_rule(_row('Data Scientist', 'Data Scientist at Acme in Berlin',
                                 thin=True)))
@@ -638,7 +642,7 @@ for _label, _text in (
      'Fully remote. Location: Berlin, Germany. Full-time permanent role.'),
     ('a role location', 'This role is remote. Role Location: Munich office'),
     ('several cities', 'Work from home. Locations: Hamburg, Frankfurt'),
-    ('an Italian city', 'Location: Milan, Italy'),
+    ('an Italian city', 'Fully remote role. Location: Milan, Italy'),
 ):
     check(f'a location label saying {_label} does not delete the listing',
           p.passes_work_location_rule({'title': 'Data Scientist', 'country': 'Germany',
@@ -1383,9 +1387,9 @@ check('  ...where the Job module would have dropped it',
 check('a stated on-site thesis outside Milan/Turin is dropped',
       TH.passes_location_rule(job(title='Master Thesis', location='Vienna',
                                   description='On-site in our Vienna office.')) is False)
-check('  ...but the same wording in Turin is kept',
+check('  ...and the same wording in Turin is dropped too: no city is exempt',
       TH.passes_location_rule(job(title='Tesi di laurea', location='Torino',
-                                  description='In sede, tre giorni in ufficio.')) is True)
+                                  description='In sede, tre giorni in ufficio.')) is False)
 check('an unpaid thesis is dropped',
       TH.survives(job(title='Master Thesis - Photonics',
                       description='Fully remote. This is an unpaid position.'))[0] is False)
@@ -1422,9 +1426,9 @@ check('a silent internship survives the Internship location rule',
 check('a stated on-site internship outside Milan/Turin is dropped',
       IN.passes_location_rule(job(title='Internship Data', location='Vienna',
                                   description='On-site in our Vienna office.')) is False)
-check('  ...but the same wording in Milan is kept -- the owner lives there',
+check('  ...and the same wording in Milan is dropped too: no city is exempt',
       IN.passes_location_rule(job(title='Tirocinio curriculare', location='Milano',
-                                  description='In sede, ibrido, tre giorni.')) is True)
+                                  description='In sede, ibrido, tre giorni.')) is False)
 check('an explicit denial of remote is dropped even when remote appears',
       IN.passes_location_rule(job(title='Internship Data',
                                   description='Remote work is not available.')) is False)
@@ -1716,9 +1720,8 @@ check('  ...that fires only on a named word, never on an inferred arrangement',
       and 'An "Intern" or a "Traineeship" is not one of these' in flat)
 check('  ...and says a home-office benefit does not count as that statement',
       'A home-office benefit is not that statement' in flat)
-check('  ...and keeps the home-city exception, now read from the résumé',
-      'The city he lives in, and any within an everyday commute of it, remain the exception'
-      in flat)
+check('  ...and has no home-city exception any more: Remote means Remote',
+      'remain the exception' not in flat and 'everyday commute' not in flat)
 # The three prompts must agree on the shape of rule 1, because a listing dropped for the
 # country or for saying nothing is the one failure all three share.
 for name, text in (('Job', JC.CLAUDE_SCREEN_SYSTEM_PROMPT),
@@ -2792,65 +2795,14 @@ check('  ...each filed under the country the rule would return for it',
 
 
 # ---------------------------------------------------------------------------------------
-section('1.x  Milan and Turin -- whole words, because the substring version waved 386 '
-        'listings past the Remote rule')
+section('1.x  no city is exempt from the Work Location rule')
 # ---------------------------------------------------------------------------------------
-# THE BUG THIS SUITE DID NOT HAVE A SINGLE ASSERTION FOR.
-#
-# mentions_milan_or_turin is the FIRST question passes_work_location_rule asks, and a yes
-# means keep unconditionally -- the Remote rule is skipped entirely. It tested
-# `city in rule_text(row)`, a plain substring, and the city names are four and five letters
-# long:
-#
-#     turin  ⊂  manufacturing, structuring, nurturing
-#     turin  ⊂  sturing   -- and that is ordinary business Dutch: "kpi-sturing",
-#                            "aansturing", "salessturing", "datagedreven sturing"
-#
-# Measured on the real 4,325-row Netherlands Bank: it said yes to 395 rows, of which 9 were
-# really about Milan or Turin. 386 false positives, 356 of them Dutch, every one of them
-# exempted from the rule that is the premise of the whole search.
-#
-# One of those 386 survived all the way to Claude, which dropped it with "hybrid work
-# required in eindhoven, not turin" -- Claude read it correctly, the keyword rule had waved
-# it through, and the right answer cost a paid second opinion.
-#
-# The lesson is L-2's in another shape: the rule existed, was correct in intent, and had no
-# test. Both directions are asserted below, because a fix that stopped matching Turin at all
-# would pass a one-sided test and quietly delete the Italian listings this rule exists to
-# save.
-from app.pipeline.rules import mentions_milan_or_turin               # noqa: E402
-
-# Must NOT match. Every one of these is a real word from the Bank.
-for _text in ('manufacturing excellence across europe',
-              'kpi-sturing en dataproducten baseert',
-              'aansturing ligt bij een van de specialisten',
-              'in dap en salesforce voor betere salessturing',
-              'structuring raw data into clean model-ready tables',
-              'nurturing an inclusive environment for all',
-              'datagedreven sturing, advanced analytics',
-              'chemical manufacturing industry',
-              'familiarity with data visualization tooling'):
-    check('not Turin: %s' % _text[:52],
-          not mentions_milan_or_turin({'description': _text}), _text)
-
-# Must STILL match -- the rule's whole purpose. Sina can reach an office in either city, so
-# for these two the working arrangement is not asked at all.
-for _text in ('Based in Turin, Italy', 'Sede di Torino', 'Milano, Lombardia',
-              'our office in Milan', 'TURIN', 'Hybrid - Turin', 'Turin/Torino hybrid',
-              'standplaats: Milaan'[:0] or 'Milan, Italy'):
-    check('still Turin/Milan: %s' % _text[:52],
-          mentions_milan_or_turin({'description': _text}), _text)
-
-# It reads every field rule_text does, not just the description -- that was a deliberate
-# earlier fix (it used to read `location` alone) and must not regress either.
-check('found in the title', mentions_milan_or_turin({'title': 'Data Scientist — Turin'}))
-check('found in the location', mentions_milan_or_turin({'location': 'Torino, Italy'}))
-check('found in the untranslated original',
-      mentions_milan_or_turin({'original_description': 'Sede di lavoro: Milano'})
-      or mentions_milan_or_turin({'description': '', 'location': 'Milano'}))
-check('an empty row is not Turin', not mentions_milan_or_turin({}))
-check('a row of None is not Turin',
-      not mentions_milan_or_turin({'title': None, 'description': None, 'location': None}))
+# The Milan / Turin exemption (and the whole-word test it needed after it waved 386 listings
+# past the Remote rule on "manufacturing") is gone. Sina: "اگر نوشتم Remote دیگه بره کلا دنبال
+# Remote حتی اگر Turin یا Milan بود". What is left to assert is the consequence.
+import app.pipeline.rules as _rules_mod  # noqa: E402
+check('the exemption and its helper no longer exist',
+      not hasattr(_rules_mod, 'mentions_milan_or_turin') and not hasattr(_rules_mod, 'MILAN_TURIN_NAMES'))
 
 # And the consequence, through the rule that reads it: a Dutch office job that happens to
 # say "sturing" must now be judged on its working arrangement like any other.
@@ -2917,9 +2869,9 @@ check('  ...but an advert tagged Remote that states office days is contradicting
 check('  ...and so is one that denies remote work outright',
       p.passes_work_location_rule(_wp(description='No remote work is possible for this role.',
                                       workplace_type='Remote')) is False)
-check('Milan and Turin stay exempt from the tag, as they are from every other rule here',
+check('Turin is no exception to the tag: a Hybrid advert in Turin is dropped like any other',
       p.passes_work_location_rule(_wp(description='Hybrid role in Turin, three days in the '
-                                                  'office.', workplace_type='Hybrid')) is True)
+                                                  'office.', workplace_type='Hybrid')) is False)
 for _tag in ('Hybrid', 'On-site', 'Remote', ''):
     check('a row with tag %r never raises' % _tag,
           p.passes_work_location_rule(_wp(description='x', workplace_type=_tag)) in (True, False))

@@ -45,8 +45,7 @@ If a rule needs a fact his résumé does not give, do not guess it, and do not D
 ## What he is looking for
 
 **A remote job he can do from his desk at home, in the city his résumé says he lives in** —
-from any country, for any company. That is the point of this search. A role in that city, or
-within an everyday commute of it, also works, on-site or not, because he is already there.
+from any country, for any company. That is the point of this search.
 
 **In the work named on the Field line of the posting**, at any level of seniority. Read
 what level the posting is pitched at and report it in `seniority`; do not weigh it
@@ -55,7 +54,7 @@ one are all kept, each labelled as what it is.
 
 ## DROP if any of these is true
 
-1. **He would have to be at a desk somewhere other than the city he lives in.**
+1. **He would have to be present somewhere — the role is not remote.**
 
    Work through these in order and stop at the first that applies. Say which one in
    `location_basis`, and make the verdict agree with it.
@@ -134,9 +133,6 @@ one are all kept, each labelled as what it is.
    different job that only mentions it, or works alongside it, does not.
 8. **It requires enrolment at a university in a country other than the one his résumé says
    he studies in**, or at a named university he does not attend.
-
-Anything in the city he lives in, or within an everyday commute of it, is a KEEP regardless
-of rule 1.
 
 ## Never DROP for
 
@@ -267,8 +263,7 @@ _SCREEN_OUTPUT_SCHEMA: dict = {
             'enum': ['1a says this role is remote',
                      '1b requires him to be present somewhere',
                      '1c home office listed only as a benefit',
-                     '1d nothing requires his presence',
-                     'in or near the city he lives in'],
+                     '1d nothing requires his presence'],
             'description': 'Which rung of rule 1 decided it.',
         },
         # The posting's own words for the thing a DROP claims -- asked for BEFORE the verdict,
