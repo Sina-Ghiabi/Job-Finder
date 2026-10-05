@@ -1655,6 +1655,47 @@ job pass sends `remote=remote` and the other two do not, so that one dropdown is
 every call it nominally covers. It is the one place "directly" is not literally true, and it is there
 because the alternative is the 0-row result `T-19` measured.
 
+#### `T-24` · Going public: the name, the license, the cleaned repository, and a step-by-step guide
+
+> *"میخوام بذارم به صورت عمومی همه استفاده کنن"* · *"دانلود و استفاده اکیه ولی تغییر و فروش مشکل داره"*
+
+- **Name:** JobDesk became **Job Finder** (window title, brand label, `JobFinder_Export.xlsx`,
+  `JobFinder.spec`, `JobFinder.exe`, the Taskbar id). **The per-user data folder stays
+  `%APPDATA%\JobDesk` on purpose** — renaming it would orphan every saved setting, the Bank and the résumé.
+  Finding it on GitHub: "Job-Finder" alone is shared by 100+ repositories; a distinctive name
+  (ShoghlYab, KaarJoo and AbroadJobs had 0–3) is still open.
+- **This file** was `README.md`; it is now `Document.md`. The new `README.md` is the short public page
+  (purpose, what it uses, what to prepare, a step-by-step guide, the Google speed note).
+- **License:** PolyForm Strict 1.0.0 (`LICENSE`) — use for yourself, no changes, no redistribution, no
+  commercial use. Source-available, not Open Source. GitHub's Terms still let anyone fork a public repository;
+  the license says they may not, it does not stop them.
+- **Two repositories.** `Job-Finder` (public) holds one clean commit made with a GitHub noreply address.
+  `Job-Finder-history` (private) keeps the full 72-commit history, which carries two personal e-mail
+  addresses and an old personal profile in `archive/` (residence, nationality, university, language levels).
+  Removing a file from the latest commit does not remove it from history, so the public repository was
+  started afresh. The working folder is wired to `Job-Finder-history`; a change reaches the public one only by
+  being copied across clean.
+- **What the review found and removed:** no API key, token or password was ever committed (all 72 commits
+  scanned); the `archive/` folder (34 files) and personal sentences in comments and docs were removed. Still
+  there, knowingly: the first name "Sina" in prompts and comments, the GitHub user name, and quotations of
+  the owner's Persian instructions.
+- **Step-by-step guide:** in `README.md`. One correction it made: an earlier draft of the README said to upload
+  the résumé in the Search window; it is uploaded in the **Filter** window (**Choose résumé…**), and the
+  Anthropic key is optional — without it only the keyword rules run.
+
+#### `T-25` · Open finding: a Thesis search for "Data Science" returns almost nothing
+
+> *"الان من Thesis جستجو کردم و برام Internship و Full-Time آورده … خیلی خیلی نتایج کم هستن"*
+
+Measured on 5 October 2026 with capped live runs (Italy, Past 2 weeks). The real search returned 4 rows, none
+a thesis: the query asks for a thesis word **and** the title ("Data Science" / "Data Scientist"), the actors
+read it as one text query, and almost no Italian thesis advert has both. The 31-term English `OR` list returned
+0 rows on all three actors. A bare "Tesi" returned 113 rows, 36 of them theses (LinkedIn 13 of 13, Glassdoor 8
+of 20, Indeed 1 of 20) — and the Thesis Filter then removed all 36 because their titles never name "Data
+Science" (e.g. "Tirocinio TESI Artificial Intelligence_Bologna" is removed too: the field rule has no
+synonyms). **Not changed.** Two decisions are the owner's: search the thesis words alone and let the Filter
+judge the field, and widen the field rule with equivalents (AI, Machine Learning, Statistics).
+
 #### `T-23` · Remote means Remote — no Milan, Turin or Italy exception
 
 > *"اگر نوشتم Remote دیگه بره کلا دنبال Remote حتی اگر Turin یا Milan بود / اگر خودم بخواد Any رو
