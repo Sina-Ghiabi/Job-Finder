@@ -128,6 +128,10 @@ QPushButton#RowDownloadButton {
     padding: 2px 10px;
 }
 
+QPushButton#RowEditButton {
+    padding: 2px 10px;
+}
+
 /* The two destructive header buttons ("Clear Search" / "Clear My Applications") --
    same colours as a row Remove button, also moved off per-widget setStyleSheet. */
 QPushButton#DangerButton {

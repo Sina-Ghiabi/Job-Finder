@@ -101,9 +101,13 @@ class ManualApplicationDialog(QDialog):
     Accepted means `job` is filled in and worth saving; Rejected means nothing happened.
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, record=None):
         super().__init__(parent)
-        self.setWindowTitle('Add an application by hand')
+        # `record` is an existing application to EDIT: the same form, filled in, saved over the
+        # same record. Without it this is the "add by hand" form it always was.
+        self._record = record
+        self._existing_documents: list[str] = [str(p) for p in (record or {}).get('documents') or []]
+        self.setWindowTitle('Edit application' if record else 'Add an application by hand')
         self.setMinimumWidth(620)
         self.setMinimumHeight(640)
         self.job: dict = {}
@@ -113,7 +117,9 @@ class ManualApplicationDialog(QDialog):
 
         outer = QVBoxLayout(self)
 
-        head = QLabel('For a job you applied to somewhere else — on LinkedIn, or a '
+        head = QLabel('Change anything about this application. Its status stays as it is.'
+                      if record else
+                      'For a job you applied to somewhere else — on LinkedIn, or a '
                       'company’s own site. Only the job title is needed.')
         head.setWordWrap(True)
         head.setStyleSheet('font-size: 14px; font-weight: 600;')
@@ -136,10 +142,13 @@ class ManualApplicationDialog(QDialog):
         outer.addWidget(scroll, 1)
 
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-        buttons.button(QDialogButtonBox.Ok).setText('Add to my applications')
+        buttons.button(QDialogButtonBox.Ok).setText(
+            'Save changes' if record else 'Add to my applications')
         buttons.accepted.connect(self._on_accept)
         buttons.rejected.connect(self.reject)
         outer.addWidget(buttons)
+        if record:
+            self._prefill(record)
 
     # ------------------------------------------------------------------ the fields ----
 
@@ -220,6 +229,9 @@ class ManualApplicationDialog(QDialog):
         attach = QPushButton('Attach files…')
         attach.clicked.connect(self._choose_documents)
         docs_row.addWidget(attach)
+        self.remove_doc_button = QPushButton('Remove selected')
+        self.remove_doc_button.clicked.connect(self._remove_selected_document)
+        docs_row.addWidget(self.remove_doc_button)
         self.clear_docs_button = QPushButton('Remove all')
         self.clear_docs_button.clicked.connect(self._clear_documents)
         docs_row.addWidget(self.clear_docs_button)
@@ -338,15 +350,75 @@ class ManualApplicationDialog(QDialog):
 
     def _clear_documents(self):
         self._chosen_documents = []
+        self._existing_documents = []
+        self._show_documents()
+
+    def _remove_selected_document(self):
+        row = self.documents_list.currentRow()
+        if row < 0:
+            return
+        if row < len(self._existing_documents):
+            del self._existing_documents[row]
+        elif row - len(self._existing_documents) < len(self._chosen_documents):
+            del self._chosen_documents[row - len(self._existing_documents)]
         self._show_documents()
 
     def _show_documents(self):
+        """Documents already stored with the application (when editing) come first, then the
+        ones chosen just now."""
         self.documents_list.clear()
-        for path in self._chosen_documents:
+        for path in self._existing_documents + self._chosen_documents:
             self.documents_list.addItem(Path(path).name)
-        if not self._chosen_documents:
+        anything = bool(self._existing_documents or self._chosen_documents)
+        if not anything:
             self.documents_list.addItem('No documents attached.')
-        self.clear_docs_button.setEnabled(bool(self._chosen_documents))
+        self.clear_docs_button.setEnabled(anything)
+        self.remove_doc_button.setEnabled(anything)
+
+    def kept_documents(self) -> list:
+        """Stored documents that stay (editing only)."""
+        return list(self._existing_documents)
+
+    def _prefill(self, record: dict) -> None:
+        """Put an existing application into the form."""
+        def pick(combo, value, by_data=False):
+            text = str(value or '')
+            index = combo.findData(text) if by_data else combo.findText(text)
+            if index < 0 and text:
+                # A value the form does not list -- a verdict such as "apply" or "check" from the
+                # Filter, a level such as "any" -- is added rather than dropped, so saving an edit
+                # never silently blanks what the application already said.
+                if by_data:
+                    combo.addItem(text, text)
+                    index = combo.findData(text)
+                else:
+                    combo.addItem(text)
+                    index = combo.findText(text)
+            combo.setCurrentIndex(max(0, index))
+
+        self.title_input.setText(str(record.get('title') or ''))
+        self.company_input.setText(str(record.get('company') or ''))
+        self.country_input.setCurrentText(str(record.get('country') or ''))
+        self.location_input.setText(str(record.get('location') or ''))
+        self.url_input.setText(str(record.get('url') or ''))
+        self.platform_input.setText(str(record.get('platform') or ''))
+        pick(self.seniority_input, record.get('seniority'))
+        pick(self.category_input, record.get('category'))
+        pick(self.sponsorship_input, record.get('sponsorship_visa'))
+        self.description_input.setPlainText(str(record.get('description') or ''))
+        self.description_source_label.setText('Edit the text, or choose a PDF to replace it.')
+        applied = QDate.fromString(str(record.get('apply_date') or ''), 'dd/MM/yyyy')
+        if applied.isValid():
+            self.date_input.setDate(applied)
+        match = record.get('claude_match')
+        self.match_input.setValue(match if isinstance(match, int) and 0 <= match <= 100 else -1)
+        pick(self.verdict_input, record.get('apply_verdict'), by_data=True)
+        self.apply_note_input.setText(str(record.get('apply_note') or ''))
+        self.strengths_input.setPlainText(str(record.get('resume_strengths') or ''))
+        self.gaps_input.setPlainText(str(record.get('resume_gaps') or ''))
+        self.search_title_input.setText(str(record.get('search_title') or ''))
+        pick(self.search_level_input, record.get('search_level'), by_data=True)
+        self._show_documents()
 
     # ----------------------------------------------------------------- description ----
 

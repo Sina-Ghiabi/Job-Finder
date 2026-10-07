@@ -1694,6 +1694,19 @@ because the alternative is the 0-row result `T-19` measured.
   the résumé in the Search window; it is uploaded in the **Filter** window (**Choose résumé…**), and the
   Anthropic key is optional — without it only the keyword rules run.
 
+#### `T-29` · An Edit button on every application
+
+> [owner's note: can an Edit section be added to Applications?]
+
+The My Applications table has a new **Edit** column, between Status and Remove. It opens the same form as
+"Add by hand", **filled in with the application**, and saves over the same record (`storage.update_application`):
+the id and the status are kept, so it is the same row afterwards. Every field can change — title, company, country,
+city, link, found-on, Seniority, Type, Sponsorship Visa, description, applied-on date, Match / Verdict / Reason /
+Strengths / Gaps and the search it came from. Documents: the stored ones are listed, **Remove selected** and
+**Remove all** delete them (only a file inside that application's own folder is ever deleted), **Attach files…** adds more.
+A value the form does not list — a verdict such as "apply" or "check" from the Filter, the level "any" — is added
+to its dropdown instead of being blanked, so saving an edit never erases what the application already said.
+
 #### `T-28` · Every LinkedIn city search returned nothing since the actor swap — fixed
 
 > [owner's note: does the app know Turin and Torino are the same place, and search both?]

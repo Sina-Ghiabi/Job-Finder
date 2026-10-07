@@ -23,7 +23,7 @@ from app.ui.manual_application_dialog import ManualApplicationDialog
 # Seniority before Type, the same order as the Jobs table and the same order he groups by.
 COLUMNS = [
     "#", "Title", "Company", "Country", "Sponsorship Visa", "Seniority", "Type",
-    "Days Ago", "Applied On", "Documents", "Status", "Remove",
+    "Days Ago", "Applied On", "Documents", "Status", "Edit", "Remove",
 ]
 SPONSORSHIP_COLUMN = 4
 SENIORITY_COLUMN = 5
@@ -38,7 +38,8 @@ APPLIED_AGO_COLUMN = 7
 APPLIED_ON_COLUMN = 8
 DOCUMENTS_COLUMN = 9
 STATUS_COLUMN = 10
-REMOVE_COLUMN = 11
+EDIT_COLUMN = 11
+REMOVE_COLUMN = 12
 ROW_HEIGHT = 44
 # Every table item in this app is created fresh and then made read-only, so the target
 # flag set is always the same value. Computing it once matters more than it looks:
@@ -161,6 +162,7 @@ class ApplicationsPage(QWidget):
         self.table.setColumnWidth(APPLIED_ON_COLUMN, 110)
         self.table.setColumnWidth(DOCUMENTS_COLUMN, 110)
         self.table.setColumnWidth(STATUS_COLUMN, 150)
+        self.table.setColumnWidth(EDIT_COLUMN, 90)
         self.table.setColumnWidth(REMOVE_COLUMN, 110)
         self.table.cellClicked.connect(self._on_cell_clicked)
         layout.addWidget(self.table)
@@ -244,6 +246,14 @@ class ApplicationsPage(QWidget):
             status_btn.setMenu(status_menu)
 
             self.table.setCellWidget(row_idx, STATUS_COLUMN, self._wrap(status_btn))
+
+            edit_btn = QPushButton("Edit")
+            edit_btn.setObjectName("RowEditButton")
+            edit_btn.setCursor(_hand_cursor())
+            edit_btn.setToolTip("Change any detail of this application")
+            edit_btn.setFixedHeight(ROW_HEIGHT - 10)
+            edit_btn.clicked.connect(lambda _checked=False, r=record: self._edit_application(r))
+            self.table.setCellWidget(row_idx, EDIT_COLUMN, self._wrap(edit_btn))
 
             remove_btn = QPushButton("Remove")
             remove_btn.setObjectName("RowRemoveButton")
@@ -330,12 +340,29 @@ class ApplicationsPage(QWidget):
             return
         QMessageBox.information(self, "Download complete", f"Saved to:\n{target_path}")
 
+    def _edit_application(self, record: dict):
+        """Open the same form as "Add by hand", filled in, and save over this application.
+
+        The id and the status are not touched: it is the same row afterwards, in the same place,
+        with whatever he changed.
+        """
+        dialog = ManualApplicationDialog(self, record=record)
+        if dialog.exec() != ManualApplicationDialog.Accepted:
+            return
+        try:
+            storage.update_application(record['id'], dialog.job, dialog.apply_date(),
+                                       dialog.documents, dialog.kept_documents())
+        except Exception as exc:                                       # noqa: BLE001
+            QMessageBox.critical(self, "Could not save the changes", str(exc))
+            return
+        self.reload()
+
     def _remove_application(self, record: dict):
         storage.delete_application(record['id'])
         self.reload()
 
     def _on_cell_clicked(self, row, column):
-        if column in (DOCUMENTS_COLUMN, STATUS_COLUMN, REMOVE_COLUMN):
+        if column in (DOCUMENTS_COLUMN, STATUS_COLUMN, EDIT_COLUMN, REMOVE_COLUMN):
             return  # these columns have their own interactive widgets
         if row < 0 or row >= len(self.applications):
             return

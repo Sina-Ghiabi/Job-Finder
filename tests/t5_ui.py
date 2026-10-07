@@ -1990,4 +1990,112 @@ for _ok in (True, False):
         check('an unreachable one is printed as Failed with its reason',
               'Google Search actor | Failed (boom)' in _t, _t[-120:])
 
+# ======================= 5.edit  an Edit button on every application =====================
+section('5.edit  Edit: the same form, filled in, saved over the same record')
+# "در بخش Application میشه یک قسمت Edit گذاشت؟"
+import tempfile as _tf  # noqa: E402
+from app.ui.manual_application_dialog import ManualApplicationDialog as _MAD  # noqa: E402
+from app.ui import applications_page as _apg  # noqa: E402
+
+_dir = Path(_tf.mkdtemp())
+_doc1 = _dir / 'cv.txt'
+_doc1.write_text('my cv', encoding='utf-8')
+_doc2 = _dir / 'letter.txt'
+_doc2.write_text('my letter', encoding='utf-8')
+_outside = _dir / 'precious.txt'
+_outside.write_text('not an application document', encoding='utf-8')
+_rec = storage.add_application(
+    {'title': 'Data Analyst', 'company': 'Acme', 'country': 'Germany', 'location': 'Berlin',
+     'url': 'https://x.example/1', 'platform': 'LinkedIn', 'Category': 'Full-Time', 'Seniority': 'Junior',
+     'sponsorship_visa': 'Unknown', 'description': 'old text', 'claude_match': 61,
+     'apply_verdict': 'check', '_search_title': 'Data Analyst', '_search_level': 'junior'},
+    [str(_doc1)], '01/09/2026')
+storage.update_application_status(_rec['id'], 'Interview')
+
+# --- storage ---
+_edit = {'title': 'Senior Data Analyst', 'company': 'Globex', 'country': 'Netherlands', 'location': 'Utrecht',
+         'url': 'https://x.example/2', 'platform': 'Indeed', 'Category': 'Full-Time', 'Seniority': 'Senior',
+         'sponsorship_visa': 'Yes', 'description': 'new text', 'claude_match': None, 'apply_verdict': '',
+         '_search_title': '', '_search_level': ''}
+_stored_before = list(_rec['documents'])
+_new = storage.update_application(_rec['id'], _edit, '15/09/2026', [str(_doc2)], [])
+check('an edit changes the fields', _new['title'] == 'Senior Data Analyst' and _new['company'] == 'Globex'
+      and _new['country'] == 'Netherlands' and _new['description'] == 'new text', _new)
+check('  ...keeps the id and the status', _new['id'] == _rec['id'] and _new['status'] == 'Interview')
+check('  ...changes the applied-on date', _new['apply_date'] == '15/09/2026')
+check('  ...replaces the documents: the old one is deleted, the new one is stored',
+      not Path(_stored_before[0]).exists() and len(_new['documents']) == 1
+      and Path(_new['documents'][0]).read_text(encoding='utf-8') == 'my letter', _new['documents'])
+check('  ...and nothing outside the application folder is ever touched', _outside.exists())
+_loaded = [a for a in storage.load_applications() if a['id'] == _rec['id']]
+check('  ...and it is what is saved: still one record, now edited',
+      len(_loaded) == 1 and _loaded[0]['title'] == 'Senior Data Analyst')
+_kept = storage.update_application(_rec['id'], _edit, '', [], _new['documents'])
+check('keeping a document keeps its file, and an empty date leaves the date alone',
+      Path(_kept['documents'][0]).exists() and _kept['apply_date'] == '15/09/2026')
+check('editing an application that does not exist returns nothing',
+      storage.update_application('no-such-id', _edit) is None)
+
+# --- the dialog, pre-filled ---
+_dlg = _MAD(None, record=_kept)
+check('the dialog says Edit', 'Edit' in _dlg.windowTitle())
+_got = _dlg.entered()
+check('the form opens with the application in it',
+      _got['title'] == 'Senior Data Analyst' and _got['company'] == 'Globex' and _got['country'] == 'Netherlands'
+      and _got['location'] == 'Utrecht' and _got['url'] == 'https://x.example/2'
+      and _got['platform'] == 'Indeed' and _got['Seniority'] == 'Senior'
+      and _got['sponsorship_visa'] == 'Yes' and _got['description'] == 'new text', _got)
+check('  ...with its date', _dlg.apply_date() == '15/09/2026', _dlg.apply_date())
+check('  ...and its existing documents listed and kept', len(_dlg.kept_documents()) == 1)
+_dlg.documents_list.setCurrentRow(0)
+_dlg._remove_selected_document()
+check('"Remove selected" takes a stored document out', _dlg.kept_documents() == [])
+_dlg2 = _MAD(None, record=dict(_kept, claude_match=88, apply_verdict='apply', category='Thesis'))
+check('Match, Verdict and Type come back too',
+      _dlg2.entered()['claude_match'] == 88 and _dlg2.entered()['apply_verdict'] == 'apply'
+      and _dlg2.entered()['Category'] == 'Thesis')
+check('the add-by-hand form is unchanged', 'Add an application' in _MAD().windowTitle())
+
+# --- the page ---
+_ap2 = _apg.ApplicationsPage()
+_ap2.reload()
+_btn = _ap2.table.cellWidget(0, _apg.EDIT_COLUMN).findChild(QPushButton)
+check('every row has an Edit button, beside Remove',
+      _btn is not None and _btn.text() == 'Edit'
+      and _ap2.table.horizontalHeaderItem(_apg.EDIT_COLUMN).text() == 'Edit'
+      and _ap2.table.horizontalHeaderItem(_apg.REMOVE_COLUMN).text() == 'Remove')
+_seen = {}
+
+
+class _FakeDialog:
+    Accepted = 1
+
+    def __init__(self, parent=None, record=None):
+        _seen['record'] = record
+        self.job = dict(_edit, title='Edited from the page')
+        self.documents = []
+
+    def exec(self):
+        return 1
+
+    def apply_date(self):
+        return '20/09/2026'
+
+    def kept_documents(self):
+        return list(_seen['record'].get('documents') or [])
+
+
+_real_dialog = _apg.ManualApplicationDialog
+_apg.ManualApplicationDialog = _FakeDialog
+try:
+    _btn.click()
+finally:
+    _apg.ManualApplicationDialog = _real_dialog
+check('clicking Edit opens the dialog on that application', _seen['record']['id'] == _rec['id'])
+check('  ...and saving changes the row in the table',
+      _ap2.table.item(0, 1).text() == 'Edited from the page', _ap2.table.item(0, 1).text())
+check('  ...without losing the status',
+      [a for a in storage.load_applications() if a['id'] == _rec['id']][0]['status'] == 'Interview')
+storage.delete_application(_rec['id'])
+
 sys.exit(summary('Suite 5 -- UI & export'))

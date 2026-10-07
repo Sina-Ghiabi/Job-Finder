@@ -294,6 +294,74 @@ def update_application_status(app_id: str, status: str) -> None:
     save_applications(applications)
 
 
+def update_application(app_id: str, job: dict, apply_date: str = '',
+                       new_documents=None, keep_documents=None):
+    """Edit an application in place: the same record, the same id, the same status.
+
+    `job` is the dict the manual dialog produces (the same shape add_application reads), so a
+    field is renamed here exactly as it is there. `keep_documents` is the stored documents that
+    stay; any other stored document of this application is deleted, but only a file inside this
+    application's own folder -- a path outside it is never touched. `new_documents` are copied
+    in. What an edit does NOT change: `id`, `status`, `added_by_hand`. Returns the record, or
+    None when there is no such application.
+    """
+    _ensure_dirs()
+    applications = load_applications()
+    record = next((a for a in applications if a.get('id') == app_id), None)
+    if record is None:
+        return None
+    app_folder = DOCUMENTS_DIR / app_id
+    app_folder.mkdir(parents=True, exist_ok=True)
+
+    keep = {str(Path(p)) for p in (keep_documents if keep_documents is not None
+                                   else record.get('documents') or [])}
+    stored = []
+    for existing in record.get('documents') or []:
+        path = Path(existing)
+        if str(path) in keep:
+            stored.append(str(path))
+            continue
+        try:
+            if path.exists() and app_folder.resolve() in path.resolve().parents:
+                path.unlink()
+        except OSError:
+            pass
+    for src in new_documents or []:
+        src_path = Path(src)
+        if not src_path.exists():
+            continue
+        dest_path = app_folder / src_path.name
+        if src_path.resolve() != dest_path.resolve():
+            shutil.copy2(src_path, dest_path)
+        if str(dest_path) not in stored:
+            stored.append(str(dest_path))
+
+    record.update({
+        'title': job.get('title'),
+        'company': job.get('company'),
+        'country': job.get('country'),
+        'location': job.get('location'),
+        'platform': job.get('platform'),
+        'category': job.get('Category'),
+        'seniority': job.get('Seniority'),
+        'sponsorship_visa': job.get('sponsorship_visa'),
+        'apply_verdict': job.get('apply_verdict'),
+        'apply_note': job.get('apply_note'),
+        'claude_match': job.get('claude_match'),
+        'resume_strengths': job.get('resume_strengths'),
+        'resume_gaps': job.get('resume_gaps'),
+        'search_title': job.get('_search_title'),
+        'search_level': job.get('_search_level'),
+        'url': job.get('url'),
+        'description': job.get('description'),
+        'documents': stored,
+    })
+    if str(apply_date or '').strip():
+        record['apply_date'] = str(apply_date).strip()
+    save_applications(applications)
+    return record
+
+
 def delete_application(app_id: str) -> list[dict]:
     """Removes the application record and its copied documents folder."""
     applications = [a for a in load_applications() if a.get('id') != app_id]
