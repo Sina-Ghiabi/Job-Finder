@@ -1380,4 +1380,16 @@ for _w in ('MSc Thesis', 'Dissertation', 'Final Year Project'):
     check('the English thesis query asks for %s' % _w, _w in _ent, _ent[:90])
 
 
+# THE CITY IS SENT AS "City Country", NEVER "City, Country". The actor returned zero rows for every comma form
+# (Amsterdam, Milan, Turin measured live on 7 October 2026) and the right country for the space form.
+section('7.city  LinkedIn city searches use the form the actor understands')
+for _city, _country in (('Turin', 'Italy'), ('Milan', 'Italy'), ('Amsterdam', 'Netherlands'), ('Berlin', 'Germany')):
+    _a, _inp, _n = _runner._actor_request('linkedin', 'data engineer', 'city', _city, _country, 100,
+                                          {'indeed': '7', 'linkedin': 'pastWeek', 'glassdoor': 7}, False, None)
+    check('city %s is sent as "%s %s" with no comma' % (_city, _city, _country),
+          _inp.get('location') == '%s %s' % (_city, _country), _inp.get('location'))
+_a, _inp, _n = _runner._actor_request('linkedin', 'data engineer', 'country', 'Italy', 'Italy', 100,
+                                      {'indeed': '7', 'linkedin': 'pastWeek', 'glassdoor': 7}, False, None)
+check('a country is sent on its own', _inp.get('location') == 'Italy', _inp.get('location'))
+
 sys.exit(summary('Suite 7 -- run_search'))

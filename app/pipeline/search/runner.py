@@ -304,9 +304,17 @@ def _linkedin_request(keywords, loc_type, location, row_country, limit_per_call,
     the same words were joined by spaces), and `date_posted` was measured at day / week /
     month. `limit` is a PAGE size here, 100 at most, and _run_linkedin_pages walks the pages.
     """
+    # THE CITY AND ITS COUNTRY, SEPARATED BY A SPACE AND NEVER A COMMA. Measured on the live actor
+    # (7 October 2026, 10-20 rows each): "Amsterdam, Netherlands", "Milan, Italy" and "Turin, Italy"
+    # all returned ZERO rows -- every LinkedIn city search had been empty since the actor swap -- while
+    # "Amsterdam Netherlands" returned 8 Dutch rows and "Turin Italy", "Milan Italy", "Berlin Germany",
+    # "Oslo Norway", "Copenhagen Denmark" and "Vienna Austria" all returned the right country. A bare
+    # city is worse: "Amsterdam" is Amsterdam, New York and "Vienna" is Virginia. "Turin" and "Torino"
+    # are the same place to LinkedIn and to Indeed, so one spelling is enough (Glassdoor needs the
+    # English one: "Torino" there returned Illinois).
     linkedin_location = (
         location if loc_type == 'country'
-        else f"{location}, {row_country}" if row_country else location
+        else f"{location} {row_country}" if row_country else location
     )
     run_input = {
         "keywords": keywords,

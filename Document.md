@@ -1694,6 +1694,22 @@ because the alternative is the 0-row result `T-19` measured.
   the résumé in the Search window; it is uploaded in the **Filter** window (**Choose résumé…**), and the
   Anthropic key is optional — without it only the keyword rules run.
 
+#### `T-28` · Every LinkedIn city search returned nothing since the actor swap — fixed
+
+> [owner's note: does the app know Turin and Torino are the same place, and search both?]
+
+Asked about Turin / Torino, the check found something larger. **Measured on the live actor, 7 October 2026:**
+the location was sent as `City, Country` ("Turin, Italy"), and **that returned 0 rows for every city** tried
+(Amsterdam, Milan, Turin, even with a broad keyword) — country searches worked, city searches did not, since the
+actor swap of 4 October. The actor documents `location` as "Country name or City name or GeoID"; a comma form is
+not understood. `City Country` with a space works: Amsterdam Netherlands 8 Dutch rows, Turin Italy 7 Italian
+plus region-wide EMEA/EU rows, Milan, Berlin, Oslo, Copenhagen and Vienna the same. A bare city is ambiguous
+("Amsterdam" is New York, "Vienna" is Virginia), so the country stays. `_linkedin_request` now sends the space form.
+**Turin and Torino:** the app sends the English name and does not search both, and that is enough — LinkedIn and
+Indeed treat them as one place (Indeed returned the same listing for both; LinkedIn the same rows), and on
+Glassdoor "Torino" resolved to Illinois while "Turin" returned Italian towns. The alias list in `geo.py` is only used
+to recognise a crawled page that names the city.
+
 #### `T-27` · The Thesis pass has a third query: the thesis words alone
 
 > [owner's note: do both - search the thesis words alone, and let the Filter judge the field with the other names]
