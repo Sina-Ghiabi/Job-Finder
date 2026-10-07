@@ -559,7 +559,7 @@ PROGRESS_TRANSCRIPT = [
 
     'PLATFORM_START:Google',
     'PREFLIGHT_START',
-    'PREFLIGHT_ITEM:Google Search actor|OK',
+    'PREFLIGHT_ITEM:Google Search actor|OK||',
     'PREFLIGHT_ITEM:arbetsformedlingen.se|OK||Sweden',
     'PREFLIGHT_ITEM:de.jooble.org|FAILED|the configured key looks malformed (too short)|Germany',
     'PREFLIGHT_END:FAILED|1 of 3 checks failed',
@@ -1949,5 +1949,45 @@ del _cf._menu.isVisible
 _cf._rebuild_if_waiting()
 check('  ...and are shown the moment it closes', len(_cf._ticks) == 3 and not _cf._rebuild_when_closed,
       list(_cf._ticks))
+
+# ======================= 5.gsa  the Google Search actor's pre-flight line =====================
+section('5.gsa  a working Google Search actor is printed OK, not "OK | Failed"')
+# Screenshot: "API | Google Search actor | OK | Failed" in red, for an actor that was fine. The emitter
+# sent three fields where the Log reads four from the right.
+from app.pipeline import preflight as _pf  # noqa: E402
+
+
+class _FakeActor:
+    def __init__(self, ok):
+        self._ok = ok
+
+    def get(self):
+        if not self._ok:
+            raise RuntimeError('boom')
+        return {'name': 'google-search-scraper'}
+
+
+class _FakeClient:
+    def __init__(self, ok):
+        self._ok = ok
+
+    def actor(self, _name):
+        return _FakeActor(self._ok)
+
+
+for _ok in (True, False):
+    _sent = []
+    _pf._preflight_check_google(_FakeClient(_ok), ['Italy'], [], ['google'], lambda m, a, b: _sent.append(m))
+    _h = _LogHost()
+    _h.feed('PREFLIGHT_START')
+    for _m in _sent:
+        _h.feed(_m)
+    _t = _h.log_panel.view.toPlainText()
+    if _ok:
+        check('a reachable Google actor is printed as OK', 'Google Search actor | OK' in _t and 'Failed' not in _t, _t[-120:])
+        check('  ...and is not attributed to a country called OK', 'API | Google Search actor' not in _t, _t[-120:])
+    else:
+        check('an unreachable one is printed as Failed with its reason',
+              'Google Search actor | Failed (boom)' in _t, _t[-120:])
 
 sys.exit(summary('Suite 5 -- UI & export'))

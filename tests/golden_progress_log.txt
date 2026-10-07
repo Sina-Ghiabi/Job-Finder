@@ -6,7 +6,7 @@
 [TIME]     → Berlin | Failed | None$
 [TIME] Google  M:SS — Completed
 [TIME]     Pre-API Check  M:SS — Completed for 1 of 3 checks failed (some checks failed)
-[TIME]         → API | Google Search actor | OK | Failed
+[TIME]         → Google Search actor | OK
 [TIME]         → API | arbetsformedlingen.se | Sweden | OK
 [TIME]         → API | de.jooble.org | Germany | Failed (the configured key looks malformed (too short))
 [TIME]     Known Websites  M:SS — Succeed  $0.05

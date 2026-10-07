@@ -55,6 +55,10 @@ _JOOBLE_LIFETIME_LIMIT = 500
 # since a pre-flight check itself must never be what drains that budget. Every other
 # source gets one minimal real request, since none of them have that scarcity problem.
 # ---------------------------------------------------------------------------
+# THE ITEM MESSAGE IS ALWAYS name|status|reason|countries, FOUR FIELDS, AND THE LAST ONE MAY BE EMPTY.
+# The Log reads the trailing field from the right. The Google actor's messages used to stop after the
+# status ("...|OK"), so "OK" was read as the countries and the status as nothing, and a healthy actor
+# was printed as "API | Google Search actor | OK | Failed" in red. Keep the trailing separators.
 def _preflight_check_google(client, countries, cities, actor_order, progress_cb, should_cancel=None):
     if not ('google' in actor_order and (countries or cities)):
         return None
@@ -69,16 +73,16 @@ def _preflight_check_google(client, countries, cities, actor_order, progress_cb,
         actor_info = client.actor(GOOGLE_SEARCH_ACTOR).get()
         if actor_info:
             if progress_cb:
-                progress_cb("PREFLIGHT_ITEM:Google Search actor|OK", 0, 1)
+                progress_cb("PREFLIGHT_ITEM:Google Search actor|OK||", 0, 1)
             return True
         if progress_cb:
-            progress_cb("PREFLIGHT_ITEM:Google Search actor|FAILED|actor not found for this token", 0, 1)
+            progress_cb("PREFLIGHT_ITEM:Google Search actor|FAILED|actor not found for this token|", 0, 1)
         return {'name': 'Google Search actor', 'reason': 'actor not found for this token', 'fixable': False}
     except SearchCancelled:
         raise
     except Exception as e:
         if progress_cb:
-            progress_cb(f"PREFLIGHT_ITEM:Google Search actor|FAILED|{e}", 0, 1)
+            progress_cb(f"PREFLIGHT_ITEM:Google Search actor|FAILED|{e}|", 0, 1)
         return {'name': 'Google Search actor', 'reason': str(e), 'fixable': False}
 
 
